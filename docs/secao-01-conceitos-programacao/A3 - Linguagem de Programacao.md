@@ -21,3 +21,7 @@ Diz respeito à correção das senteças (gramática).
 | Certo | Errado |
 | --- | --- |
 | O cachorro está com fome. | A cachorro está com fome. |
+| A comida é boa. | O comida é bom |
+| O gato está vigiando | A gato está vigiando |
+| O apartamento está desarrumado | A apartamento está desarrumado |
+| Tem promoção | Tem pro mocinha |
