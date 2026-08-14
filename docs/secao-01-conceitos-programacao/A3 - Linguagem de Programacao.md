@@ -25,3 +25,9 @@ Diz respeito à correção das senteças (gramática).
 | O gato está vigiando | A gato está vigiando |
 | O apartamento está desarrumado | A apartamento está desarrumado |
 | Tem promoção | Tem pro mocinha |
+
+### Exemplo na linguagem de programação:
+
+| Certo | Errado |
+| --- | --- |
+| x = 2 + y | x = + 2 y |
