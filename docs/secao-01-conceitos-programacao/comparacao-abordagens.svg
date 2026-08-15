@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1040" role="img" aria-labelledby="title description">
+  <title id="title">Comparação das abordagens compilada, interpretada e híbrida</title>
+  <desc id="description">Três pilhas mostram como código-fonte, executável, interpretador, bytecode e máquina virtual se relacionam com o sistema operacional e o hardware.</desc>
+
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#111827" flood-opacity="0.16" />
+    </filter>
+  </defs>
+
+  <rect width="1800" height="1040" rx="20" fill="#ffffff" />
+
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <!-- Abordagem compilada: C / C++ -->
+    <g filter="url(#shadow)">
+      <rect x="55" y="220" width="480" height="145" fill="#ffbd0a" stroke="#b88600" stroke-width="3" />
+      <rect x="55" y="395" width="480" height="155" fill="#70ad47" stroke="#4f7f30" stroke-width="3" />
+      <rect x="55" y="580" width="480" height="145" fill="#5b9bd5" stroke="#3776ad" stroke-width="3" />
+      <rect x="55" y="755" width="480" height="145" fill="#a5a5a5" stroke="#777777" stroke-width="3" />
+    </g>
+
+    <g fill="#ffffff">
+      <text x="295" y="306" font-size="42">Código fonte</text>
+
+      <text x="295" y="446" font-size="39">Código executável</text>
+      <text x="295" y="494" font-size="29" font-style="italic">(específico para o sistema</text>
+      <text x="295" y="532" font-size="29" font-style="italic">operacional)</text>
+
+      <text x="295" y="666" font-size="39">Sistema Operacional</text>
+      <text x="295" y="841" font-size="42">Hardware</text>
+    </g>
+
+    <text x="295" y="995" fill="#111827" font-size="40">C / C++</text>
+
+    <!-- Abordagem interpretada: PHP, Python e JavaScript -->
+    <g filter="url(#shadow)">
+      <rect x="660" y="220" width="480" height="145" fill="#ffbd0a" stroke="#b88600" stroke-width="3" />
+      <rect x="660" y="395" width="480" height="155" fill="#ed7d31" stroke="#b55418" stroke-width="3" />
+      <rect x="660" y="580" width="480" height="145" fill="#5b9bd5" stroke="#3776ad" stroke-width="3" />
+      <rect x="660" y="755" width="480" height="145" fill="#a5a5a5" stroke="#777777" stroke-width="3" />
+    </g>
+
+    <g fill="#ffffff">
+      <text x="900" y="306" font-size="42">Código fonte</text>
+
+      <text x="900" y="446" font-size="41">Interpretador</text>
+      <text x="900" y="494" font-size="29">(específico para o sistema</text>
+      <text x="900" y="532" font-size="29">operacional)</text>
+
+      <text x="900" y="666" font-size="39">Sistema Operacional</text>
+      <text x="900" y="841" font-size="42">Hardware</text>
+    </g>
+
+    <text x="900" y="995" fill="#111827" font-size="38">PHP, Python, JavaScript</text>
+
+    <!-- Abordagem híbrida: Java e C# -->
+    <g filter="url(#shadow)">
+      <rect x="1265" y="40" width="480" height="145" fill="#ffbd0a" stroke="#b88600" stroke-width="3" />
+      <rect x="1265" y="220" width="480" height="145" fill="#70ad47" stroke="#4f7f30" stroke-width="3" />
+      <rect x="1265" y="395" width="480" height="155" fill="#ed7d31" stroke="#b55418" stroke-width="3" />
+      <rect x="1265" y="580" width="480" height="145" fill="#5b9bd5" stroke="#3776ad" stroke-width="3" />
+      <rect x="1265" y="755" width="480" height="145" fill="#a5a5a5" stroke="#777777" stroke-width="3" />
+    </g>
+
+    <g fill="#ffffff">
+      <text x="1505" y="126" font-size="42">Código fonte</text>
+
+      <text x="1505" y="278" font-size="40">Bytecode</text>
+      <text x="1505" y="326" font-size="29">(código precompilado)</text>
+
+      <text x="1505" y="446" font-size="41">Máquina virtual</text>
+      <text x="1505" y="494" font-size="29">(específica para o sistema</text>
+      <text x="1505" y="532" font-size="29">operacional)</text>
+
+      <text x="1505" y="666" font-size="39">Sistema Operacional</text>
+      <text x="1505" y="841" font-size="42">Hardware</text>
+    </g>
+
+    <text x="1505" y="995" fill="#111827" font-size="40">Java, C#</text>
+  </g>
+</svg>
