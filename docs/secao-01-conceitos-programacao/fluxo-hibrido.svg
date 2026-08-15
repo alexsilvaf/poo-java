@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 540" role="img" aria-labelledby="title description">
   <title id="title">Fluxo da abordagem híbrida</title>
-  <desc id="description">O código-fonte é precompilado para bytecode, que uma máquina virtual interpreta sob demanda durante a execução.</desc>
+  <desc id="description">O código-fonte é compilado para bytecode, que uma máquina virtual interpreta ou compila para código nativo sob demanda.</desc>
 
   <defs>
     <linearGradient id="boxGradient" x1="0" y1="0" x2="0" y2="1">
@@ -25,10 +25,10 @@
   <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle" fill="#111827">
     <!-- Descrições acima das setas -->
     <text x="465" y="55" font-size="34" font-weight="700">Compilador:</text>
-    <text x="465" y="98" font-size="34" font-weight="700">precompilação</text>
+    <text x="465" y="98" font-size="34" font-weight="700">compilação</text>
 
     <text x="1110" y="55" font-size="34" font-weight="700">Máquina virtual:</text>
-    <text x="1110" y="98" font-size="34" font-weight="700">interpretação</text>
+    <text x="1110" y="98" font-size="34" font-weight="700">interpretação / JIT</text>
 
     <!-- Código-fonte, bytecode e execução -->
     <g filter="url(#shadow)">
@@ -49,11 +49,11 @@
 
     <!-- Descrições abaixo das setas -->
     <g fill="#6b7280" font-size="30" font-style="italic">
-      <text x="465" y="360">análise léxica</text>
-      <text x="465" y="401">+</text>
-      <text x="465" y="442">análise sintática</text>
+      <text x="465" y="360">análises léxica e sintática</text>
+      <text x="465" y="401">análise semântica</text>
+      <text x="465" y="442">geração de bytecode</text>
 
-      <text x="1110" y="380">geração de código</text>
+      <text x="1110" y="380">execução ou geração de código nativo</text>
       <text x="1110" y="490" font-size="33">SOB DEMANDA</text>
     </g>
   </g>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 480" role="img" aria-labelledby="title description">
   <title id="title">Fluxo de compilação de um programa</title>
-  <desc id="description">O código-fonte passa pela compilação e se torna código objeto. Depois, a construção gera o código executável.</desc>
+  <desc id="description">O compilador transforma código-fonte em código objeto. Depois, o ligador combina arquivos e bibliotecas para formar o executável.</desc>
 
   <defs>
     <linearGradient id="boxGradient" x1="0" y1="0" x2="0" y2="1">
@@ -23,8 +23,8 @@
     <text x="475" y="58" font-size="34" font-weight="700">Compilador:</text>
     <text x="475" y="100" font-size="34" font-weight="700">compilação</text>
 
-    <text x="1125" y="58" font-size="34" font-weight="700">Gerador de código:</text>
-    <text x="1125" y="100" font-size="34" font-weight="700">construção (build)</text>
+    <text x="1125" y="58" font-size="34" font-weight="700">Ligador (linker):</text>
+    <text x="1125" y="100" font-size="34" font-weight="700">ligação (linkedição)</text>
 
     <!-- Caixas -->
     <g filter="url(#shadow)">
@@ -49,12 +49,12 @@
 
     <!-- Descrições abaixo das setas -->
     <g fill="#6b7280" font-size="30" font-style="italic">
-      <text x="475" y="365">análise léxica</text>
-      <text x="475" y="402">+</text>
-      <text x="475" y="439">análise sintática</text>
+      <text x="475" y="365">análises léxica e sintática</text>
+      <text x="475" y="402">análise semântica</text>
+      <text x="475" y="439">geração de código objeto</text>
 
-      <text x="1125" y="383">geração de</text>
-      <text x="1125" y="422">código</text>
+      <text x="1125" y="383">combinação de arquivos</text>
+      <text x="1125" y="422">e bibliotecas</text>
     </g>
   </g>
 </svg>

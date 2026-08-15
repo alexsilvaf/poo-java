@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1040" role="img" aria-labelledby="title description">
   <title id="title">Comparação das abordagens compilada, interpretada e híbrida</title>
-  <desc id="description">Três pilhas mostram como código-fonte, executável, interpretador, bytecode e máquina virtual se relacionam com o sistema operacional e o hardware.</desc>
+  <desc id="description">Três pilhas mostram como código-fonte, executável, interpretador, código intermediário e runtime se relacionam com o sistema operacional e o hardware.</desc>
 
   <defs>
     <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
@@ -65,10 +65,10 @@
     <g fill="#ffffff">
       <text x="1505" y="126" font-size="42">Código fonte</text>
 
-      <text x="1505" y="278" font-size="40">Bytecode</text>
-      <text x="1505" y="326" font-size="29">(código precompilado)</text>
+      <text x="1505" y="278" font-size="34">Código intermediário</text>
+      <text x="1505" y="326" font-size="29">(bytecode ou CIL)</text>
 
-      <text x="1505" y="446" font-size="41">Máquina virtual</text>
+      <text x="1505" y="446" font-size="34">Máquina virtual / runtime</text>
       <text x="1505" y="494" font-size="29">(específica para o sistema</text>
       <text x="1505" y="532" font-size="29">operacional)</text>
 

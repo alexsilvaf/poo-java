@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 620" role="img" aria-labelledby="title description">
   <title id="title">Fluxo de interpretação de um programa</title>
-  <desc id="description">O interpretador analisa o código-fonte, gera o código necessário sob demanda e executa o programa.</desc>
+  <desc id="description">O interpretador analisa e executa as instruções do código-fonte progressivamente, sob demanda.</desc>
 
   <defs>
     <linearGradient id="sourceGradient" x1="0" y1="0" x2="0" y2="1">
@@ -46,7 +46,7 @@
       <text x="800" y="394">+</text>
       <text x="800" y="436">análise sintática</text>
       <text x="800" y="478">+</text>
-      <text x="800" y="520">geração de código</text>
+      <text x="800" y="520">análise semântica e execução</text>
       <text x="800" y="585" font-size="34">SOB DEMANDA</text>
     </g>
   </g>

@@ -1,33 +1,54 @@
 # Linguagem de programação
-É um conjunto de regras léxicas (ortografia) e sintáticas (gramática) para se escrever programas
+
+Uma linguagem de programação possui regras léxicas, sintáticas e semânticas para representar instruções de maneira precisa.
 
 ## Léxica
-Diz respeito à correção das palavras isoladas (ortografia).
 
-### Exemplo:
+Diz respeito à formação dos elementos individuais da linguagem, chamados de *tokens*. Palavras-chave, identificadores, números, operadores e símbolos precisam ser escritos de maneira válida.
+
+### Exemplo
+
+Na língua portuguesa, `cachorro` e `caxorro` ilustram a diferença ortográfica. Em uma linguagem de programação, um exemplo comum de erro léxico é iniciar uma sequência de texto e não usar o delimitador de fechamento:
 
 | Certo | Errado |
 | --- | --- |
-| Cachorro | Caxorro |
-| main | maim |
-| Problema | Pobrema |
-| Casa | Kasa |
+| `"Olá"` | `"Olá` |
+
+Os tokens disponíveis e as regras para escrevê-los são definidos por cada linguagem.
 
 ## Sintática
-Diz respeito à correção das senteças (gramática).
 
-### Exemplo:
+Diz respeito à maneira como os elementos da linguagem podem ser combinados para formar instruções válidas.
+
+### Exemplo
 
 | Certo | Errado |
 | --- | --- |
 | O cachorro está com fome. | A cachorro está com fome. |
-| A comida é boa. | O comida é bom |
-| O gato está vigiando | A gato está vigiando |
-| O apartamento está desarrumado | A apartamento está desarrumado |
-| Tem promoção | Tem pro mocinha |
+| A comida é boa. | O comida é bom. |
 
-### Exemplo na linguagem de programação:
+### Exemplo em uma linguagem de programação
 
 | Certo | Errado |
 | --- | --- |
-| x = 2 + y | x = + 2 y |
+| `x = 2 + y;` | `x = + 2 y;` |
+
+## Semântica
+
+Diz respeito ao significado de uma instrução. Um programa pode respeitar as regras léxicas e sintáticas e, ainda assim, produzir um resultado diferente do esperado.
+
+### Exemplo
+
+Para calcular a média de `x` e `y`, a expressão correta é:
+
+```text
+media = (x + y) / 2
+```
+
+Sem os parênteses, `x + y / 2` normalmente realiza primeiro a divisão e produz outro resultado.
+
+## Tipos de erro
+
+- **Erro léxico ou sintático:** impede a tradução do programa.
+- **Erro de execução:** ocorre enquanto o programa está sendo executado.
+- **Erro semântico ou lógico:** o programa executa, mas produz um comportamento incorreto.

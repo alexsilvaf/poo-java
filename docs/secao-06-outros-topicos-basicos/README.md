@@ -17,14 +17,6 @@
 | ---: | --- | --- | --- |
 <!-- Adicione uma linha para cada aula. -->
 
-## Materiais de apoio
-
-<!-- Adicione links, livros, artigos e arquivos. -->
-
-## Exercicios
-
-<!-- Registre os exercicios e os resultados esperados. -->
-
 ## Observacoes
 
 <!-- Inclua decisoes, ajustes e lembretes para esta secao. -->
