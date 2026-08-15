@@ -25,13 +25,14 @@ Diz respeito à maneira como os elementos da linguagem podem ser combinados para
 | Certo | Errado |
 | --- | --- |
 | O cachorro está com fome. | A cachorro está com fome. |
-| A comida é boa. | O comida é bom. |
+| A comida é boa. | A é boa comida. |
 
 ### Exemplo em uma linguagem de programação
 
-| Certo | Errado |
-| --- | --- |
-| `x = 2 + y;` | `x = + 2 y;` |
+| Certo | Errado | Separação em tokens |
+| --- | --- | --- |
+| `x = 2 + y;` | `x = + 2 y;` | `x` · `=` · `2` · `+` · `y` · `;` |
+| `int idade = 20;` | `int idade = ;` | `int` · `idade` · `=` · `20` · `;` |
 
 ## Semântica
 

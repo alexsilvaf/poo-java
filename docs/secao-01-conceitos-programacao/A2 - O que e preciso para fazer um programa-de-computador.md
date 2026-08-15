@@ -21,7 +21,7 @@ O código objeto nem sempre pode ser executado diretamente: ele pode precisar se
 
 ## O que é um interpretador?
 
-É um software que analisa e executa o programa de forma progressiva. Uma implementação pode criar representações intermediárias internamente, mesmo quando a linguagem é classificada como interpretada.
+É um software que lê, analisa e coordena a execução de um programa sem exigir que o programador gere antes um executável nativo. Ele analisa o código e realiza suas instruções de acordo com o fluxo definido no próprio programa.
 
 ## O que é uma máquina virtual?
 
