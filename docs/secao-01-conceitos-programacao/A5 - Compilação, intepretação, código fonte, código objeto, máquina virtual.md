@@ -40,7 +40,9 @@ Na abordagem híbrida, o código-fonte é compilado para uma representação int
 ### Exemplos
 
 - Java (JVM)
-- C# (CLR, ambiente de execução da plataforma .NET)
+- C# (CLR)
+
+> **CLR (*Common Language Runtime*):** ambiente de execução do .NET que carrega e executa o código intermediário gerado pelo compilador. O CLR também gerencia recursos como memória e exceções e pode usar um compilador JIT para transformar esse código em código nativo durante a execução.
 
 ## Vantagens e características
 
