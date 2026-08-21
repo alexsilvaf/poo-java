@@ -8,6 +8,9 @@ Este README cobre, por enquanto, as aulas 6 a 88 da referencia, que correspondem
 
 ## Referências
 - OCPJ21 Study Guide [ https://github.com/eh3rrera/ocpj21-book ]
+- Certificacao Oracle Certified Professional, Java SE 25 Developer - exame 1Z0-831 [ https://education.oracle.com/java-se-25-developer-professional/pexam_1Z0-831 ]
+
+> Nao existe um repositorio `ocpj25-book`. O autor do `ocpj21-book`, Esteban Herrera, mantem `ocpj8-book`, `ocpj8-notes`, `ocpj17-book` e `ocpj21-book`, mas nenhum voltado ao Java 25 ate agosto de 2026. O `ocpj21-book` segue como base, complementado pelos materiais das secoes.
 
 ## Status
 
