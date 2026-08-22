@@ -8,7 +8,7 @@ Java é uma linguagem orientada a objetos. A organização do código segue uma 
 
 Classe é a unidade lógica básica de um programa orientado a objetos, no nosso caso, a linguagem de programação Java. Todo código Java tem que estar dentro de classes.
 
-![Classes](./classes.png)
+![Classes](./classes.svg)
 
 ```java
 public class Produto {
@@ -46,7 +46,7 @@ class Categoria {        // sem modificador, permitida no mesmo arquivo
 
 Pacote é um agrupamento lógico de classes relacionadas.
 
-![Pacotes](./pacote.png)
+![Pacotes](./pacote.svg)
 
 O pacote é declarado na **primeira instrução** do arquivo, antes de qualquer `import` e de qualquer classe. Por convenção usa-se o nome de domínio invertido, todo em minúsculas.
 
@@ -74,7 +74,7 @@ Módulos são agrupamentos lógicos de pacotes relacionados. Foram introduzidos 
 
 _Observação: Runtime é o agrupamento físico._
 
-![Módulos](./modulo.png)
+![Módulos](./modulo.svg)
 
 Um módulo é declarado em um arquivo chamado `module-info.java`, colocado na raiz do código-fonte do módulo:
 
@@ -112,7 +112,7 @@ public class Exemplo {
 
 Agrupamento de módulos relacionados.
 
-![Aplicacao](aplicacao.png)
+![Aplicacao](aplicacao.svg)
 
 Na prática, uma aplicação é distribuída de uma destas formas:
 

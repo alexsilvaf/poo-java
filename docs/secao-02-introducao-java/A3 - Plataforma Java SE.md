@@ -41,17 +41,17 @@ O Java é definido por especificações públicas, e várias organizações dist
 - Linguagens pré-compiladas + máquina virtual: Java, C#
 
 ### Exemplo de linguagem compilada
-![Fluxo de compilação: código-fonte, compilador e código executável](./linguagem-compilada.png)
+![Fluxo de compilação: código-fonte, compilador e código executável](./linguagem-compilada.svg)
 
 ### Exemplo de linguagem interpretada
-![Fluxo de interpretacao: código-fonte, interpretador e código executável](./linguagem-interpretada.png)
+![Fluxo de interpretacao: código-fonte, interpretador e código executável](./linguagem-interpretada.svg)
 
 ### Exemplo de linguagem híbrida
-![Fluxo hibrido: código-fonte, pré-compilador, bytecode e código executável sobre uma máquina virtual](./linguagem-hibrida.png)
+![Fluxo hibrido: código-fonte, pré-compilador, bytecode e código executável sobre uma máquina virtual](./linguagem-hibrida.svg)
 
 ## Modelo de execução
 
-![Modelo de execução do Java/Compilação just-in-time (JIT)](./modelo-execucao.png)
+![Modelo de execução do Java/Compilação just-in-time (JIT)](./modelo-execucao.svg)
 
 O caminho percorrido por um programa Java é sempre o mesmo:
 

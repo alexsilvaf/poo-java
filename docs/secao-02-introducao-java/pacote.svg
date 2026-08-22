@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 680" role="img" aria-labelledby="title description">
+  <title id="title">Pacote como agrupamento lógico de classes</title>
+  <desc id="description">Dois pacotes, Entities e Services, cada um reunindo várias classes relacionadas dentro de um contêiner com nome.</desc>
+
+  <defs>
+    <linearGradient id="yellowGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe29a" />
+      <stop offset="100%" stop-color="#ffbd0a" />
+    </linearGradient>
+    <linearGradient id="orangeGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8b48a" />
+      <stop offset="100%" stop-color="#ed7d31" />
+    </linearGradient>
+    <linearGradient id="packageGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eaf3fc" />
+      <stop offset="100%" stop-color="#d7e8f8" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#163d5c" flood-opacity="0.18" />
+    </filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#163d5c" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <rect width="1900" height="680" rx="20" fill="#ffffff" />
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <!-- Pacote Entities -->
+    <g filter="url(#shadow)">
+      <rect x="60" y="60" width="850" height="560" rx="24" fill="url(#packageGradient)" stroke="#5d97c8" stroke-width="3" />
+    </g>
+    <text x="485" y="130" font-size="40" text-anchor="middle" fill="#1e3a5f" font-weight="700">entities</text>
+
+    <g filter="url(#softShadow)">
+      <rect x="120"  y="180" width="220" height="90" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+      <rect x="420"  y="180" width="220" height="90" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+      <rect x="270"  y="310" width="220" height="90" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+      <rect x="120"  y="440" width="220" height="90" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+      <rect x="420"  y="440" width="220" height="90" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+    </g>
+    <g font-size="30" text-anchor="middle" fill="#1f2937">
+      <text x="230" y="233">Class</text>
+      <text x="530" y="233">Class</text>
+      <text x="380" y="363">Class</text>
+      <text x="230" y="493">Class</text>
+      <text x="530" y="493">Class</text>
+    </g>
+
+    <!-- Pacote Services -->
+    <g filter="url(#shadow)">
+      <rect x="990" y="60" width="850" height="560" rx="24" fill="url(#packageGradient)" stroke="#5d97c8" stroke-width="3" />
+    </g>
+    <text x="1415" y="130" font-size="40" text-anchor="middle" fill="#1e3a5f" font-weight="700">services</text>
+
+    <g filter="url(#softShadow)">
+      <rect x="1050" y="180" width="220" height="90" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+      <rect x="1350" y="180" width="220" height="90" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+      <rect x="1200" y="310" width="220" height="90" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+      <rect x="1050" y="440" width="220" height="90" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+      <rect x="1350" y="440" width="220" height="90" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+    </g>
+    <g font-size="30" text-anchor="middle" fill="#1f2937">
+      <text x="1160" y="233">Class</text>
+      <text x="1460" y="233">Class</text>
+      <text x="1310" y="363">Class</text>
+      <text x="1160" y="493">Class</text>
+      <text x="1460" y="493">Class</text>
+    </g>
+  </g>
+</svg>

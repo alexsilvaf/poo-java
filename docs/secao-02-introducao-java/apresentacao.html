@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Seção 2 — Introdução à linguagem Java</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --blue-900:#1e3a5f; --blue-700:#2e5f96; --blue-500:#347fbd; --blue-300:#72b5e5; --blue-100:#eaf3fc;
+    --amber-600:#b88600; --amber-400:#ffbd0a; --amber-200:#ffe29a;
+    --orange-600:#b55418; --orange-400:#ed7d31;
+    --green-600:#4f7f30; --green-400:#70ad47;
+    --ink-900:#111827; --ink-700:#374151; --ink-500:#6b7280;
+    --paper:#ffffff; --paper-alt:#f8fafc;
+    --code-kw:#7c3aed; --code-str:#b45309; --code-plain:#1f2937; --code-com:#6b7280;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: #0f172a;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    overflow: hidden;
+  }
+  .deck {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stage {
+    position: relative;
+    width: 1280px; height: 720px;
+    background: var(--paper);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    border-radius: 6px;
+    overflow: hidden;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 64px 80px 56px;
+  }
+  .slide.active { display: flex; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .eyebrow {
+    font-size: 22px; font-weight: 700; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--blue-500); margin: 0 0 10px;
+  }
+  h1 { font-size: 52px; margin: 0 0 18px; color: var(--ink-900); line-height: 1.12; }
+  h2 { font-size: 40px; margin: 0 0 22px; color: var(--ink-900); line-height: 1.15; }
+  .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+  .slide-body.top { justify-content: flex-start; }
+
+  ul.points { list-style: none; margin: 0; padding: 0; font-size: 30px; color: var(--ink-700); }
+  ul.points li {
+    position: relative; padding-left: 42px; margin-bottom: 22px; line-height: 1.35;
+    opacity: 1;
+  }
+  .fragment { opacity: 0; transition: opacity .35s ease, transform .35s ease; }
+  .fragment.visible { opacity: 1; }
+  ul.points li.fragment { transform: translateX(-10px); }
+  ul.points li.fragment.visible { transform: translateX(0); }
+  ul.points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0; color: var(--blue-500); font-size: 28px;
+  }
+  ul.points li b { color: var(--ink-900); }
+  ul.points.compact { font-size: 26px; }
+  ul.points.compact li { margin-bottom: 14px; }
+
+  .sub { color: var(--ink-500); font-size: 24px; }
+
+  table.deck-table { width: 100%; border-collapse: collapse; font-size: 25px; }
+  table.deck-table th, table.deck-table td {
+    text-align: left; padding: 14px 18px; border-bottom: 1px solid #e5e7eb;
+  }
+  table.deck-table th { color: var(--blue-900); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; }
+  table.deck-table td.mono, table.deck-table th.mono { font-family: Consolas, "Courier New", monospace; }
+  table.deck-table tr:last-child td { border-bottom: none; }
+  table.deck-table td b { color: var(--ink-900); }
+
+  .code-block {
+    background: #f8fafc; border: 1px solid #d7dee7; border-radius: 10px;
+    padding: 26px 30px; font-family: Consolas, "Courier New", monospace;
+    font-size: 25px; line-height: 1.55; color: var(--code-plain); white-space: pre;
+    box-shadow: 0 4px 14px rgba(17,24,39,.06);
+  }
+  .code-block .kw { color: var(--code-kw); }
+  .code-block .str { color: var(--code-str); }
+  .code-block .com { color: var(--code-com); font-style: italic; }
+  .code-block.small { font-size: 21px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .two-col.center { align-items: center; }
+  .col-title { font-size: 22px; font-weight: 700; color: var(--blue-700); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .03em; }
+
+  .diagram-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  .diagram-wrap img { max-width: 100%; max-height: 100%; }
+
+  .badge {
+    display: inline-block; padding: 6px 16px; border-radius: 999px;
+    font-size: 20px; font-weight: 700; letter-spacing: .02em;
+  }
+  .badge-blue { background: var(--blue-100); color: var(--blue-900); }
+  .badge-amber { background: var(--amber-200); color: #6b4b00; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+
+  .callout {
+    margin-top: 20px; padding: 18px 24px; border-left: 6px solid var(--blue-500);
+    background: var(--blue-100); border-radius: 6px; font-size: 23px; color: var(--blue-900);
+  }
+  .callout.amber { border-left-color: var(--amber-600); background: #fff8e6; color: #6b4b00; }
+
+  .kpi-row { display: flex; gap: 24px; margin-top: 10px; }
+  .kpi {
+    flex: 1; background: var(--paper-alt); border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .kpi .kpi-num { font-size: 40px; font-weight: 700; color: var(--blue-700); }
+  .kpi .kpi-label { font-size: 20px; color: var(--ink-500); margin-top: 4px; }
+
+  .footer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 18px; color: var(--ink-500); margin-top: 18px;
+  }
+
+  .slide--divider {
+    background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%);
+    justify-content: center; align-items: flex-start; padding: 0 90px;
+  }
+  .slide--divider .div-num {
+    font-size: 26px; color: var(--blue-300); font-weight: 700; letter-spacing: .06em;
+  }
+  .slide--divider h1 { color: #ffffff; font-size: 58px; max-width: 900px; }
+  .slide--divider .div-list { margin-top: 34px; font-size: 26px; color: #dbeafe; }
+  .slide--divider .div-list div { margin-bottom: 10px; }
+
+  .slide--title {
+    justify-content: center; align-items: flex-start;
+    background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%);
+  }
+  .slide--title .kicker { color: var(--blue-300); font-size: 26px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .slide--title h1 { color: #ffffff; font-size: 64px; margin-top: 14px; }
+  .slide--title .subtitle { color: #dbeafe; font-size: 28px; margin-top: 10px; max-width: 820px; }
+  .slide--title .title-foot { margin-top: 48px; color: #bcd3f0; font-size: 22px; }
+
+  .slide--end {
+    justify-content: center; align-items: center; text-align: center;
+    background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%);
+  }
+  .slide--end h1 { color: #fff; }
+  .slide--end .subtitle { color: #dbeafe; font-size: 30px; }
+
+  .chip-row { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
+  .chip {
+    background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 12px;
+    padding: 16px 22px; font-size: 24px; color: var(--ink-700); font-weight: 700;
+  }
+  .chip.on { border-color: var(--blue-500); color: var(--blue-700); background: var(--blue-100); }
+  .chip[data-correct] { cursor: pointer; transition: transform .15s ease, background .2s ease, border-color .2s ease; }
+  .chip[data-correct]:hover { transform: translateY(-2px); border-color: var(--blue-300); }
+  .chip-correct { background: #dcfce7 !important; border-color: #16a34a !important; color: #166534 !important; }
+  .chip-correct::after { content: " ✓"; }
+  .chip-wrong { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
+  .chip-wrong::after { content: " ✗"; }
+
+  .arrow-chain { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 34px; font-weight: 700; color: var(--ink-900); flex-wrap: wrap; }
+  .arrow-chain .node {
+    background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 14px; padding: 18px 30px;
+  }
+  .arrow-chain .arrow { color: var(--blue-500); font-size: 40px; }
+
+  /* HUD */
+  .hud {
+    position: fixed; right: 22px; bottom: 16px; color: #94a3b8;
+    font-family: Arial, sans-serif; font-size: 14px; z-index: 20; user-select: none;
+  }
+  .hud .sect { color: #cbd5e1; margin-right: 10px; }
+  .progress {
+    position: fixed; left: 0; bottom: 0; height: 4px; width: 100%;
+    background: rgba(255,255,255,.08); z-index: 20;
+  }
+  .progress-fill { height: 100%; background: var(--blue-300); width: 0%; transition: width .25s ease; }
+
+  .hint {
+    position: fixed; left: 22px; bottom: 16px; color: #64748b; font-size: 13px; z-index: 20; user-select: none;
+  }
+
+  .overview {
+    position: fixed; inset: 0; z-index: 30; background: rgba(15,23,42,.96);
+    display: none; padding: 50px; overflow-y: auto;
+  }
+  .overview.active { display: block; }
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; max-width: 1500px; margin: 0 auto;
+  }
+  .overview-card {
+    background: #1e293b; border: 2px solid #334155; border-radius: 8px; padding: 14px;
+    color: #cbd5e1; cursor: pointer; font-size: 13px; min-height: 90px;
+  }
+  .overview-card:hover { border-color: var(--blue-300); }
+  .overview-card .oc-num { color: #64748b; font-size: 12px; margin-bottom: 6px; }
+  .overview-card .oc-title { font-weight: 700; color: #f1f5f9; font-size: 14px; line-height: 1.3; }
+  .overview-title {
+    color: #f1f5f9; text-align: center; font-size: 22px; margin-bottom: 30px; font-family: Arial, sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+  <div class="stage" id="stage">
+
+    <section class="slide slide--title" data-section="Abertura">
+      <div class="kicker">Curso de Java — Seção 2</div>
+      <h1>Introdução à linguagem Java</h1>
+      <div class="subtitle">Da história do Java ao primeiro programa: plataforma, versões, estrutura de uma aplicação e a sintaxe simplificada do Java 25.</div>
+      <div class="title-foot">Aulas 8 a 20</div>
+    </section>
+
+    <section class="slide" data-section="Abertura">
+      <div class="eyebrow">Roteiro da aula</div>
+      <h2>Seis blocos de conteúdo</h2>
+      <div class="slide-body top">
+        <table class="deck-table">
+          <tr><th style="width:110px">Bloco</th><th>Conteúdo</th></tr>
+          <tr><td><b>1</b></td><td>Contextualização e edições do Java</td></tr>
+          <tr><td><b>2</b></td><td>Plataforma Java SE — JDK, JRE, JVM</td></tr>
+          <tr><td><b>3</b></td><td>Versões e cadência de lançamentos</td></tr>
+          <tr><td><b>4</b></td><td>Estrutura de uma aplicação Java</td></tr>
+          <tr><td><b>5</b></td><td>Ambiente e primeiro programa</td></tr>
+          <tr><td><b>6</b></td><td>Sintaxe simplificada do Java 25</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 1">
+      <div class="div-num">BLOCO 1 DE 6</div>
+      <h1>Contextualização e edições do Java</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Contextualização">
+      <div class="eyebrow">O que é Java?</div>
+      <h2>Duas coisas ao mesmo tempo</h2>
+      <div class="slide-body">
+        <ul class="points">
+          <li><b>Linguagem de programação</b> — com suas próprias regras léxicas, sintáticas e semânticas.</li>
+          <li><b>Plataforma de desenvolvimento e execução</b> — bibliotecas (API) mais um ambiente de execução (a JVM).</li>
+        </ul>
+        <div class="callout">Criada pela Sun Microsystems em meados dos anos 1990; adquirida pela Oracle em 2010.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Contextualização">
+      <div class="eyebrow">Por que o Java fez sucesso</div>
+      <h2>Três problemas que ele veio resolver</h2>
+      <div class="slide-body">
+        <ul class="points">
+          <li><b>Ponteiros e gerenciamento de memória</b> — em C, o programador controlava ponteiros manualmente; Java automatiza isso.</li>
+          <li><b>Portabilidade falha</b> — um programa compilado em C muitas vezes precisava de ajustes ao mudar de sistema operacional.</li>
+          <li><b>Custo e diversidade de dispositivos</b> — rodar o mesmo programa em várias máquinas era caro e trabalhoso.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Compilação">
+      <div class="eyebrow">Linguagem compilada — C / C++</div>
+      <h2>Um executável por sistema operacional</h2>
+      <div class="diagram-wrap"><img src="./linguagem-compilada.svg" alt="Fluxo de linguagem compilada"></div>
+      <div class="callout">O mesmo código-fonte passa por um compilador diferente para cada SO — e às vezes precisa de ajustes.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Interpretação">
+      <div class="eyebrow">Linguagem interpretada — PHP, Python, JavaScript</div>
+      <h2>Sem executável: sempre um interpretador</h2>
+      <div class="diagram-wrap"><img src="./linguagem-interpretada.svg" alt="Fluxo de linguagem interpretada"></div>
+      <div class="callout">Portátil por natureza, mas depende de um interpretador instalado — e tende a ser mais lento.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Abordagem híbrida">
+      <div class="eyebrow">Linguagem híbrida — a resposta do Java</div>
+      <h2>Compila uma vez, roda em qualquer JVM</h2>
+      <div class="diagram-wrap"><img src="./linguagem-hibrida.svg" alt="Fluxo de linguagem híbrida"></div>
+      <div class="callout amber">"Write once, run anywhere" — o bytecode é o mesmo em qualquer sistema; quem se adapta é a JVM.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Edições">
+      <div class="eyebrow">As edições do Java</div>
+      <h2>ME, SE e EE</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Edição</th><th>Nome</th><th>Uso</th></tr>
+          <tr><td class="mono"><b>Java ME</b></td><td>Micro Edition</td><td>Dispositivos embarcados, móveis, IoT</td></tr>
+          <tr><td class="mono"><b>Java SE</b></td><td>Standard Edition</td><td>O núcleo da linguagem — desktop e servidores. <b>Foco deste curso.</b></td></tr>
+          <tr><td class="mono"><b>Java EE</b></td><td>Enterprise Edition</td><td>Aplicações corporativas, construída sobre o SE</td></tr>
+        </table>
+        <div class="callout">Portável, segura e robusta, domina o mercado corporativo desde o fim dos anos 90 — e foi o padrão do Android por muitos anos.</div>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 2">
+      <div class="div-num">BLOCO 2 DE 6</div>
+      <h1>Plataforma Java SE</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · JDK/JRE/JVM">
+      <div class="eyebrow">Três siglas, uma contenção</div>
+      <h2>JDK ⊃ JRE ⊃ JVM</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th class="mono">Sigla</th><th>Nome</th><th>O que é</th></tr>
+          <tr><td class="mono"><b>JVM</b></td><td>Java Virtual Machine</td><td>Carrega, verifica e executa o bytecode</td></tr>
+          <tr><td class="mono"><b>JRE</b></td><td>Java Runtime Environment</td><td>JVM + bibliotecas padrão — mínimo para <b>executar</b></td></tr>
+          <tr><td class="mono"><b>JDK</b></td><td>Java Development Kit</td><td>JRE + ferramentas — mínimo para <b>compilar</b></td></tr>
+        </table>
+        <div class="callout amber">Desde o Java 11 a Oracle não distribui mais o JRE separado. Instala-se o JDK; um runtime sob medida vem do <span class="mono" style="font-family:Consolas,monospace">jlink</span>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Ferramentas">
+      <div class="eyebrow">Ferramentas do JDK</div>
+      <h2>O que cada comando faz</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><td class="mono"><b>javac</b></td><td>Compila <span class="mono">.java</span> em <span class="mono">.class</span> (bytecode)</td></tr>
+          <tr><td class="mono"><b>java</b></td><td>Inicia a JVM e executa uma classe, .jar ou arquivo-fonte</td></tr>
+          <tr><td class="mono"><b>jar</b></td><td>Empacota classes e recursos em um .jar</td></tr>
+          <tr><td class="mono"><b>javadoc</b></td><td>Gera documentação HTML a partir dos comentários</td></tr>
+          <tr><td class="mono"><b>jshell</b></td><td>Console interativo para testar código sem criar uma classe</td></tr>
+          <tr><td class="mono"><b>jlink</b></td><td>Cria uma imagem de runtime só com os módulos necessários</td></tr>
+          <tr><td class="mono"><b>jdeps</b></td><td>Analisa dependências entre classes, pacotes e módulos</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Modelo de execução">
+      <div class="eyebrow">Do código-fonte ao processador</div>
+      <h2>Modelo de execução do Java</h2>
+      <div class="diagram-wrap"><img src="./modelo-execucao.svg" alt="Modelo de execução do Java"></div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Dentro da JVM">
+      <div class="eyebrow">Componentes internos</div>
+      <h2>O que existe dentro da JVM</h2>
+      <div class="slide-body">
+        <ul class="points compact">
+          <li><b>Class Loader</b> — localiza e carrega os <span class="mono" style="font-family:Consolas,monospace">.class</span> sob demanda.</li>
+          <li><b>Verificador de bytecode</b> — valida o código antes de executar.</li>
+          <li><b>Áreas de memória</b> — heap (objetos), stack (chamadas e variáveis locais), metaspace (metadados das classes).</li>
+          <li><b>Motor de execução</b> — combina interpretação e compilação JIT.</li>
+          <li><b>Coletor de lixo (GC)</b> — libera a memória da heap automaticamente.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Dentro da JVM">
+      <div class="eyebrow">Juntando as peças</div>
+      <h2>Acompanhe a jornada do .class</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1900 900" role="img" aria-labelledby="jvmanim-title jvmanim-desc" style="max-width:100%;max-height:100%">
+          <title id="jvmanim-title">Jornada animada de uma classe dentro da JVM</title>
+          <desc id="jvmanim-desc">Um ícone de arquivo .class viaja pelo Class Loader, pelo Verificador e pelo Motor de execução, enquanto objetos aparecem e desaparecem na Heap, mostrando a coleta de lixo automática.</desc>
+          <style>
+            .jvmanim-pkg { animation: jvmanimTravel 8s ease-in-out infinite; }
+            .jvmanim-loader { animation: jvmanimArrive 8s ease-in-out infinite; animation-delay: 1.2s; }
+            .jvmanim-verify { animation: jvmanimArrive 8s ease-in-out infinite; animation-delay: 3.4s; }
+            .jvmanim-engine { animation: jvmanimArrive 8s ease-in-out infinite; animation-delay: 5.4s; }
+            .jvmanim-check { animation: jvmanimCheck 8s ease-in-out infinite backwards; animation-delay: 3.4s; transform-box: fill-box; transform-origin: center; }
+            .jvmanim-obj1 { animation: jvmanimSpawn 4s ease-in-out infinite backwards; animation-delay: 0s; transform-box: fill-box; transform-origin: center; }
+            .jvmanim-obj2 { animation: jvmanimSpawn 4s ease-in-out infinite backwards; animation-delay: 1.3s; transform-box: fill-box; transform-origin: center; }
+            .jvmanim-obj3 { animation: jvmanimSpawn 4s ease-in-out infinite backwards; animation-delay: 2.6s; transform-box: fill-box; transform-origin: center; }
+            .jvmanim-gc { animation: jvmanimGcFlash 4s ease-in-out infinite; }
+            .jvmanim-pill-a { animation: jvmanimAlt 4s ease-in-out infinite; animation-delay: 0s; }
+            .jvmanim-pill-b { animation: jvmanimAlt 4s ease-in-out infinite; animation-delay: 2s; }
+            @keyframes jvmanimTravel {
+              0%   { transform: translateX(0px);    opacity: 0; }
+              4%   { opacity: 1; }
+              18%  { transform: translateX(315px);  opacity: 1; }
+              30%  { transform: translateX(315px);  opacity: 1; }
+              44%  { transform: translateX(675px);  opacity: 1; }
+              56%  { transform: translateX(675px);  opacity: 1; }
+              70%  { transform: translateX(1110px); opacity: 1; }
+              82%  { transform: translateX(1110px); opacity: 1; }
+              92%  { opacity: 0; }
+              100% { transform: translateX(1110px); opacity: 0; }
+            }
+            @keyframes jvmanimArrive {
+              0%, 100% { filter: brightness(1); }
+              50%      { filter: brightness(1.4); }
+            }
+            @keyframes jvmanimCheck {
+              0%, 38%, 100% { opacity: 0; transform: scale(.6); }
+              50%, 62%      { opacity: 1; transform: scale(1); }
+            }
+            @keyframes jvmanimSpawn {
+              0%   { opacity: 0; transform: scale(.4) translateY(0); }
+              15%  { opacity: 1; transform: scale(1)  translateY(0); }
+              70%  { opacity: 1; transform: scale(1)  translateY(0); }
+              88%  { opacity: 0; transform: scale(.5) translateY(46px); }
+              100% { opacity: 0; }
+            }
+            @keyframes jvmanimGcFlash {
+              0%, 78%, 100% { filter: brightness(1); }
+              88%           { filter: brightness(1.6); }
+            }
+            @keyframes jvmanimAlt {
+              0%, 45%, 100% { filter: brightness(1); }
+              50%, 95%      { filter: brightness(1.3); }
+            }
+          </style>
+          <defs>
+            <linearGradient id="jvmanim-container" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#eaf3fc" />
+              <stop offset="100%" stop-color="#d7e8f8" />
+            </linearGradient>
+            <linearGradient id="jvmanim-code" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="100%" stop-color="#f3f4f6" />
+            </linearGradient>
+            <linearGradient id="jvmanim-blue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9dc3e6" />
+              <stop offset="100%" stop-color="#5b9bd5" />
+            </linearGradient>
+            <linearGradient id="jvmanim-amber" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffd9a0" />
+              <stop offset="100%" stop-color="#ffbd0a" />
+            </linearGradient>
+            <linearGradient id="jvmanim-green" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a9d18e" />
+              <stop offset="100%" stop-color="#70ad47" />
+            </linearGradient>
+            <linearGradient id="jvmanim-gray" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c9c9c9" />
+              <stop offset="100%" stop-color="#a5a5a5" />
+            </linearGradient>
+            <filter id="jvmanim-shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#163d5c" flood-opacity="0.18" />
+            </filter>
+            <filter id="jvmanim-softShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#163d5c" flood-opacity="0.15" />
+            </filter>
+          </defs>
+
+          <g font-family="Arial, Helvetica, sans-serif">
+            <g filter="url(#jvmanim-shadow)">
+              <rect x="40" y="70" width="1820" height="760" rx="28" fill="url(#jvmanim-container)" stroke="#5d97c8" stroke-width="3" />
+            </g>
+            <text x="950" y="140" font-size="34" text-anchor="middle" fill="#1e3a5f" font-weight="700">JVM — Java Virtual Machine</text>
+
+            <!-- .class -->
+            <g filter="url(#jvmanim-softShadow)">
+              <rect x="90" y="230" width="170" height="150" rx="10" fill="url(#jvmanim-code)" stroke="#c7cbd1" stroke-width="2.5" />
+            </g>
+            <text x="175" y="285" font-size="30" text-anchor="middle">📄</text>
+            <text x="175" y="325" font-size="24" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1f2937">.class</text>
+
+            <path d="M260 305 H340" stroke="#9ca3af" stroke-width="4" fill="none" />
+            <path d="M615 305 H685" stroke="#9ca3af" stroke-width="4" fill="none" />
+            <path d="M990 305 H1060" stroke="#9ca3af" stroke-width="4" fill="none" />
+
+            <!-- Pacote viajante -->
+            <g class="jvmanim-pkg">
+              <circle cx="175" cy="305" r="26" fill="#ffffff" stroke="#347fbd" stroke-width="3" />
+              <text x="175" y="315" font-size="24" text-anchor="middle">📄</text>
+            </g>
+
+            <!-- Class Loader -->
+            <g class="jvmanim-loader">
+              <g filter="url(#jvmanim-softShadow)">
+                <rect x="365" y="210" width="250" height="190" rx="10" fill="url(#jvmanim-blue)" stroke="#3776ad" stroke-width="3" />
+              </g>
+              <text x="490" y="260" font-size="28" text-anchor="middle">⚙️</text>
+              <text x="490" y="300" font-size="24" text-anchor="middle" fill="#ffffff" font-weight="700">Class Loader</text>
+              <text x="490" y="335" font-size="17" text-anchor="middle" fill="#eaf3fc">carrega sob demanda</text>
+            </g>
+
+            <!-- Verificador -->
+            <g class="jvmanim-verify">
+              <g filter="url(#jvmanim-softShadow)">
+                <rect x="710" y="210" width="280" height="190" rx="10" fill="url(#jvmanim-blue)" stroke="#3776ad" stroke-width="3" />
+              </g>
+              <text x="850" y="255" font-size="28" text-anchor="middle">🔍</text>
+              <text x="850" y="295" font-size="24" text-anchor="middle" fill="#ffffff" font-weight="700">Verificador</text>
+              <text x="850" y="325" font-size="17" text-anchor="middle" fill="#eaf3fc">valida antes de executar</text>
+            </g>
+            <text class="jvmanim-check" x="850" y="245" font-size="30" text-anchor="middle" fill="#16a34a" font-weight="700">✓</text>
+
+            <!-- Motor de execução -->
+            <g class="jvmanim-engine">
+              <g filter="url(#jvmanim-softShadow)">
+                <rect x="1085" y="180" width="400" height="260" rx="10" fill="url(#jvmanim-amber)" stroke="#b88600" stroke-width="3" />
+              </g>
+              <text x="1285" y="222" font-size="25" text-anchor="middle" fill="#111827" font-weight="700">Motor de execução</text>
+              <g filter="url(#jvmanim-softShadow)">
+                <rect class="jvmanim-pill-a" x="1115" y="248" width="340" height="70" rx="10" fill="#fffaf0" stroke="#b88600" stroke-width="2" />
+                <rect class="jvmanim-pill-b" x="1115" y="333" width="340" height="70" rx="10" fill="#fffaf0" stroke="#b88600" stroke-width="2" />
+              </g>
+              <text x="1285" y="290" font-size="22" text-anchor="middle" fill="#6b4b00">🐢 Interpretador</text>
+              <text x="1285" y="375" font-size="22" text-anchor="middle" fill="#6b4b00">⚡ Compilador JIT</text>
+            </g>
+
+            <!-- Áreas de memória -->
+            <text x="905" y="470" font-size="26" text-anchor="middle" fill="#1e3a5f" font-weight="700">Áreas de memória</text>
+
+            <g filter="url(#jvmanim-softShadow)">
+              <rect x="365" y="495" width="330" height="150" rx="10" fill="url(#jvmanim-green)" stroke="#4f7f30" stroke-width="3" />
+              <rect x="735" y="495" width="330" height="150" rx="10" fill="url(#jvmanim-green)" stroke="#4f7f30" stroke-width="3" />
+              <rect x="1105" y="495" width="330" height="150" rx="10" fill="url(#jvmanim-green)" stroke="#4f7f30" stroke-width="3" />
+            </g>
+            <g fill="#ffffff" text-anchor="middle">
+              <text x="530" y="522" font-size="24" font-weight="700">📦 Heap</text>
+              <text x="900" y="522" font-size="24" font-weight="700">Stack</text>
+              <text x="900" y="600" font-size="17">chamadas e variáveis locais</text>
+              <text x="1270" y="522" font-size="24" font-weight="700">Metaspace</text>
+              <text x="1270" y="600" font-size="17">metadados das classes</text>
+            </g>
+
+            <!-- Objetos que nascem e somem da Heap -->
+            <rect class="jvmanim-obj1" x="425" y="565" width="46" height="46" rx="8" fill="#ffffff" stroke="#4f7f30" stroke-width="2.5" />
+            <rect class="jvmanim-obj2" x="500" y="580" width="40" height="40" rx="8" fill="#ffffff" stroke="#4f7f30" stroke-width="2.5" />
+            <rect class="jvmanim-obj3" x="570" y="562" width="50" height="50" rx="8" fill="#ffffff" stroke="#4f7f30" stroke-width="2.5" />
+
+            <!-- Coletor de lixo -->
+            <path d="M430 690 C 430 665, 460 655, 480 650" stroke="#9ca3af" stroke-width="4" fill="none" />
+            <g class="jvmanim-gc">
+              <g filter="url(#jvmanim-softShadow)">
+                <rect x="365" y="695" width="330" height="95" rx="10" fill="url(#jvmanim-gray)" stroke="#777777" stroke-width="2.5" />
+              </g>
+              <text x="530" y="732" font-size="22" text-anchor="middle" fill="#1f2937" font-weight="700">🧹 Coletor de lixo (GC)</text>
+              <text x="530" y="760" font-size="17" text-anchor="middle" fill="#374151">libera a heap automaticamente</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="callout">Veja o <span class="mono" style="font-family:Consolas,monospace">.class</span> passar pelo Class Loader, pelo Verificador e pelo Motor de execução — enquanto isso, objetos nascem e somem sozinhos na Heap.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Classpath">
+      <div class="eyebrow">Onde as classes são procuradas</div>
+      <h2>Classpath vs. module path</h2>
+      <div class="slide-body">
+        <div class="code-block">
+<span class="com"># Classpath — tradicional, anterior ao Java 9, sem encapsulamento</span>
+java -cp bin com.exemplo.Programa
+
+<span class="com"># Module path — Java 9+, respeita dependências e encapsulamento</span>
+java --module-path mods --module com.exemplo/com.exemplo.Programa
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Qual ferramenta do JDK compila um .java em .class?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="true" data-explain="javac compila. java inicia a JVM e executa; jar empacota classes já compiladas.">javac</div>
+          <div class="chip" data-correct="false" data-explain="java inicia a JVM e executa uma classe, um .jar ou um arquivo-fonte — ele não compila nada sozinho.">java</div>
+          <div class="chip" data-correct="false" data-explain="jar empacota classes já compiladas (arquivos .class) dentro de um .jar — não faz compilação.">jar</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">javac compila. java inicia a JVM e executa; jar empacota classes já compiladas.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Verdadeiro ou falso: o Class Loader carrega todas as classes de uma vez, no início do programa.</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Se fosse assim, toda aplicação carregaria na memória de uma vez, mesmo código nunca usado — desperdiçando tempo e memória.">Verdadeiro</div>
+          <div class="chip" data-correct="true" data-explain="Falso — o Class Loader carrega cada classe sob demanda, só quando ela é necessária.">Falso</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Falso — o Class Loader carrega cada classe sob demanda, só quando ela é necessária.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Você só precisa <em>rodar</em> um .jar nesta máquina — nunca compilar nada. Qual é o mínimo necessário?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="O JDK inclui o compilador (javac) e ferramentas de desenvolvimento — é mais do que você precisa só para executar.">JDK completo</div>
+          <div class="chip" data-correct="true" data-explain="JRE — é a JVM mais as bibliotecas padrão, o mínimo para executar. Sem javac, ele não compila nada.">JRE</div>
+          <div class="chip" data-correct="false" data-explain="A JVM sozinha executa bytecode, mas sem as bibliotecas padrão (como String, System, ArrayList) quase nenhum programa real funciona.">Só a JVM</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">JRE — é a JVM mais as bibliotecas padrão, o mínimo para executar. Sem javac, ele não compila nada.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 3">
+      <div class="div-num">BLOCO 3 DE 6</div>
+      <h1>Versões e cadência de lançamentos</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Cadência">
+      <div class="eyebrow">Desde o Java 9</div>
+      <h2>Uma versão nova a cada seis meses</h2>
+      <div class="slide-body">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">Março</div><div class="kpi-label">feature release</div></div>
+          <div class="kpi"><div class="kpi-num">Setembro</div><div class="kpi-label">feature release</div></div>
+          <div class="kpi"><div class="kpi-num">A cada 2 anos</div><div class="kpi-label">uma versão vira LTS</div></div>
+        </div>
+        <ul class="points" style="margin-top:34px">
+          <li><b>Versões LTS</b> (Long-Term Support) — usadas em produção, recebem correções por anos.</li>
+          <li><b>Versões intermediárias</b> — suporte só até a próxima versão; servem para experimentar recursos novos.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · JEPs">
+      <div class="eyebrow">JDK Enhancement Proposals</div>
+      <h2>Do preview ao definitivo</h2>
+      <div class="slide-body">
+        <div class="arrow-chain">
+          <div class="node">Incubator / Preview</div>
+          <div class="arrow">→</div>
+          <div class="node">Final</div>
+        </div>
+        <div class="callout amber" style="margin-top:40px">A prova de certificação cobra apenas recursos <b>finais</b> da versão correspondente. Recursos em preview não caem na prova.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Versões LTS">
+      <div class="eyebrow">As cinco versões LTS desde o Java 8</div>
+      <h2>A linha do tempo que importa</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Versão</th><th>Lançamento</th></tr>
+          <tr><td class="mono"><b>Java 25</b></td><td>setembro / 2025 — usada neste curso</td></tr>
+          <tr><td class="mono"><b>Java 21</b></td><td>setembro / 2023</td></tr>
+          <tr><td class="mono"><b>Java 17</b></td><td>setembro / 2021</td></tr>
+          <tr><td class="mono"><b>Java 11</b></td><td>setembro / 2018</td></tr>
+          <tr><td class="mono"><b>Java 8</b></td><td>março / 2014</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Java 25">
+      <div class="eyebrow">Por que este curso usa o Java 25</div>
+      <h2>Destaques da versão</h2>
+      <div class="slide-body">
+        <ul class="points compact">
+          <li>Arquivos-fonte compactos e método <span class="mono" style="font-family:Consolas,monospace">main</span> de instância (JEP 512)</li>
+          <li><span class="mono" style="font-family:Consolas,monospace">import module</span> — importação de módulo inteiro (JEP 511)</li>
+          <li>Corpos de construtor flexíveis (JEP 513)</li>
+          <li>Scoped Values finalizados (JEP 506)</li>
+          <li>Cabeçalhos de objeto compactos — menos memória (JEP 519)</li>
+        </ul>
+        <div class="callout">É a versão cobrada pela certificação Oracle Certified Professional, Java SE 25 Developer (1Z0-831).</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>De quantos em quantos meses o Java lança uma nova versão?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="3 meses seria rápido demais — nem a Oracle nem os times de infraestrutura acompanhariam esse ritmo.">3 meses</div>
+          <div class="chip" data-correct="true" data-explain="6 meses — sempre em março e setembro, desde o Java 9.">6 meses</div>
+          <div class="chip" data-correct="false" data-explain="Era o ritmo antigo do Java, antes do Java 9. Hoje é mais rápido: a cada 6 meses.">12 meses</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">6 meses — sempre em março e setembro, desde o Java 9.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Um recurso que ainda está em Preview cai na prova de certificação?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Recursos em preview ainda podem mudar ou ser removidos — por isso não entram na prova.">Sim</div>
+          <div class="chip" data-correct="true" data-explain="Não — a prova cobra apenas recursos finais da versão correspondente.">Não</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Não — a prova cobra apenas recursos finais da versão correspondente.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Sua empresa quer a mesma versão em produção pelos próximos 5 anos, com correções de segurança garantidas. Qual escolher?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Uma feature release perde suporte assim que a próxima versão sai, seis meses depois — não serve pra 5 anos de estabilidade.">Feature release</div>
+          <div class="chip" data-correct="true" data-explain="Versão LTS — recebe correções por anos. É a escolha certa para produção de longo prazo.">Versão LTS</div>
+          <div class="chip" data-correct="false" data-explain="Uma versão em preview ainda pode mudar ou ser removida — nunca é escolha para produção.">Versão em preview</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Versão LTS — recebe correções por anos. É a escolha certa para produção de longo prazo.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 4">
+      <div class="div-num">BLOCO 4 DE 6</div>
+      <h1>Estrutura de uma aplicação Java</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Hierarquia">
+      <div class="eyebrow">Do menor agrupamento ao maior</div>
+      <h2>A hierarquia de organização do código</h2>
+      <div class="slide-body">
+        <div class="arrow-chain">
+          <div class="node">classe</div><div class="arrow">→</div>
+          <div class="node">pacote</div><div class="arrow">→</div>
+          <div class="node">módulo</div><div class="arrow">→</div>
+          <div class="node">aplicação</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Classes">
+      <div class="eyebrow">O menor agrupamento</div>
+      <h2>Classe — unidade lógica básica</h2>
+      <div class="two-col">
+        <div>
+          <div class="diagram-wrap" style="height:260px"><img src="./classes.svg" alt="Diversas classes"></div>
+        </div>
+        <div>
+          <div class="col-title">Regra de ouro</div>
+          <ul class="points compact">
+            <li>No máximo <b>uma classe pública</b> por arquivo.</li>
+            <li>O nome do arquivo deve ser idêntico ao da classe pública.</li>
+            <li>Java diferencia maiúsculas de minúsculas.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Pacotes">
+      <div class="eyebrow">Agrupamento lógico de classes</div>
+      <h2>Pacote (package)</h2>
+      <div class="diagram-wrap" style="height:300px"><img src="./pacote.svg" alt="Pacotes entities e services"></div>
+      <div class="code-block small" style="margin-top:18px">
+<span class="kw">package</span> com.exemplo.produtos;   <span class="com">// 1ª instrução do arquivo</span>
+<span class="kw">import</span> java.util.ArrayList;     <span class="com">// depois do package</span>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Módulos">
+      <div class="eyebrow">Agrupamento lógico de pacotes — Java 9+</div>
+      <h2>Módulo (Project Jigsaw)</h2>
+      <div class="diagram-wrap" style="height:290px"><img src="./modulo.svg" alt="Módulos financial e graphics"></div>
+      <div class="code-block small" style="margin-top:14px">
+<span class="kw">module</span> com.exemplo.produtos {
+    <span class="kw">requires</span> java.sql;
+    <span class="kw">exports</span> com.exemplo.produtos.api;
+}
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Aplicação">
+      <div class="eyebrow">O maior agrupamento</div>
+      <h2>Aplicação — módulos relacionados</h2>
+      <div class="diagram-wrap"><img src="./aplicacao.svg" alt="Aplicação de comércio eletrônico"></div>
+      <div class="callout">Distribuída como <span class="mono" style="font-family:Consolas,monospace">.jar</span> ou como imagem de runtime gerada pelo <span class="mono" style="font-family:Consolas,monospace">jlink</span>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Qual é a ordem certa, do menor para o maior agrupamento?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="true" data-explain="Classe é a menor unidade; pacotes agrupam classes, módulos agrupam pacotes, e a aplicação agrupa módulos.">classe → pacote → módulo → aplicação</div>
+          <div class="chip" data-correct="false" data-explain="Inverteu: pacote é quem agrupa classes, não o contrário — a classe vem primeiro.">pacote → classe → módulo → aplicação</div>
+          <div class="chip" data-correct="false" data-explain="Está de trás pra frente: módulo é o maior agrupamento aqui, não o menor.">módulo → pacote → classe → aplicação</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Classe é a menor unidade; pacotes agrupam classes, módulos agrupam pacotes, e a aplicação agrupa módulos.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Um arquivo .java pode ter quantas classes public?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Um arquivo pode, sim, ter uma classe public — só não pode ter mais de uma.">0</div>
+          <div class="chip" data-correct="true" data-explain="No máximo uma — e o nome do arquivo precisa ser idêntico ao dela.">1</div>
+          <div class="chip" data-correct="false" data-explain="O compilador não aceita: no máximo uma classe public por arquivo-fonte.">Quantas quiser</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">No máximo uma — e o nome do arquivo precisa ser idêntico ao dela.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Ache o erro</h2>
+      <div class="code-block small">
+<span class="com">// Arquivo: Produto.java</span>
+<span class="kw">public</span> <span class="kw">class</span> Item { String nome; }
+<span class="kw">public</span> <span class="kw">class</span> Categoria { String descricao; }
+      </div>
+      <div class="fragment" style="margin-top:22px">
+        <span class="badge badge-amber">RESPOSTA</span>
+        <div class="callout" style="margin-top:14px">Duas classes <span class="mono" style="font-family:Consolas,monospace">public</span> no mesmo arquivo — só uma é permitida.</div>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 5">
+      <div class="div-num">BLOCO 5 DE 6</div>
+      <h1>Ambiente e primeiro programa</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Checklist">
+      <div class="eyebrow">Antes de codar ao vivo</div>
+      <h2>Checklist do ambiente</h2>
+      <div class="slide-body">
+        <ul class="points">
+          <li>JDK 25 instalado — conferir com <span class="mono" style="font-family:Consolas,monospace">java -version</span> e <span class="mono" style="font-family:Consolas,monospace">javac -version</span></li>
+          <li>IDE configurada com o JDK 25 (Window → Preferences → Java → Installed JREs)</li>
+          <li><span class="mono" style="font-family:Consolas,monospace">Compiler compliance level</span> ajustado para 25</li>
+        </ul>
+        <div class="callout amber">Se o nível de compilação estiver abaixo de 25, recursos novos (como o arquivo-fonte compacto) aparecem como erro mesmo com o JDK certo instalado.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Primeiro programa">
+      <div class="eyebrow">Ao vivo</div>
+      <h2>OlaMundo.java</h2>
+      <div class="code-block">
+<span class="kw">public</span> <span class="kw">class</span> OlaMundo {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> main(String[] args) {
+        System.out.println(<span class="str">"Olá, mundo!"</span>);
+    }
+}
+      </div>
+      <div class="callout">O arquivo precisa se chamar <b>OlaMundo.java</b>, porque a classe <span class="mono" style="font-family:Consolas,monospace">OlaMundo</span> é pública.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · main">
+      <div class="eyebrow">Cada palavra tem um motivo</div>
+      <h2>Entendendo o método main</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th class="mono">Parte</th><th>Por que é necessária</th></tr>
+          <tr><td class="mono">public</td><td>Permite que a JVM chame o método de fora da classe</td></tr>
+          <tr><td class="mono">static</td><td>Permite chamar sem criar um objeto da classe</td></tr>
+          <tr><td class="mono">void</td><td>O método não devolve valor</td></tr>
+          <tr><td class="mono">main</td><td>Nome que a JVM procura, todo em minúsculas</td></tr>
+          <tr><td class="mono">String[] args</td><td>Recebe os argumentos da linha de comando</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Compilar e executar">
+      <div class="eyebrow">Da linha de comando</div>
+      <h2>Compilar e executar</h2>
+      <div class="code-block">
+javac OlaMundo.java   <span class="com">// gera OlaMundo.class (bytecode)</span>
+java OlaMundo          <span class="com">// executa (sem a extensão .class)</span>
+      </div>
+      <div class="callout amber" style="margin-top:26px">Desde o Java 11: <span class="mono" style="font-family:Consolas,monospace">java OlaMundo.java</span> compila em memória e executa direto — ótimo para testes rápidos.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Erros comuns">
+      <div class="eyebrow">Referência rápida durante a aula</div>
+      <h2>Erros mais comuns no primeiro programa</h2>
+      <div class="slide-body">
+        <table class="deck-table" style="font-size:22px">
+          <tr><td class="mono">class X is public, should be...</td><td>Nome do arquivo não bate com a classe pública</td></tr>
+          <tr><td class="mono">Could not find or load main class</td><td>Classe errada, diretório errado, ou falta o pacote</td></tr>
+          <tr><td class="mono">cannot find symbol</td><td>Nome errado, falta import, ou variável não declarada</td></tr>
+          <tr><td class="mono">';' expected</td><td>Falta ponto e vírgula ao final da instrução</td></tr>
+          <tr><td class="mono">NoClassDefFoundError</td><td>Compilou, mas não está no classpath ao executar</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Por que o main precisa ser static?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Não é só estilo — sem static, a JVM precisaria de um objeto já criado antes de conseguir chamar o main.">Só por convenção</div>
+          <div class="chip" data-correct="true" data-explain="static permite que a JVM chame o método diretamente pela classe, sem instanciar nada antes.">Pra JVM chamar sem criar um objeto</div>
+          <div class="chip" data-correct="false" data-explain="static não afeta a velocidade de execução — é sobre como o método é chamado, não sobre performance.">Pra rodar mais rápido</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">static permite que a JVM chame o método diretamente pela classe, sem instanciar nada antes.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>args, em main(String[] args), pode ser null quando não passo argumento nenhum?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Um engano comum — mas causaria NullPointerException toda vez que alguém checasse args.length sem passar nada.">Sim, sempre que não há argumento</div>
+          <div class="chip" data-correct="true" data-explain="args nunca é null. Sem argumentos, ele é simplesmente um array de tamanho zero.">Não</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">args nunca é null. Sem argumentos, ele é simplesmente um array de tamanho zero.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Desafio">
+      <div class="eyebrow">Mão na massa</div>
+      <h2>Personalize o OlaMundo</h2>
+      <div class="slide-body top">
+        <ul class="points compact">
+          <li>Troque o texto fixo por uma pergunta: leia o nome da pessoa com <span class="mono" style="font-family:Consolas,monospace">Scanner</span>.</li>
+          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">"Olá, " + nome + "!"</span> em vez da mensagem fixa.</li>
+        </ul>
+        <div class="fragment" style="margin-top:26px">
+          <span class="badge badge-amber">SOLUÇÃO — dentro do main</span>
+          <div class="code-block small" style="margin-top:14px">
+<span class="kw">import</span> java.util.Scanner;
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+System.out.print(<span class="str">"Digite seu nome: "</span>);
+String nome = sc.nextLine();
+System.out.println(<span class="str">"Olá, "</span> + nome + <span class="str">"!"</span>);
+sc.close();
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 6">
+      <div class="div-num">BLOCO 6 DE 6</div>
+      <h1>Sintaxe simplificada do Java 25</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Arquivo compacto">
+      <div class="eyebrow">JEP 512 — Compact Source Files and Instance Main Methods</div>
+      <h2>O mesmo programa, sem cerimônia</h2>
+      <div class="two-col center">
+        <div>
+          <div class="col-title">Forma tradicional</div>
+          <div class="code-block small">
+<span class="kw">public</span> <span class="kw">class</span> OlaMundo {
+  <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span>
+  main(String[] args) {
+    System.out.println(
+      <span class="str">"Olá, mundo!"</span>);
+  }
+}
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Java 25 — arquivo compacto</div>
+          <div class="code-block small">
+<span class="kw">void</span> main() {
+    IO.println(<span class="str">"Olá, mundo!"</span>);
+}
+
+
+
+          </div>
+        </div>
+      </div>
+      <div class="callout">É açúcar sintático: compila para um .class comum, sem tratamento especial da JVM. Bom para exercícios; o resto do curso continua com classes explícitas.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · java.lang.IO">
+      <div class="eyebrow">Novidade do Java 25</div>
+      <h2>A classe java.lang.IO</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><td class="mono"><b>IO.println(Object)</b></td><td>Escreve o objeto e quebra a linha</td></tr>
+          <tr><td class="mono"><b>IO.print(Object)</b></td><td>Escreve sem quebrar a linha</td></tr>
+          <tr><td class="mono"><b>IO.readln()</b></td><td>Lê uma linha digitada pelo usuário</td></tr>
+          <tr><td class="mono"><b>IO.readln(String)</b></td><td>Escreve um prompt e então lê a linha</td></tr>
+        </table>
+        <div class="callout">Substitui, em casos simples, a combinação de <span class="mono" style="font-family:Consolas,monospace">System.out.println</span> com <span class="mono" style="font-family:Consolas,monospace">Scanner</span>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Quando usar">
+      <div class="eyebrow">Uma forma não substitui a outra</div>
+      <h2>Quando usar cada sintaxe</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Situação</th><th>Forma recomendada</th></tr>
+          <tr><td>Exercício rápido, script, aula introdutória</td><td>Arquivo compacto, <span class="mono">void main()</span></td></tr>
+          <tr><td>Classe de um projeto real</td><td>Classe explícita, com package e main tradicional</td></tr>
+          <tr><td>Código chamado por outras classes</td><td>Classe explícita, obrigatoriamente</td></tr>
+        </table>
+        <div class="callout amber">O recurso não substitui a orientação a objetos — apenas adia o momento de aprendê-la.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Um arquivo-fonte compacto pode declarar package?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Justamente o contrário: arquivos-fonte compactos não podem ter package — é uma das limitações da JEP 512.">Sim</div>
+          <div class="chip" data-correct="true" data-explain="Não — a classe implícita sempre fica no pacote sem nome.">Não</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Não — a classe implícita sempre fica no pacote sem nome.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Qual classe do Java 25 substitui, em casos simples, System.out.println?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="true" data-explain="java.lang.IO — importada automaticamente, com println, print e readln.">java.lang.IO</div>
+          <div class="chip" data-correct="false" data-explain="Console existe desde antes, mas exige obter a instância via System.console() — mais burocrático que a nova IO.">java.io.Console</div>
+          <div class="chip" data-correct="false" data-explain="Scanner lê dados de entrada, mas não substitui println para saída — e não é a novidade do Java 25.">java.util.Scanner</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">java.lang.IO — importada automaticamente, com println, print e readln.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Reescreva em arquivo-fonte compacto</h2>
+      <div class="two-col center">
+        <div>
+          <div class="col-title">Programa tradicional</div>
+          <div class="code-block small">
+<span class="kw">public</span> <span class="kw">class</span> Saudacao {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span>
+    main(String[] args) {
+        System.out.println(
+          <span class="str">"Bem-vindo ao Java 25!"</span>);
+    }
+}
+          </div>
+        </div>
+        <div class="fragment">
+          <div class="col-title">Solução — arquivo compacto</div>
+          <div class="code-block small">
+<span class="kw">void</span> main() {
+    IO.println(<span class="str">"Bem-vindo ao Java 25!"</span>);
+}
+
+
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Revisão">
+      <div class="eyebrow">Fechando a Seção 2</div>
+      <h2>O que você já é capaz de fazer</h2>
+      <div class="slide-body">
+        <ul class="points compact">
+          <li>Explicar Java como linguagem e como plataforma</li>
+          <li>Diferenciar JDK, JRE e JVM</li>
+          <li>Descrever o caminho do código-fonte até a execução, via bytecode e JIT</li>
+          <li>Organizar código em classes, pacotes, módulos e aplicação</li>
+          <li>Escrever, compilar e executar um programa Java</li>
+          <li>Reconhecer a sintaxe simplificada do Java 25</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Encerramento">
+      <div class="eyebrow">De olho na certificação</div>
+      <h2>Este curso caminha junto com a OCP Java SE 25</h2>
+      <div class="slide-body">
+        <div class="callout">O que você viu aqui — edições do Java, JDK/JRE/JVM, módulos e arquivos-fonte compactos — cai direto na certificação Oracle Certified Professional, Java SE 25 Developer (1Z0-831). O material A8 mostra exatamente o que desta seção é cobrado na prova.</div>
+        <div class="callout amber" style="margin-top:18px">A próxima seção começa com estrutura sequencial: variáveis, tipos, entrada e saída de dados.</div>
+      </div>
+    </section>
+
+    <section class="slide slide--end" data-section="Fim">
+      <h1>Perguntas?</h1>
+      <div class="subtitle">Seção 2 — Introdução à linguagem Java</div>
+    </section>
+
+  </div>
+</div>
+
+<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+<div class="hud"><span class="sect" id="hudSection"></span><span id="hudCount"></span></div>
+<div class="hint">← → navegar · Espaço avança · Esc visão geral · F tela cheia</div>
+
+<div class="overview" id="overview">
+  <div class="overview-title">Visão geral — clique em um slide para ir até ele</div>
+  <div class="overview-grid" id="overviewGrid"></div>
+</div>
+
+<script>
+(function () {
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+  var fragIndex = 0;
+
+  function fragmentsOf(i) {
+    return Array.prototype.slice.call(slides[i].querySelectorAll('.fragment'));
+  }
+
+  function render() {
+    slides.forEach(function (s, i) { s.classList.toggle('active', i === current); });
+    var frags = fragmentsOf(current);
+    frags.forEach(function (f, i) { f.classList.toggle('visible', i < fragIndex); });
+
+    document.getElementById('hudSection').textContent = slides[current].getAttribute('data-section') || '';
+    document.getElementById('hudCount').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('progressFill').style.width = ((current + 1) / total * 100) + '%';
+
+    history.replaceState(null, '', '#/' + (current + 1));
+  }
+
+  function goTo(i, resetFrag) {
+    current = Math.max(0, Math.min(total - 1, i));
+    fragIndex = resetFrag === 'end' ? fragmentsOf(current).length : 0;
+    render();
+  }
+
+  function next() {
+    var frags = fragmentsOf(current);
+    if (fragIndex < frags.length) { fragIndex++; render(); return; }
+    if (current < total - 1) goTo(current + 1, 'start');
+  }
+
+  function prev() {
+    if (fragIndex > 0) { fragIndex--; render(); return; }
+    if (current > 0) goTo(current - 1, 'end');
+  }
+
+  function buildOverview() {
+    var grid = document.getElementById('overviewGrid');
+    slides.forEach(function (s, i) {
+      var title = s.querySelector('h1, h2');
+      var card = document.createElement('div');
+      card.className = 'overview-card';
+      card.innerHTML = '<div class="oc-num">' + (i + 1) + ' · ' + (s.getAttribute('data-section') || '') + '</div>' +
+                        '<div class="oc-title">' + (title ? title.textContent : '') + '</div>';
+      card.addEventListener('click', function () {
+        goTo(i, 'start');
+        toggleOverview(false);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function toggleOverview(force) {
+    var ov = document.getElementById('overview');
+    var show = typeof force === 'boolean' ? force : !ov.classList.contains('active');
+    ov.classList.toggle('active', show);
+  }
+
+  function scaleStage() {
+    var pad = 110;
+    var sw = (window.innerWidth - pad) / 1280;
+    var sh = (window.innerHeight - pad) / 720;
+    var scale = Math.min(sw, sh);
+    stage.style.transform = 'scale(' + scale + ')';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { toggleOverview(); return; }
+    if (document.getElementById('overview').classList.contains('active')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { goTo(0, 'start'); }
+    else if (e.key === 'End') { goTo(total - 1, 'start'); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  stage.addEventListener('click', function (e) {
+    var rect = stage.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    if (x < rect.width * 0.35) prev(); else next();
+  });
+
+  document.querySelectorAll('.chip[data-correct]').forEach(function (chip) {
+    chip.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var row = chip.closest('.chip-row');
+      row.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('chip-correct', 'chip-wrong'); });
+      var isCorrect = chip.dataset.correct === 'true';
+      if (isCorrect) {
+        chip.classList.add('chip-correct');
+      } else {
+        chip.classList.add('chip-wrong');
+        var right = row.querySelector('.chip[data-correct="true"]');
+        if (right) right.classList.add('chip-correct');
+      }
+      var slide = chip.closest('.slide');
+      var answerLabel = slide.querySelector('.js-answer-label');
+      var answerText = slide.querySelector('.js-answer-text');
+      if (answerText && chip.dataset.explain) {
+        answerText.textContent = chip.dataset.explain;
+        if (answerLabel) {
+          answerLabel.textContent = isCorrect ? 'RESPOSTA CERTA' : 'ISSO NÃO É BEM ASSIM';
+          answerLabel.className = 'badge js-answer-label ' + (isCorrect ? 'badge-amber' : 'badge-red');
+        }
+      }
+      var idx = slides.indexOf(slide);
+      var frags = fragmentsOf(idx);
+      frags.forEach(function (f) { f.classList.add('visible'); });
+      if (idx === current) fragIndex = frags.length;
+    });
+  });
+
+  window.addEventListener('resize', scaleStage);
+
+  buildOverview();
+  scaleStage();
+
+  var hash = window.location.hash.match(/#\/(\d+)/);
+  if (hash) goTo(parseInt(hash[1], 10) - 1, 'start'); else render();
+})();
+</script>
+</body>
+</html>

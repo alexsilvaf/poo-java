@@ -2,7 +2,6 @@
 
 - **Aulas do curso:** 8 a 20
 - **Aulas de referência:** 13 a 25
-- **Carga horária planejada:** 1 encontro de 1 hora
 
 ## Objetivos
 
@@ -18,6 +17,10 @@ Ao final desta seção, o aluno deverá ser capaz de:
 - instalar o JDK, configurar a IDE e criar o primeiro projeto;
 - escrever, compilar e executar um programa Java, entendendo cada parte do método `main`;
 - reconhecer a sintaxe simplificada introduzida no Java 25.
+
+## Apresentação
+
+[apresentacao.html](./apresentacao.html) reúne os seis blocos da aula em slides, incluindo os diagramas desta seção. Basta abrir o arquivo no navegador; navegação por `←`/`→`/espaço, `Esc` para visão geral e `F` para tela cheia.
 
 ## Conteúdos
 
@@ -43,6 +46,5 @@ Ao final desta seção, o aluno deverá ser capaz de:
 
 ## Observações
 
-- O A6 pressupõe que a instalação do JDK e da IDE seja feita antes do encontro. Se a turma precisar instalar em aula, o planejamento não cabe em uma hora.
 - O A7 apresenta a sintaxe simplificada, mas o restante do curso continua usando classes declaradas explicitamente. A forma compacta é mostrada para que o aluno a reconheça, não para que a adote.
 - O A8 é material de referência para quem quiser seguir rumo à certificação. Não é conteúdo de aula e não é avaliado.

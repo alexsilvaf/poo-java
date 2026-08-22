@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">Aplicação como agrupamento de módulos</title>
+  <desc id="description">Uma aplicação de comércio eletrônico reunindo quatro módulos relacionados: financial, catalog, sales e users.</desc>
+
+  <defs>
+    <linearGradient id="moduleGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fc1ea" />
+      <stop offset="100%" stop-color="#4f86c6" />
+    </linearGradient>
+    <linearGradient id="appGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#eef4fb" />
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#163d5c" flood-opacity="0.18" />
+    </filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#163d5c" flood-opacity="0.16" />
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" rx="20" fill="#ffffff" />
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <!-- Aplicação -->
+    <g filter="url(#shadow)">
+      <rect x="60" y="60" width="1480" height="780" rx="28" fill="url(#appGradient)" stroke="#5d97c8" stroke-width="3" />
+    </g>
+    <text x="800" y="140" font-size="44" text-anchor="middle" fill="#1e3a5f" font-weight="700">Sistema de comércio eletrônico</text>
+
+    <!-- Quatro módulos -->
+    <g filter="url(#softShadow)">
+      <rect x="130"  y="200" width="640" height="290" rx="20" fill="url(#moduleGradient)" stroke="#2e5f96" stroke-width="3" />
+      <rect x="830"  y="200" width="640" height="290" rx="20" fill="url(#moduleGradient)" stroke="#2e5f96" stroke-width="3" />
+      <rect x="130"  y="530" width="640" height="290" rx="20" fill="url(#moduleGradient)" stroke="#2e5f96" stroke-width="3" />
+      <rect x="830"  y="530" width="640" height="290" rx="20" fill="url(#moduleGradient)" stroke="#2e5f96" stroke-width="3" />
+    </g>
+
+    <g font-size="38" text-anchor="middle" fill="#ffffff" font-weight="700">
+      <text x="450"  y="355">financial</text>
+      <text x="1150" y="355">catalog</text>
+      <text x="450"  y="685">sales</text>
+      <text x="1150" y="685">users</text>
+    </g>
+    <g font-size="24" text-anchor="middle" fill="#eaf3fc">
+      <text x="450"  y="400">contas, pagamentos, faturas</text>
+      <text x="1150" y="400">produtos, categorias, estoque</text>
+      <text x="450"  y="730">pedidos, carrinho, cupons</text>
+      <text x="1150" y="730">clientes, autenticação, perfis</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 980" role="img" aria-labelledby="title description">
+  <title id="title">Fluxo de uma linguagem compilada</title>
+  <desc id="description">Um código-fonte em C++ é compilado por compiladores diferentes para gerar um executável específico para Windows, Mac e Linux, cada um sobre seu sistema operacional e hardware.</desc>
+
+  <defs>
+    <linearGradient id="codeGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f3f4f6" />
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a9d18e" />
+      <stop offset="100%" stop-color="#70ad47" />
+    </linearGradient>
+    <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9dc3e6" />
+      <stop offset="100%" stop-color="#5b9bd5" />
+    </linearGradient>
+    <linearGradient id="grayGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9c9c9" />
+      <stop offset="100%" stop-color="#a5a5a5" />
+    </linearGradient>
+    <linearGradient id="noteGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e5e7eb" />
+      <stop offset="100%" stop-color="#c7cbd1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#163d5c" flood-opacity="0.18" />
+    </filter>
+    <marker id="arrowhead" markerUnits="userSpaceOnUse" markerWidth="26" markerHeight="26" refX="18" refY="13" orient="auto">
+      <path d="M0,0 L26,13 L0,26 Z" fill="#9ca3af" />
+    </marker>
+    <marker id="arrowheadSmall" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto">
+      <path d="M0,0 L14,7 L0,14 Z" fill="#9ca3af" />
+    </marker>
+  </defs>
+
+  <rect width="1900" height="980" rx="20" fill="#ffffff" />
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <!-- Código-fonte -->
+    <g filter="url(#shadow)">
+      <rect x="620" y="30" width="660" height="230" rx="10" fill="url(#codeGradient)" stroke="#c7cbd1" stroke-width="2" />
+    </g>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="26">
+      <text x="650" y="75" fill="#7c3aed">#include &lt;iostream&gt;</text>
+      <text x="650" y="130" fill="#1f2937"><tspan fill="#2563eb">int</tspan> main() {</text>
+      <text x="680" y="170" fill="#b45309">std::cout &lt;&lt; "Olá, mundo!";</text>
+      <text x="680" y="210" fill="#2563eb">return <tspan fill="#1f2937">0;</tspan></text>
+      <text x="650" y="245" fill="#1f2937">}</text>
+    </g>
+
+    <!-- Nota de adaptação -->
+    <g filter="url(#shadow)">
+      <rect x="1360" y="60" width="450" height="150" rx="10" fill="url(#noteGradient)" stroke="#9ca3af" stroke-width="2" />
+    </g>
+    <text x="1585" y="120" font-size="27" text-anchor="middle" fill="#1f2937">Pode exigir adaptações</text>
+    <text x="1585" y="158" font-size="27" text-anchor="middle" fill="#1f2937">no código-fonte</text>
+    <path d="M1360 150 L940 260" stroke="#9ca3af" stroke-width="4" fill="none" marker-end="url(#arrowheadSmall)" />
+
+    <!-- Setas divergentes -->
+    <path d="M760 260 L280 470" stroke="#9ca3af" stroke-width="10" fill="none" marker-end="url(#arrowhead)" />
+    <path d="M950 260 L950 470" stroke="#9ca3af" stroke-width="10" fill="none" marker-end="url(#arrowhead)" />
+    <path d="M1140 260 L1620 470" stroke="#9ca3af" stroke-width="10" fill="none" marker-end="url(#arrowhead)" />
+
+    <g font-size="30" text-anchor="middle" fill="#1f2937">
+      <text x="470" y="350">compilador 1</text>
+      <text x="950" y="400">compilador 2</text>
+      <text x="1430" y="350">compilador 3</text>
+    </g>
+
+    <!-- Três pilhas: Windows, Mac, Linux -->
+    <g filter="url(#shadow)">
+      <!-- Windows -->
+      <rect x="80" y="500" width="400" height="120" fill="url(#greenGradient)" stroke="#4f7f30" stroke-width="3" />
+      <rect x="80" y="620" width="400" height="120" fill="url(#blueGradient)" stroke="#3776ad" stroke-width="3" />
+      <rect x="80" y="740" width="400" height="120" fill="url(#grayGradient)" stroke="#777777" stroke-width="3" />
+
+      <!-- Mac -->
+      <rect x="750" y="500" width="400" height="120" fill="url(#greenGradient)" stroke="#4f7f30" stroke-width="3" />
+      <rect x="750" y="620" width="400" height="120" fill="url(#blueGradient)" stroke="#3776ad" stroke-width="3" />
+      <rect x="750" y="740" width="400" height="120" fill="url(#grayGradient)" stroke="#777777" stroke-width="3" />
+
+      <!-- Linux -->
+      <rect x="1420" y="500" width="400" height="120" fill="url(#greenGradient)" stroke="#4f7f30" stroke-width="3" />
+      <rect x="1420" y="620" width="400" height="120" fill="url(#blueGradient)" stroke="#3776ad" stroke-width="3" />
+      <rect x="1420" y="740" width="400" height="120" fill="url(#grayGradient)" stroke="#777777" stroke-width="3" />
+    </g>
+
+    <g fill="#ffffff" font-size="30" text-anchor="middle">
+      <text x="280" y="568">Executável p/ Windows</text>
+      <text x="280" y="688">Windows</text>
+      <text x="280" y="808">Hardware</text>
+
+      <text x="950" y="568">Executável p/ Mac</text>
+      <text x="950" y="688">Mac OS</text>
+      <text x="950" y="808">Hardware</text>
+
+      <text x="1620" y="568">Executável p/ Linux</text>
+      <text x="1620" y="688">Linux</text>
+      <text x="1620" y="808">Hardware</text>
+    </g>
+
+    <text x="950" y="920" font-size="34" text-anchor="middle" fill="#111827">Linguagem compilada — C / C++</text>
+  </g>
+</svg>

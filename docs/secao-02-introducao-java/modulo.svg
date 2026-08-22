@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 820" role="img" aria-labelledby="title description">
+  <title id="title">Módulo como agrupamento lógico de pacotes</title>
+  <desc id="description">Dois módulos, financial e graphics, cada um reunindo pacotes relacionados, e cada pacote reunindo suas classes.</desc>
+
+  <defs>
+    <linearGradient id="yellowGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe29a" />
+      <stop offset="100%" stop-color="#ffbd0a" />
+    </linearGradient>
+    <linearGradient id="orangeGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8b48a" />
+      <stop offset="100%" stop-color="#ed7d31" />
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a9d18e" />
+      <stop offset="100%" stop-color="#70ad47" />
+    </linearGradient>
+    <linearGradient id="moduleGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fc1ea" />
+      <stop offset="100%" stop-color="#4f86c6" />
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#163d5c" flood-opacity="0.2" />
+    </filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#163d5c" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <rect width="1900" height="820" rx="20" fill="#ffffff" />
+
+  <!-- Módulo financial -->
+  <g font-family="Arial, Helvetica, sans-serif">
+    <g filter="url(#shadow)">
+      <rect x="40" y="60" width="900" height="720" rx="24" fill="url(#moduleGradient)" stroke="#2e5f96" stroke-width="3" />
+    </g>
+    <text x="490" y="130" font-size="42" text-anchor="middle" fill="#ffffff" font-weight="700">financial</text>
+
+    <!-- pacote entities -->
+    <g filter="url(#softShadow)">
+      <rect x="80" y="170" width="820" height="180" rx="14" fill="#f5f9fd" stroke="#7fa8cc" stroke-width="2.5" />
+    </g>
+    <text x="490" y="215" font-size="28" text-anchor="middle" fill="#1e3a5f" font-weight="700">entities</text>
+    <g filter="url(#softShadow)">
+      <rect x="250" y="250" width="220" height="70" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+      <rect x="510" y="250" width="220" height="70" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+    </g>
+    <text x="360" y="293" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+    <text x="620" y="293" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+
+    <!-- pacote services -->
+    <g filter="url(#softShadow)">
+      <rect x="80" y="370" width="820" height="180" rx="14" fill="#f5f9fd" stroke="#7fa8cc" stroke-width="2.5" />
+    </g>
+    <text x="490" y="415" font-size="28" text-anchor="middle" fill="#1e3a5f" font-weight="700">services</text>
+    <g filter="url(#softShadow)">
+      <rect x="250" y="450" width="220" height="70" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+      <rect x="510" y="450" width="220" height="70" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+    </g>
+    <text x="360" y="493" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+    <text x="620" y="493" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+
+    <!-- pacote repositories -->
+    <g filter="url(#softShadow)">
+      <rect x="80" y="570" width="820" height="180" rx="14" fill="#f5f9fd" stroke="#7fa8cc" stroke-width="2.5" />
+    </g>
+    <text x="490" y="615" font-size="28" text-anchor="middle" fill="#1e3a5f" font-weight="700">repositories</text>
+    <g filter="url(#softShadow)">
+      <rect x="250" y="650" width="220" height="70" rx="8" fill="url(#greenGradient)" stroke="#4f7f30" stroke-width="2.5" />
+      <rect x="510" y="650" width="220" height="70" rx="8" fill="url(#greenGradient)" stroke="#4f7f30" stroke-width="2.5" />
+    </g>
+    <text x="360" y="693" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+    <text x="620" y="693" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+  </g>
+
+  <!-- Módulo graphics -->
+  <g font-family="Arial, Helvetica, sans-serif">
+    <g filter="url(#shadow)">
+      <rect x="980" y="60" width="900" height="720" rx="24" fill="url(#moduleGradient)" stroke="#2e5f96" stroke-width="3" />
+    </g>
+    <text x="1430" y="130" font-size="42" text-anchor="middle" fill="#ffffff" font-weight="700">graphics</text>
+
+    <!-- pacote graphics3d -->
+    <g filter="url(#softShadow)">
+      <rect x="1020" y="170" width="820" height="180" rx="14" fill="#f5f9fd" stroke="#7fa8cc" stroke-width="2.5" />
+    </g>
+    <text x="1430" y="215" font-size="28" text-anchor="middle" fill="#1e3a5f" font-weight="700">graphics3d</text>
+    <g filter="url(#softShadow)">
+      <rect x="1190" y="250" width="220" height="70" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+      <rect x="1450" y="250" width="220" height="70" rx="8" fill="url(#yellowGradient)" stroke="#b88600" stroke-width="2.5" />
+    </g>
+    <text x="1300" y="293" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+    <text x="1560" y="293" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+
+    <!-- pacote graphics2d -->
+    <g filter="url(#softShadow)">
+      <rect x="1020" y="370" width="820" height="180" rx="14" fill="#f5f9fd" stroke="#7fa8cc" stroke-width="2.5" />
+    </g>
+    <text x="1430" y="415" font-size="28" text-anchor="middle" fill="#1e3a5f" font-weight="700">graphics2d</text>
+    <g filter="url(#softShadow)">
+      <rect x="1190" y="450" width="220" height="70" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+      <rect x="1450" y="450" width="220" height="70" rx="8" fill="url(#orangeGradient)" stroke="#b55418" stroke-width="2.5" />
+    </g>
+    <text x="1300" y="493" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+    <text x="1560" y="493" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+
+    <!-- pacote utilities -->
+    <g filter="url(#softShadow)">
+      <rect x="1020" y="570" width="820" height="180" rx="14" fill="#f5f9fd" stroke="#7fa8cc" stroke-width="2.5" />
+    </g>
+    <text x="1430" y="615" font-size="28" text-anchor="middle" fill="#1e3a5f" font-weight="700">utilities</text>
+    <g filter="url(#softShadow)">
+      <rect x="1190" y="650" width="220" height="70" rx="8" fill="url(#greenGradient)" stroke="#4f7f30" stroke-width="2.5" />
+      <rect x="1450" y="650" width="220" height="70" rx="8" fill="url(#greenGradient)" stroke="#4f7f30" stroke-width="2.5" />
+    </g>
+    <text x="1300" y="693" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+    <text x="1560" y="693" font-size="26" text-anchor="middle" fill="#1f2937">Class</text>
+  </g>
+</svg>

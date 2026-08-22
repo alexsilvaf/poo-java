@@ -2,7 +2,6 @@
 
 - **Aulas do curso:** 1 a 7
 - **Aulas de referência:** 6 a 12
-- **Carga horária planejada:** 1 encontro de 1 hora
 
 ## Objetivos
 
@@ -32,7 +31,3 @@ Ao final desta seção, o aluno deverá ser capaz de:
 | 20–30 min | Ferramentas de desenvolvimento | Explicar editor, IDE, compilador, interpretador e máquina virtual com base no A2 e no A4 |
 | 30–50 min | Formas de tradução e execução | Percorrer os diagramas do A5 e comparar compilação, interpretação e abordagem híbrida |
 | 50–60 min | Revisão e exercícios | Usar o diagrama comparativo, responder dúvidas e realizar uma atividade curta de classificação |
-
-## Observações
-
-Todo o conteúdo da seção foi planejado para um único encontro de uma hora. A divisão de tempo é apenas uma referência e pode ser ajustada ao ritmo da turma.
