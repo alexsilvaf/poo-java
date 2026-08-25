@@ -3,21 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <title>Seção 2 — Introdução à linguagem Java</title>
+<!--
+  duke.svg — Duke, o mascote do Java.
+  Autor: sbmehta, via Wikimedia Commons ("Duke (Java mascot) waving.svg").
+  Licença: BSD. Duke foi liberado como código aberto pela Sun Microsystems em 2006.
+-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root {
-    --blue-900:#1e3a5f; --blue-700:#2e5f96; --blue-500:#347fbd; --blue-300:#72b5e5; --blue-100:#eaf3fc;
-    --amber-600:#b88600; --amber-400:#ffbd0a; --amber-200:#ffe29a;
+    /* Identidade Java / Oracle */
+    --java-red:#e12523;       /* vermelho Oracle */
+    --java-red-dark:#8f1614;
+    --java-red-deep:#5c0d0c;
+    --java-orange:#f89820;    /* laranja clássico do Duke/Java */
+    --java-orange-soft:#ffd9a0;
+    --java-blue:#5382a1;      /* azul do logo Java */
+    --java-blue-dark:#2f5f7a;
+
+    --blue-900:#1b3a4b; --blue-700:#2f5f7a; --blue-500:#5382a1; --blue-300:#8fb5cc; --blue-100:#e8f1f6;
+    --amber-600:#b8690a; --amber-400:#f89820; --amber-200:#ffe0b8;
     --orange-600:#b55418; --orange-400:#ed7d31;
     --green-600:#4f7f30; --green-400:#70ad47;
-    --ink-900:#111827; --ink-700:#374151; --ink-500:#6b7280;
-    --paper:#ffffff; --paper-alt:#f8fafc;
-    --code-kw:#7c3aed; --code-str:#b45309; --code-plain:#1f2937; --code-com:#6b7280;
+    --ink-900:#1a1a1a; --ink-700:#3d3d3d; --ink-500:#6b6b6b;
+    --paper:#ffffff; --paper-alt:#fbf8f5;
+    --code-kw:#c026a3; --code-str:#b45309; --code-plain:#1f2937; --code-com:#6b7280;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0; width: 100%; height: 100%;
-    background: #0f172a;
+    background: #1c0f0e;
+    background-image: radial-gradient(ellipse at 50% 0%, #3a1a16 0%, #1c0f0e 60%);
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     overflow: hidden;
   }
@@ -41,12 +56,17 @@
     flex-direction: column;
     padding: 64px 80px 56px;
   }
+  .slide::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px;
+    background: linear-gradient(90deg, var(--java-red) 0%, var(--java-orange) 100%);
+  }
+  .slide--title::before, .slide--divider::before, .slide--end::before { display: none; }
   .slide.active { display: flex; animation: fadeIn .35s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
   .eyebrow {
     font-size: 22px; font-weight: 700; letter-spacing: .04em;
-    text-transform: uppercase; color: var(--blue-500); margin: 0 0 10px;
+    text-transform: uppercase; color: var(--java-red); margin: 0 0 10px;
   }
   h1 { font-size: 52px; margin: 0 0 18px; color: var(--ink-900); line-height: 1.12; }
   h2 { font-size: 40px; margin: 0 0 22px; color: var(--ink-900); line-height: 1.15; }
@@ -63,7 +83,7 @@
   ul.points li.fragment { transform: translateX(-10px); }
   ul.points li.fragment.visible { transform: translateX(0); }
   ul.points li::before {
-    content: "▸"; position: absolute; left: 0; top: 0; color: var(--blue-500); font-size: 28px;
+    content: "▸"; position: absolute; left: 0; top: 0; color: var(--java-orange); font-size: 28px;
   }
   ul.points li b { color: var(--ink-900); }
   ul.points.compact { font-size: 26px; }
@@ -75,7 +95,7 @@
   table.deck-table th, table.deck-table td {
     text-align: left; padding: 14px 18px; border-bottom: 1px solid #e5e7eb;
   }
-  table.deck-table th { color: var(--blue-900); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; }
+  table.deck-table th { color: var(--java-red-dark); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; }
   table.deck-table td.mono, table.deck-table th.mono { font-family: Consolas, "Courier New", monospace; }
   table.deck-table tr:last-child td { border-bottom: none; }
   table.deck-table td b { color: var(--ink-900); }
@@ -93,7 +113,7 @@
 
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
   .two-col.center { align-items: center; }
-  .col-title { font-size: 22px; font-weight: 700; color: var(--blue-700); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .03em; }
+  .col-title { font-size: 22px; font-weight: 700; color: var(--java-red-dark); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .03em; }
 
   .diagram-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
   .diagram-wrap img { max-width: 100%; max-height: 100%; }
@@ -103,21 +123,21 @@
     font-size: 20px; font-weight: 700; letter-spacing: .02em;
   }
   .badge-blue { background: var(--blue-100); color: var(--blue-900); }
-  .badge-amber { background: var(--amber-200); color: #6b4b00; }
+  .badge-amber { background: var(--java-orange); color: #4d2c02; }
   .badge-red { background: #fee2e2; color: #991b1b; }
 
   .callout {
-    margin-top: 20px; padding: 18px 24px; border-left: 6px solid var(--blue-500);
-    background: var(--blue-100); border-radius: 6px; font-size: 23px; color: var(--blue-900);
+    margin-top: 20px; padding: 18px 24px; border-left: 6px solid var(--java-red);
+    background: #fdf0ef; border-radius: 6px; font-size: 23px; color: #6b1512;
   }
-  .callout.amber { border-left-color: var(--amber-600); background: #fff8e6; color: #6b4b00; }
+  .callout.amber { border-left-color: var(--java-orange); background: #fff6e9; color: #7a4708; }
 
   .kpi-row { display: flex; gap: 24px; margin-top: 10px; }
   .kpi {
     flex: 1; background: var(--paper-alt); border: 1px solid #e5e7eb; border-radius: 12px;
     padding: 22px 24px;
   }
-  .kpi .kpi-num { font-size: 40px; font-weight: 700; color: var(--blue-700); }
+  .kpi .kpi-num { font-size: 40px; font-weight: 700; color: var(--java-red); }
   .kpi .kpi-label { font-size: 20px; color: var(--ink-500); margin-top: 4px; }
 
   .footer-row {
@@ -126,40 +146,57 @@
   }
 
   .slide--divider {
-    background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%);
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
     justify-content: center; align-items: flex-start; padding: 0 90px;
+    overflow: hidden;
   }
   .slide--divider .div-num {
-    font-size: 26px; color: var(--blue-300); font-weight: 700; letter-spacing: .06em;
+    font-size: 26px; color: var(--java-orange); font-weight: 700; letter-spacing: .06em;
   }
-  .slide--divider h1 { color: #ffffff; font-size: 58px; max-width: 900px; }
-  .slide--divider .div-list { margin-top: 34px; font-size: 26px; color: #dbeafe; }
+  .slide--divider h1 { color: #ffffff; font-size: 58px; max-width: 700px; }
+  .slide--divider .div-num { max-width: 700px; }
+  .slide--divider .div-list { margin-top: 34px; font-size: 26px; color: #ffe0b8; }
   .slide--divider .div-list div { margin-bottom: 10px; }
 
   .slide--title {
     justify-content: center; align-items: flex-start;
-    background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%);
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    overflow: hidden;
   }
-  .slide--title .kicker { color: var(--blue-300); font-size: 26px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-  .slide--title h1 { color: #ffffff; font-size: 64px; margin-top: 14px; }
-  .slide--title .subtitle { color: #dbeafe; font-size: 28px; margin-top: 10px; max-width: 820px; }
-  .slide--title .title-foot { margin-top: 48px; color: #bcd3f0; font-size: 22px; }
+  .slide--title .kicker { color: var(--java-orange); font-size: 26px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .slide--title h1 { color: #ffffff; font-size: 60px; margin-top: 14px; max-width: 700px; }
+  .slide--title .subtitle { color: #ffeeda; font-size: 27px; margin-top: 10px; max-width: 680px; }
+  .slide--title .kicker { max-width: 700px; }
+  .slide--title .title-foot { margin-top: 48px; color: var(--java-orange-soft); font-size: 22px; }
 
   .slide--end {
     justify-content: center; align-items: center; text-align: center;
-    background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%);
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    overflow: hidden;
   }
   .slide--end h1 { color: #fff; }
-  .slide--end .subtitle { color: #dbeafe; font-size: 30px; }
+  .slide--end .subtitle { color: #ffe0b8; font-size: 30px; }
+
+  /* Duke — mascote do Java */
+  .duke {
+    position: absolute; right: 70px; bottom: 0; height: 78%;
+    pointer-events: none; z-index: 1;
+    filter: drop-shadow(0 10px 26px rgba(0,0,0,.35));
+  }
+  .slide--end .duke { right: 60px; bottom: 0; height: 62%; opacity: .95; }
+  .slide--divider .duke { right: 60px; height: 66%; opacity: .28; }
+  .slide--title > *:not(.duke),
+  .slide--divider > *:not(.duke),
+  .slide--end > *:not(.duke) { position: relative; z-index: 2; }
 
   .chip-row { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
   .chip {
     background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 12px;
     padding: 16px 22px; font-size: 24px; color: var(--ink-700); font-weight: 700;
   }
-  .chip.on { border-color: var(--blue-500); color: var(--blue-700); background: var(--blue-100); }
+  .chip.on { border-color: var(--java-red); color: var(--java-red-dark); background: #fdf0ef; }
   .chip[data-correct] { cursor: pointer; transition: transform .15s ease, background .2s ease, border-color .2s ease; }
-  .chip[data-correct]:hover { transform: translateY(-2px); border-color: var(--blue-300); }
+  .chip[data-correct]:hover { transform: translateY(-2px); border-color: var(--java-orange); }
   .chip-correct { background: #dcfce7 !important; border-color: #16a34a !important; color: #166534 !important; }
   .chip-correct::after { content: " ✓"; }
   .chip-wrong { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
@@ -169,26 +206,29 @@
   .arrow-chain .node {
     background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 14px; padding: 18px 30px;
   }
-  .arrow-chain .arrow { color: var(--blue-500); font-size: 40px; }
+  .arrow-chain .arrow { color: var(--java-red); font-size: 40px; }
 
   /* HUD */
   .hud {
-    position: fixed; right: 22px; bottom: 16px; color: #94a3b8;
+    position: fixed; right: 22px; bottom: 16px; color: #b89a90;
     font-family: Arial, sans-serif; font-size: 14px; z-index: 20; user-select: none;
   }
-  .hud .sect { color: #cbd5e1; margin-right: 10px; }
+  .hud .sect { color: var(--java-orange); margin-right: 10px; }
   .progress {
     position: fixed; left: 0; bottom: 0; height: 4px; width: 100%;
     background: rgba(255,255,255,.08); z-index: 20;
   }
-  .progress-fill { height: 100%; background: var(--blue-300); width: 0%; transition: width .25s ease; }
+  .progress-fill {
+    height: 100%; width: 0%; transition: width .25s ease;
+    background: linear-gradient(90deg, var(--java-red) 0%, var(--java-orange) 100%);
+  }
 
   .hint {
-    position: fixed; left: 22px; bottom: 16px; color: #64748b; font-size: 13px; z-index: 20; user-select: none;
+    position: fixed; left: 22px; bottom: 16px; color: #8a6f66; font-size: 13px; z-index: 20; user-select: none;
   }
 
   .overview {
-    position: fixed; inset: 0; z-index: 30; background: rgba(15,23,42,.96);
+    position: fixed; inset: 0; z-index: 30; background: rgba(28,15,14,.97);
     display: none; padding: 50px; overflow-y: auto;
   }
   .overview.active { display: block; }
@@ -196,14 +236,14 @@
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; max-width: 1500px; margin: 0 auto;
   }
   .overview-card {
-    background: #1e293b; border: 2px solid #334155; border-radius: 8px; padding: 14px;
-    color: #cbd5e1; cursor: pointer; font-size: 13px; min-height: 90px;
+    background: #2e1a17; border: 2px solid #4a2a25; border-radius: 8px; padding: 14px;
+    color: #e3d3cd; cursor: pointer; font-size: 13px; min-height: 90px;
   }
-  .overview-card:hover { border-color: var(--blue-300); }
-  .overview-card .oc-num { color: #64748b; font-size: 12px; margin-bottom: 6px; }
-  .overview-card .oc-title { font-weight: 700; color: #f1f5f9; font-size: 14px; line-height: 1.3; }
+  .overview-card:hover { border-color: var(--java-orange); }
+  .overview-card .oc-num { color: #a07c70; font-size: 12px; margin-bottom: 6px; }
+  .overview-card .oc-title { font-weight: 700; color: #fff6f0; font-size: 14px; line-height: 1.3; }
   .overview-title {
-    color: #f1f5f9; text-align: center; font-size: 22px; margin-bottom: 30px; font-family: Arial, sans-serif;
+    color: #fff6f0; text-align: center; font-size: 22px; margin-bottom: 30px; font-family: Arial, sans-serif;
   }
 </style>
 </head>
@@ -213,10 +253,11 @@
   <div class="stage" id="stage">
 
     <section class="slide slide--title" data-section="Abertura">
-      <div class="kicker">Curso de Java — Seção 2</div>
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="kicker">Curso de Java — rumo à OCP Java SE 25</div>
       <h1>Introdução à linguagem Java</h1>
       <div class="subtitle">Da história do Java ao primeiro programa: plataforma, versões, estrutura de uma aplicação e a sintaxe simplificada do Java 25.</div>
-      <div class="title-foot">Aulas 8 a 20</div>
+      <div class="title-foot">Seção 2 · Aulas 8 a 20</div>
     </section>
 
     <section class="slide" data-section="Abertura">
@@ -236,6 +277,7 @@
     </section>
 
     <section class="slide slide--divider" data-section="Bloco 1">
+      <img class="duke" src="./duke.svg" alt="">
       <div class="div-num">BLOCO 1 DE 6</div>
       <h1>Contextualização e edições do Java</h1>
     </section>
@@ -300,6 +342,7 @@
     </section>
 
     <section class="slide slide--divider" data-section="Bloco 2">
+      <img class="duke" src="./duke.svg" alt="">
       <div class="div-num">BLOCO 2 DE 6</div>
       <h1>Plataforma Java SE</h1>
     </section>
@@ -367,12 +410,12 @@
             .jvmanim-verify { animation: jvmanimArrive 8s ease-in-out infinite; animation-delay: 3.4s; }
             .jvmanim-engine { animation: jvmanimArrive 8s ease-in-out infinite; animation-delay: 5.4s; }
             .jvmanim-check { animation: jvmanimCheck 8s ease-in-out infinite backwards; animation-delay: 3.4s; transform-box: fill-box; transform-origin: center; }
-            .jvmanim-obj1 { animation: jvmanimSpawn 4s ease-in-out infinite backwards; animation-delay: 0s; transform-box: fill-box; transform-origin: center; }
-            .jvmanim-obj2 { animation: jvmanimSpawn 4s ease-in-out infinite backwards; animation-delay: 1.3s; transform-box: fill-box; transform-origin: center; }
-            .jvmanim-obj3 { animation: jvmanimSpawn 4s ease-in-out infinite backwards; animation-delay: 2.6s; transform-box: fill-box; transform-origin: center; }
-            .jvmanim-gc { animation: jvmanimGcFlash 4s ease-in-out infinite; }
-            .jvmanim-pill-a { animation: jvmanimAlt 4s ease-in-out infinite; animation-delay: 0s; }
-            .jvmanim-pill-b { animation: jvmanimAlt 4s ease-in-out infinite; animation-delay: 2s; }
+            .jvmanim-obj1 { animation: jvmanimSpawn 4.6s ease-in-out infinite backwards; animation-delay: 0s; transform-box: fill-box; transform-origin: center; }
+            .jvmanim-obj2 { animation: jvmanimSpawn 4.6s ease-in-out infinite backwards; animation-delay: 1.5s; transform-box: fill-box; transform-origin: center; }
+            .jvmanim-obj3 { animation: jvmanimSpawn 4.6s ease-in-out infinite backwards; animation-delay: 3s; transform-box: fill-box; transform-origin: center; }
+            .jvmanim-gc { animation: jvmanimGcFlash 4.6s ease-in-out infinite; }
+            .jvmanim-pill-a { animation: jvmanimAlt 3.7s ease-in-out infinite; animation-delay: 0s; }
+            .jvmanim-pill-b { animation: jvmanimAlt 3.7s ease-in-out infinite; animation-delay: 1.85s; }
             @keyframes jvmanimTravel {
               0%   { transform: translateX(0px);    opacity: 0; }
               4%   { opacity: 1; }
@@ -598,6 +641,7 @@ java --module-path mods --module com.exemplo/com.exemplo.Programa
     </section>
 
     <section class="slide slide--divider" data-section="Bloco 3">
+      <img class="duke" src="./duke.svg" alt="">
       <div class="div-num">BLOCO 3 DE 6</div>
       <h1>Versões e cadência de lançamentos</h1>
     </section>
@@ -709,6 +753,7 @@ java --module-path mods --module com.exemplo/com.exemplo.Programa
     </section>
 
     <section class="slide slide--divider" data-section="Bloco 4">
+      <img class="duke" src="./duke.svg" alt="">
       <div class="div-num">BLOCO 4 DE 6</div>
       <h1>Estrutura de uma aplicação Java</h1>
     </section>
@@ -820,6 +865,7 @@ java --module-path mods --module com.exemplo/com.exemplo.Programa
     </section>
 
     <section class="slide slide--divider" data-section="Bloco 5">
+      <img class="duke" src="./duke.svg" alt="">
       <div class="div-num">BLOCO 5 DE 6</div>
       <h1>Ambiente e primeiro programa</h1>
     </section>
@@ -943,6 +989,7 @@ sc.close();
     </section>
 
     <section class="slide slide--divider" data-section="Bloco 6">
+      <img class="duke" src="./duke.svg" alt="">
       <div class="div-num">BLOCO 6 DE 6</div>
       <h1>Sintaxe simplificada do Java 25</h1>
     </section>
@@ -1092,6 +1139,7 @@ sc.close();
     </section>
 
     <section class="slide slide--end" data-section="Fim">
+      <img class="duke" src="./duke.svg" alt="">
       <h1>Perguntas?</h1>
       <div class="subtitle">Seção 2 — Introdução à linguagem Java</div>
     </section>

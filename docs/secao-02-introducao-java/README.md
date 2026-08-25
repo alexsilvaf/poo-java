@@ -22,6 +22,8 @@ Ao final desta seção, o aluno deverá ser capaz de:
 
 [apresentacao.html](./apresentacao.html) reúne os seis blocos da aula em slides, incluindo os diagramas desta seção. Basta abrir o arquivo no navegador; navegação por `←`/`→`/espaço, `Esc` para visão geral e `F` para tela cheia.
 
+> A imagem do Duke (`duke.svg`) é de autoria de sbmehta, obtida no Wikimedia Commons e distribuída sob **licença BSD** — o Duke foi liberado como código aberto pela Sun Microsystems em 2006.
+
 ## Conteúdos
 
 - [Versões do Java](./A1%20-%20Versoes%20do%20Java.md)
