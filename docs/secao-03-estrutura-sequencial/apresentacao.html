@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Seção 3 — Estrutura sequencial</title>
+<!--
+  duke.svg — Duke, o mascote do Java.
+  Autor: sbmehta, via Wikimedia Commons ("Duke (Java mascot) waving.svg").
+  Licença: BSD. Duke foi liberado como código aberto pela Sun Microsystems em 2006.
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    /* Identidade Java / Oracle */
+    --java-red:#e12523;       /* vermelho Oracle */
+    --java-red-dark:#8f1614;
+    --java-red-deep:#5c0d0c;
+    --java-orange:#f89820;    /* laranja clássico do Duke/Java */
+    --java-orange-soft:#ffd9a0;
+    --java-blue:#5382a1;      /* azul do logo Java */
+    --java-blue-dark:#2f5f7a;
+
+    --blue-900:#1b3a4b; --blue-700:#2f5f7a; --blue-500:#5382a1; --blue-300:#8fb5cc; --blue-100:#e8f1f6;
+    --amber-600:#b8690a; --amber-400:#f89820; --amber-200:#ffe0b8;
+    --orange-600:#b55418; --orange-400:#ed7d31;
+    --green-600:#4f7f30; --green-400:#70ad47;
+    --ink-900:#1a1a1a; --ink-700:#3d3d3d; --ink-500:#6b6b6b;
+    --paper:#ffffff; --paper-alt:#fbf8f5;
+    --code-kw:#c026a3; --code-str:#b45309; --code-plain:#1f2937; --code-com:#6b7280;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: #1c0f0e;
+    background-image: radial-gradient(ellipse at 50% 0%, #3a1a16 0%, #1c0f0e 60%);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    overflow: hidden;
+  }
+  .deck {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stage {
+    position: relative;
+    width: 1280px; height: 720px;
+    background: var(--paper);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    border-radius: 6px;
+    overflow: hidden;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 64px 80px 56px;
+  }
+  .slide::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px;
+    background: linear-gradient(90deg, var(--java-red) 0%, var(--java-orange) 100%);
+  }
+  .slide--title::before, .slide--divider::before, .slide--end::before { display: none; }
+  .slide.active { display: flex; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .eyebrow {
+    font-size: 22px; font-weight: 700; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--java-red); margin: 0 0 10px;
+  }
+  h1 { font-size: 52px; margin: 0 0 18px; color: var(--ink-900); line-height: 1.12; }
+  h2 { font-size: 40px; margin: 0 0 22px; color: var(--ink-900); line-height: 1.15; }
+  .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+  .slide-body.top { justify-content: flex-start; }
+
+  ul.points { list-style: none; margin: 0; padding: 0; font-size: 30px; color: var(--ink-700); }
+  ul.points li {
+    position: relative; padding-left: 42px; margin-bottom: 22px; line-height: 1.35;
+    opacity: 1;
+  }
+  .fragment { opacity: 0; transition: opacity .35s ease, transform .35s ease; }
+  .fragment.visible { opacity: 1; }
+  ul.points li.fragment { transform: translateX(-10px); }
+  ul.points li.fragment.visible { transform: translateX(0); }
+  ul.points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0; color: var(--java-orange); font-size: 28px;
+  }
+  ul.points li b { color: var(--ink-900); }
+  ul.points.compact { font-size: 26px; }
+  ul.points.compact li { margin-bottom: 14px; }
+
+  .sub { color: var(--ink-500); font-size: 24px; }
+
+  table.deck-table { width: 100%; border-collapse: collapse; font-size: 25px; }
+  table.deck-table th, table.deck-table td {
+    text-align: left; padding: 14px 18px; border-bottom: 1px solid #e5e7eb;
+  }
+  table.deck-table th { color: var(--java-red-dark); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; }
+  table.deck-table td.mono, table.deck-table th.mono { font-family: Consolas, "Courier New", monospace; }
+  table.deck-table tr:last-child td { border-bottom: none; }
+  table.deck-table td b { color: var(--ink-900); }
+
+  .code-block {
+    background: #f8fafc; border: 1px solid #d7dee7; border-radius: 10px;
+    padding: 26px 30px; font-family: Consolas, "Courier New", monospace;
+    font-size: 25px; line-height: 1.55; color: var(--code-plain); white-space: pre;
+    box-shadow: 0 4px 14px rgba(17,24,39,.06);
+  }
+  .code-block .kw { color: var(--code-kw); }
+  .code-block .str { color: var(--code-str); }
+  .code-block .com { color: var(--code-com); font-style: italic; }
+  .code-block.small { font-size: 21px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .two-col.center { align-items: center; }
+  .col-title { font-size: 22px; font-weight: 700; color: var(--java-red-dark); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .03em; }
+
+  .diagram-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  .diagram-wrap img { max-width: 100%; max-height: 100%; }
+
+  .badge {
+    display: inline-block; padding: 6px 16px; border-radius: 999px;
+    font-size: 20px; font-weight: 700; letter-spacing: .02em;
+  }
+  .badge-blue { background: var(--blue-100); color: var(--blue-900); }
+  .badge-amber { background: var(--java-orange); color: #4d2c02; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+
+  .callout {
+    margin-top: 20px; padding: 18px 24px; border-left: 6px solid var(--java-red);
+    background: #fdf0ef; border-radius: 6px; font-size: 23px; color: #6b1512;
+  }
+  .callout.amber { border-left-color: var(--java-orange); background: #fff6e9; color: #7a4708; }
+
+  .kpi-row { display: flex; gap: 24px; margin-top: 10px; }
+  .kpi {
+    flex: 1; background: var(--paper-alt); border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .kpi .kpi-num { font-size: 40px; font-weight: 700; color: var(--java-red); }
+  .kpi .kpi-label { font-size: 20px; color: var(--ink-500); margin-top: 4px; }
+
+  .footer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 18px; color: var(--ink-500); margin-top: 18px;
+  }
+
+  ol.points {
+    list-style: none; margin: 0; padding: 0; font-size: 26px; color: var(--ink-700);
+    counter-reset: exercicio;
+  }
+  ol.points li {
+    position: relative; padding-left: 54px; margin-bottom: 18px; line-height: 1.35;
+    counter-increment: exercicio;
+  }
+  ol.points li::before {
+    content: counter(exercicio);
+    position: absolute; left: 0; top: 1px; width: 34px; height: 34px;
+    border-radius: 999px; background: var(--java-orange); color: #4d2c02;
+    font-size: 19px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.points li b { color: var(--ink-900); }
+  ol.points.compact { font-size: 23px; }
+  ol.points.compact li { margin-bottom: 12px; }
+
+  /* Slides mais densos: reduz tipografia e respiro para o conteúdo caber nos 720px */
+  .slide.compact h2 { font-size: 34px; margin-bottom: 16px; }
+  .slide.compact .eyebrow { margin-bottom: 6px; }
+  .slide.compact table.deck-table { font-size: 22px; }
+  .slide.compact table.deck-table th,
+  .slide.compact table.deck-table td { padding: 9px 18px; }
+  .slide.compact table.deck-table th { font-size: 20px; }
+  .slide.compact .code-block { font-size: 21px; padding: 20px 26px; line-height: 1.45; }
+  .slide.compact .code-block.small { font-size: 19px; }
+  .slide.compact .callout { font-size: 21px; margin-top: 14px; padding: 14px 20px; }
+
+  .slide.compact-2 h2 { font-size: 32px; margin-bottom: 12px; }
+  .slide.compact-2 .code-block { font-size: 18px; padding: 16px 22px; line-height: 1.4; }
+  .slide.compact-2 .code-block.small { font-size: 17px; }
+  .slide.compact-2 .callout { font-size: 20px; margin-top: 12px; padding: 12px 18px; }
+
+  .slide--divider {
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    justify-content: center; align-items: flex-start; padding: 0 90px;
+    overflow: hidden;
+  }
+  .slide--divider .div-num {
+    font-size: 26px; color: var(--java-orange); font-weight: 700; letter-spacing: .06em;
+  }
+  .slide--divider h1 { color: #ffffff; font-size: 58px; max-width: 700px; }
+  .slide--divider .div-num { max-width: 700px; }
+  .slide--divider .div-list { margin-top: 34px; font-size: 26px; color: #ffe0b8; }
+  .slide--divider .div-list div { margin-bottom: 10px; }
+
+  .slide--title {
+    justify-content: center; align-items: flex-start;
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    overflow: hidden;
+  }
+  .slide--title .kicker { color: var(--java-orange); font-size: 26px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .slide--title h1 { color: #ffffff; font-size: 60px; margin-top: 14px; max-width: 700px; }
+  .slide--title .subtitle { color: #ffeeda; font-size: 27px; margin-top: 10px; max-width: 680px; }
+  .slide--title .kicker { max-width: 700px; }
+  .slide--title .title-foot { margin-top: 48px; color: var(--java-orange-soft); font-size: 22px; }
+
+  .slide--end {
+    justify-content: center; align-items: center; text-align: center;
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    overflow: hidden;
+  }
+  .slide--end h1 { color: #fff; }
+  .slide--end .subtitle { color: #ffe0b8; font-size: 30px; }
+
+  /* Duke — mascote do Java */
+  .duke {
+    position: absolute; right: 70px; bottom: 0; height: 78%;
+    pointer-events: none; z-index: 1;
+    filter: drop-shadow(0 10px 26px rgba(0,0,0,.35));
+  }
+  .slide--end .duke { right: 60px; bottom: 0; height: 62%; opacity: .95; }
+  .slide--divider .duke { right: 60px; height: 66%; opacity: .28; }
+  .slide--title > *:not(.duke),
+  .slide--divider > *:not(.duke),
+  .slide--end > *:not(.duke) { position: relative; z-index: 2; }
+
+  .chip-row { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
+  .chip {
+    background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 12px;
+    padding: 16px 22px; font-size: 24px; color: var(--ink-700); font-weight: 700;
+  }
+  .chip.on { border-color: var(--java-red); color: var(--java-red-dark); background: #fdf0ef; }
+  .chip[data-correct] { cursor: pointer; transition: transform .15s ease, background .2s ease, border-color .2s ease; }
+  .chip[data-correct]:hover { transform: translateY(-2px); border-color: var(--java-orange); }
+  .chip-correct { background: #dcfce7 !important; border-color: #16a34a !important; color: #166534 !important; }
+  .chip-correct::after { content: " ✓"; }
+  .chip-wrong { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
+  .chip-wrong::after { content: " ✗"; }
+
+  .arrow-chain { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 34px; font-weight: 700; color: var(--ink-900); flex-wrap: wrap; }
+  .arrow-chain .node {
+    background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 14px; padding: 18px 30px;
+  }
+  .arrow-chain .arrow { color: var(--java-red); font-size: 40px; }
+
+  /* HUD */
+  .hud {
+    position: fixed; right: 22px; bottom: 16px; color: #b89a90;
+    font-family: Arial, sans-serif; font-size: 14px; z-index: 20; user-select: none;
+  }
+  .hud .sect { color: var(--java-orange); margin-right: 10px; }
+  .progress {
+    position: fixed; left: 0; bottom: 0; height: 4px; width: 100%;
+    background: rgba(255,255,255,.08); z-index: 20;
+  }
+  .progress-fill {
+    height: 100%; width: 0%; transition: width .25s ease;
+    background: linear-gradient(90deg, var(--java-red) 0%, var(--java-orange) 100%);
+  }
+
+  .hint {
+    position: fixed; left: 22px; bottom: 16px; color: #8a6f66; font-size: 13px; z-index: 20; user-select: none;
+  }
+
+  .overview {
+    position: fixed; inset: 0; z-index: 30; background: rgba(28,15,14,.97);
+    display: none; padding: 50px; overflow-y: auto;
+  }
+  .overview.active { display: block; }
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; max-width: 1500px; margin: 0 auto;
+  }
+  .overview-card {
+    background: #2e1a17; border: 2px solid #4a2a25; border-radius: 8px; padding: 14px;
+    color: #e3d3cd; cursor: pointer; font-size: 13px; min-height: 90px;
+  }
+  .overview-card:hover { border-color: var(--java-orange); }
+  .overview-card .oc-num { color: #a07c70; font-size: 12px; margin-bottom: 6px; }
+  .overview-card .oc-title { font-weight: 700; color: #fff6f0; font-size: 14px; line-height: 1.3; }
+  .overview-title {
+    color: #fff6f0; text-align: center; font-size: 22px; margin-bottom: 30px; font-family: Arial, sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+  <div class="stage" id="stage">
+
+    <section class="slide slide--title" data-section="Abertura">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="kicker">Curso de Java — rumo à OCP Java SE 25</div>
+      <h1>Estrutura sequencial</h1>
+      <div class="subtitle">Variáveis, tipos, expressões, entrada, processamento e saída: tudo o que um programa faz de cima para baixo, sem desvios.</div>
+      <div class="title-foot">Seção 3 · Aulas 21 a 32</div>
+    </section>
+
+    <section class="slide" data-section="Abertura">
+      <div class="eyebrow">Roteiro da aula</div>
+      <h2>Seis blocos de conteúdo</h2>
+      <div class="slide-body top">
+        <table class="deck-table">
+          <tr><th style="width:110px">Bloco</th><th>Conteúdo</th></tr>
+          <tr><td><b>1</b></td><td>Variáveis e tipos básicos</td></tr>
+          <tr><td><b>2</b></td><td>Expressões aritméticas</td></tr>
+          <tr><td><b>3</b></td><td>As três operações básicas</td></tr>
+          <tr><td><b>4</b></td><td>Saída de dados</td></tr>
+          <tr><td><b>5</b></td><td>Processamento de dados e casting</td></tr>
+          <tr><td><b>6</b></td><td>Entrada de dados e funções matemáticas</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 1">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 1 DE 6</div>
+      <h1>Variáveis e tipos básicos</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Variáveis">
+      <div class="eyebrow">Java é estaticamente tipada</div>
+      <h2>Toda variável tem um tipo, e ele não muda</h2>
+      <div class="code-block">
+<span class="kw">int</span> idade;              <span class="com">// declaração</span>
+idade = 25;             <span class="com">// atribuição</span>
+
+<span class="kw">int</span> quantidade = 10;    <span class="com">// declaração com inicialização</span>
+      </div>
+      <div class="callout">Uma variável é um espaço <b>nomeado</b> na memória, capaz de guardar um valor de um <b>tipo</b> determinado.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Tipos">
+      <div class="eyebrow">Dois grandes grupos</div>
+      <h2>Tipos de dados em Java</h2>
+      <div class="diagram-wrap"><img src="./tipos-de-dados.svg" alt="Tipos de dados em Java"></div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Primitivos">
+      <div class="eyebrow">São exatamente oito</div>
+      <h2>Os tipos primitivos</h2>
+      <div class="slide-body top">
+        <table class="deck-table" style="font-size:22px">
+          <tr><th class="mono">Tipo</th><th>Tamanho</th><th>Faixa</th><th class="mono">Padrão</th></tr>
+          <tr><td class="mono"><b>byte</b></td><td>8 bits</td><td>-128 a 127</td><td class="mono">0</td></tr>
+          <tr><td class="mono"><b>short</b></td><td>16 bits</td><td>-32.768 a 32.767</td><td class="mono">0</td></tr>
+          <tr><td class="mono"><b>int</b></td><td>32 bits</td><td>cerca de -2,1 bi a 2,1 bi</td><td class="mono">0</td></tr>
+          <tr><td class="mono"><b>long</b></td><td>64 bits</td><td>cerca de -9,2 a 9,2 quintilhões</td><td class="mono">0L</td></tr>
+          <tr><td class="mono"><b>float</b></td><td>32 bits</td><td>cerca de 7 dígitos de precisão</td><td class="mono">0.0f</td></tr>
+          <tr><td class="mono"><b>double</b></td><td>64 bits</td><td>cerca de 15 dígitos de precisão</td><td class="mono">0.0d</td></tr>
+          <tr><td class="mono"><b>boolean</b></td><td>—</td><td>true ou false</td><td class="mono">false</td></tr>
+          <tr><td class="mono"><b>char</b></td><td>16 bits</td><td>um caractere Unicode</td><td class="mono">código 0</td></tr>
+        </table>
+        <div class="callout amber" style="margin-top:14px">No dia a dia, quatro resolvem quase tudo: <b>int</b>, <b>double</b>, <b>char</b> e <b>boolean</b> — mais a classe <b>String</b>, que não é primitiva.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Inicialização">
+      <div class="eyebrow">O valor padrão engana</div>
+      <h2>Variável local não tem valor padrão</h2>
+      <div class="code-block small">
+<span class="kw">public class</span> Exemplo {
+    <span class="kw">static int</span> contador;              <span class="com">// atributo: vale 0 automaticamente</span>
+
+    <span class="kw">public static void</span> main(String[] args) {
+        <span class="kw">int</span> total;
+        System.out.println(contador);   <span class="com">// 0</span>
+        System.out.println(total);      <span class="com">// ERRO DE COMPILAÇÃO</span>
+    }
+}
+      </div>
+      <div class="callout">Os valores padrão da tabela valem só para <b>atributos</b>. Usar uma variável local sem inicializar é erro de compilação — <span class="mono" style="font-family:Consolas,monospace">variable total might not have been initialized</span>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Literais">
+      <div class="eyebrow">O valor escrito no código</div>
+      <h2>Literais e sufixos</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Funciona</div>
+          <div class="code-block small">
+<span class="kw">long</span> pop = 8_100_000_000L;
+<span class="kw">float</span> altura = 1.75f;
+<span class="kw">double</span> preco = 49.90;
+
+<span class="kw">int</span> hex = 0x2A;
+<span class="kw">int</span> bin = 0b101010;
+<span class="kw">int</span> legivel = 1_000_000;
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Não compila</div>
+          <div class="code-block small">
+<span class="kw">long</span> pop = 8100000000;
+<span class="com">// integer number too large</span>
+
+<span class="kw">float</span> altura = 1.75;
+<span class="com">// possible lossy conversion</span>
+<span class="com">// from double to float</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout amber">Todo literal inteiro é <b>int</b> por padrão; todo literal com ponto é <b>double</b>. Quando isso não serve, o sufixo é obrigatório.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · char e String">
+      <div class="eyebrow">A aspa denuncia qual é qual</div>
+      <h2><span class="mono" style="font-family:Consolas,monospace">char</span> e <span class="mono" style="font-family:Consolas,monospace">String</span></h2>
+      <div class="code-block">
+<span class="kw">char</span> letra = <span class="str">'A'</span>;           <span class="com">// aspas simples, UM caractere</span>
+String nome = <span class="str">"Alexandre"</span>;  <span class="com">// aspas duplas, zero ou mais</span>
+
+<span class="kw">char</span> c = <span class="str">'A'</span>;
+System.out.println(c);        <span class="com">// A</span>
+System.out.println((<span class="kw">int</span>) c);  <span class="com">// 65</span>
+System.out.println(c + 1);    <span class="com">// 66 — virou int na operação</span>
+      </div>
+      <div class="callout">Um <span class="mono" style="font-family:Consolas,monospace">char</span> é numérico por dentro: ele guarda o <b>código Unicode</b> do caractere.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Nomes">
+      <div class="eyebrow">Duas listas diferentes</div>
+      <h2>O que o compilador exige e o que a comunidade espera</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">O compilador exige</div>
+          <ul class="points compact" style="font-size:23px">
+            <li>Letras, dígitos, <span class="mono" style="font-family:Consolas,monospace">_</span> e <span class="mono" style="font-family:Consolas,monospace">$</span> — nunca começando com dígito</li>
+            <li>Nada de palavras reservadas</li>
+            <li>Maiúsculas e minúsculas são diferentes</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-title">A comunidade espera</div>
+          <ul class="points compact" style="font-size:23px">
+            <li>Variáveis e métodos em <b>camelCase</b></li>
+            <li>Classes em <b>PascalCase</b></li>
+            <li>Constantes em <b>MAIUSCULAS_COM_UNDERLINE</b></li>
+            <li>Sem acentos, cedilha ou espaços</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">A prova de certificação cobra a primeira lista: o que <b>compila</b>, não o que é elegante.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Memória">
+      <div class="eyebrow">Onde o valor realmente fica</div>
+      <h2>Variáveis na memória: stack e heap</h2>
+      <div class="diagram-wrap"><img src="./memoria-variaveis.svg" alt="Variáveis na memória: stack e heap"></div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Memória">
+      <div class="eyebrow">A consequência prática</div>
+      <h2>Só quem guarda endereço pode não guardar nada</h2>
+      <div class="code-block">
+<span class="kw">int</span> numero = 10;       <span class="com">// a caixa "numero" contém 10</span>
+String texto = <span class="str">"Oi"</span>;   <span class="com">// contém o ENDEREÇO de um objeto</span>
+String vazio = <span class="kw">null</span>;   <span class="com">// não aponta para nada</span>
+
+<span class="kw">int</span> erro = <span class="kw">null</span>;      <span class="com">// ERRO: int não aceita null</span>
+      </div>
+      <div class="callout amber">Um tipo primitivo guarda o próprio valor e por isso <b>nunca</b> pode ser <span class="mono" style="font-family:Consolas,monospace">null</span>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · var e final">
+      <div class="eyebrow">Duas palavras que aparecem em código alheio</div>
+      <h2><span class="mono" style="font-family:Consolas,monospace">var</span> e <span class="mono" style="font-family:Consolas,monospace">final</span></h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">var — inferência (Java 10)</div>
+          <div class="code-block small">
+<span class="kw">var</span> idade = 25;      <span class="com">// int</span>
+<span class="kw">var</span> nome = <span class="str">"Maria"</span>;  <span class="com">// String</span>
+
+<span class="kw">var</span> x;               <span class="com">// erro</span>
+<span class="kw">var</span> y = <span class="kw">null</span>;        <span class="com">// erro</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">final — atribui uma vez só</div>
+          <div class="code-block small">
+<span class="kw">final double</span> PI = 3.14159;
+<span class="kw">final int</span> MAXIMO = 3;
+
+PI = 3.15;           <span class="com">// erro</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout"><span class="mono" style="font-family:Consolas,monospace">var</span> <b>não</b> torna Java dinamicamente tipada: o tipo é fixado na compilação. O curso segue com declarações explícitas.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Qual destas declarações <b>não</b> compila?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Compila: o sufixo L marca o literal como long, e o _ é apenas visual.">long n = 8_100_000_000L;</div>
+          <div class="chip" data-correct="true" data-explain="Não compila: 1.75 é um literal double, e double não cabe em float sem o sufixo f — possible lossy conversion.">float f = 1.75;</div>
+          <div class="chip" data-correct="false" data-explain="Compila: o sufixo d é opcional, porque double já é o tipo padrão de um literal com ponto.">double d = 49.90;</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Não compila: <span class="mono" style="font-family:Consolas,monospace">1.75</span> é um literal <b>double</b>, e ele não cabe em <b>float</b> sem o sufixo <span class="mono" style="font-family:Consolas,monospace">f</span>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 1</div>
+      <h2>Pratique na IDE: variáveis e tipos</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Crie a classe <span class="mono" style="font-family:Consolas,monospace">Tipos</span> e declare uma variável de cada um dos <b>oito</b> primitivos, com um valor válido. Imprima todas com <span class="mono" style="font-family:Consolas,monospace">println</span>.</li>
+          <li>Escreva <span class="mono" style="font-family:Consolas,monospace">long populacao = 8100000000;</span> e <span class="mono" style="font-family:Consolas,monospace">float altura = 1.75;</span> Leia as duas mensagens de erro e conserte com os sufixos.</li>
+          <li>Declare <span class="mono" style="font-family:Consolas,monospace">int total;</span> dentro do <span class="mono" style="font-family:Consolas,monospace">main</span> e tente imprimir. Depois mova a mesma declaração para fora, como <span class="mono" style="font-family:Consolas,monospace">static</span>, e compare.</li>
+          <li>Com <span class="mono" style="font-family:Consolas,monospace">char letra = 'A';</span> imprima <span class="mono" style="font-family:Consolas,monospace">letra</span>, <span class="mono" style="font-family:Consolas,monospace">(int) letra</span> e <span class="mono" style="font-family:Consolas,monospace">letra + 1</span>. Explique por que só o primeiro mostra a letra.</li>
+          <li>Troque suas declarações por <span class="mono" style="font-family:Consolas,monospace">var</span> e marque uma delas como <span class="mono" style="font-family:Consolas,monospace">final</span>. Tente reatribuí-la e leia o erro.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 2">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 2 DE 6</div>
+      <h1>Expressões aritméticas</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Operadores">
+      <div class="eyebrow">O que é uma expressão</div>
+      <h2>Todo cálculo tem um valor e um tipo</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th class="mono" style="width:130px">Operador</th><th>Nome</th><th class="mono">Exemplo</th><th class="mono">Resultado</th></tr>
+          <tr><td class="mono"><b>+</b></td><td>adição</td><td class="mono">7 + 3</td><td class="mono">10</td></tr>
+          <tr><td class="mono"><b>-</b></td><td>subtração</td><td class="mono">7 - 3</td><td class="mono">4</td></tr>
+          <tr><td class="mono"><b>*</b></td><td>multiplicação</td><td class="mono">7 * 3</td><td class="mono">21</td></tr>
+          <tr><td class="mono"><b>/</b></td><td>divisão</td><td class="mono">7 / 3</td><td class="mono">2</td></tr>
+          <tr><td class="mono"><b>%</b></td><td>resto da divisão</td><td class="mono">7 % 3</td><td class="mono">1</td></tr>
+        </table>
+        <div class="callout">Não existe operador de potenciação em Java. Para elevar um número, usa-se <span class="mono" style="font-family:Consolas,monospace">Math.pow</span>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Divisão">
+      <div class="eyebrow">O erro número um da seção</div>
+      <h2>A divisão tem dois comportamentos</h2>
+      <div class="code-block">
+System.out.println(<span class="str">10 / 3</span>);      <span class="com">// 3     — divisão inteira</span>
+System.out.println(<span class="str">10.0 / 3</span>);    <span class="com">// 3.3333333333333335</span>
+System.out.println(<span class="str">10 / 3.0</span>);    <span class="com">// 3.3333333333333335</span>
+      </div>
+      <div class="callout">Se os <b>dois</b> operandos são inteiros, a divisão é inteira e a parte fracionária é <b>descartada</b>, não arredondada. Basta um deles ser decimal para o resultado ser decimal.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Divisão">
+      <div class="eyebrow">Converter na hora errada</div>
+      <h2>Tarde demais não recupera nada</h2>
+      <div class="code-block">
+<span class="kw">int</span> a = 10, b = 3;
+
+System.out.println(a / b);            <span class="com">// 3</span>
+System.out.println(a / (<span class="kw">double</span>) b);   <span class="com">// 3.3333333333333335</span>
+System.out.println((<span class="kw">double</span>) (a / b)); <span class="com">// 3.0   ← a divisão já foi inteira</span>
+      </div>
+      <div class="callout amber">Converter o <b>resultado</b> não traz de volta o que já se perdeu. É preciso converter <b>antes</b> de dividir.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Operador %">
+      <div class="eyebrow">Muito mais útil do que parece</div>
+      <h2>O operador de resto</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Como funciona</div>
+          <div class="code-block small">
+17 % 5   <span class="com">// 2  — 17 = 5*3 + 2</span>
+20 % 5   <span class="com">// 0  — divisão exata</span>
+7 % 2    <span class="com">// 1  — número ímpar</span>
+8 % 2    <span class="com">// 0  — número par</span>
+7.5 % 2  <span class="com">// 1.5 — vale para double</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Um uso clássico</div>
+          <div class="code-block small">
+<span class="kw">int</span> total = 3725;
+
+<span class="kw">int</span> horas    = total / 3600;
+<span class="kw">int</span> minutos  = (total % 3600) / 60;
+<span class="kw">int</span> segundos = total % 60;
+
+<span class="com">// 1 h 2 min 5 s</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Divisão por zero">
+      <div class="eyebrow">O tipo muda o desfecho</div>
+      <h2>Divisão por zero</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th class="mono">Expressão</th><th>O que acontece</th></tr>
+          <tr><td class="mono">10 / 0</td><td><span class="badge badge-red">ArithmeticException</span> &nbsp; / by zero</td></tr>
+          <tr><td class="mono">10 % 0</td><td><span class="badge badge-red">ArithmeticException</span> &nbsp; / by zero</td></tr>
+          <tr><td class="mono">10.0 / 0</td><td class="mono">Infinity</td></tr>
+          <tr><td class="mono">-10.0 / 0</td><td class="mono">-Infinity</td></tr>
+          <tr><td class="mono">0.0 / 0</td><td class="mono">NaN &nbsp;<span style="font-family:Arial">(Not a Number)</span></td></tr>
+        </table>
+        <div class="callout">Divisão <b>inteira</b> por zero derruba o programa. Divisão <b>de ponto flutuante</b> por zero não lança exceção nenhuma.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Precedência">
+      <div class="eyebrow">A ordem da matemática</div>
+      <h2>Precedência de operadores</h2>
+      <div class="code-block">
+7 + 3 * 2      <span class="com">// 13 — a multiplicação vem primeiro</span>
+(7 + 3) * 2    <span class="com">// 20 — o parêntese muda a ordem</span>
+10 - 4 - 3     <span class="com">// 3  — avalia (10-4) e depois -3</span>
+20 / 5 * 2     <span class="com">// 8  — e não 20/(5*2)</span>
+      </div>
+      <div class="callout amber"><b>*</b>, <b>/</b> e <b>%</b> têm a mesma precedência entre si e são avaliados da esquerda para a direita. O mesmo vale para <b>+</b> e <b>-</b>. Na dúvida, use parênteses.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Fórmulas">
+      <div class="eyebrow">Do papel para o código</div>
+      <h2>A fórmula tem duas dimensões; o código tem uma linha</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Fórmula</th><th class="mono">Em Java</th></tr>
+          <tr><td>soma de <b>a</b> e <b>b</b>, dividida por 2</td><td class="mono">(a + b) / 2.0</td></tr>
+          <tr><td>base vezes altura, dividido por 2</td><td class="mono">base * altura / 2.0</td></tr>
+          <tr><td>1 dividido por (1 mais <b>x</b>)</td><td class="mono">1.0 / (1 + x)</td></tr>
+        </table>
+        <div class="callout">O erro mais comum é esquecer o parêntese do numerador: <span class="mono" style="font-family:Consolas,monospace">a + b / 2</span> calcula <b>a</b> mais a metade de <b>b</b> — e não a média entre os dois.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Quanto vale <span class="mono" style="font-family:Consolas,monospace">10 / 4</span> em Java?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Esse seria o resultado se algum dos operandos fosse decimal — mas os dois são int.">2.5</div>
+          <div class="chip" data-correct="true" data-explain="Dois operandos int produzem divisão inteira: a parte fracionária é descartada, não arredondada.">2</div>
+          <div class="chip" data-correct="false" data-explain="Java descarta a parte fracionária na divisão inteira; ele nunca arredonda para cima sozinho.">3</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Dois operandos <span class="mono" style="font-family:Consolas,monospace">int</span> produzem divisão inteira: a parte fracionária é descartada, não arredondada.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Ache o erro</h2>
+      <div class="code-block small">
+<span class="com">// média entre duas notas</span>
+<span class="kw">int</span> nota1 = 7, nota2 = 8;
+<span class="kw">double</span> media = nota1 + nota2 / 2;
+      </div>
+      <div class="fragment" style="margin-top:22px">
+        <span class="badge badge-amber">RESPOSTA</span>
+        <div class="callout" style="margin-top:14px">Faltou o parêntese: <span class="mono" style="font-family:Consolas,monospace">nota2 / 2</span> é calculado primeiro, e o resultado é <b>11.0</b>, não <b>7.5</b>. O correto é <span class="mono" style="font-family:Consolas,monospace">(nota1 + nota2) / 2.0</span> — com o <b>2.0</b>, senão a divisão ainda seria inteira.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 2</div>
+      <h2>Pratique na IDE: expressões aritméticas</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">10 / 3</span>, <span class="mono" style="font-family:Consolas,monospace">10.0 / 3</span>, <span class="mono" style="font-family:Consolas,monospace">10 / 3.0</span> e <span class="mono" style="font-family:Consolas,monospace">(double) (10 / 3)</span>. Explique por que o último dá 3.0.</li>
+          <li>Converta 3725 segundos em horas, minutos e segundos usando só <span class="mono" style="font-family:Consolas,monospace">/</span> e <span class="mono" style="font-family:Consolas,monospace">%</span>. A saída deve ser <span class="mono" style="font-family:Consolas,monospace">1h 2min 5s</span>.</li>
+          <li>Calcule a média de duas notas. Escreva primeiro <span class="mono" style="font-family:Consolas,monospace">n1 + n2 / 2</span>, veja o resultado errado e conserte com parênteses.</li>
+          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">1 + 2 + " reais"</span> e <span class="mono" style="font-family:Consolas,monospace">"reais " + 1 + 2</span>. Anote por que os dois resultados são diferentes.</li>
+          <li>Execute <span class="mono" style="font-family:Consolas,monospace">10 / 0</span> e depois <span class="mono" style="font-family:Consolas,monospace">10.0 / 0</span>. Anote qual quebra o programa e qual imprime <span class="mono" style="font-family:Consolas,monospace">Infinity</span>.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 3">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 3 DE 6</div>
+      <h1>As três operações básicas</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Entrada, processamento, saída">
+      <div class="eyebrow">Todo sistema se reduz a isto</div>
+      <h2>Entrada, processamento e saída</h2>
+      <div class="diagram-wrap"><img src="./operacoes-basicas.svg" alt="As três operações básicas de programação"></div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Estruturas">
+      <div class="eyebrow">Onde estamos no curso</div>
+      <h2>Três estruturas, três seções</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Estrutura</th><th>O que faz</th><th>Onde</th></tr>
+          <tr><td><b>Sequencial</b></td><td>executa tudo em ordem, uma vez</td><td><span class="badge badge-amber">Seção 3</span></td></tr>
+          <tr><td>Condicional</td><td>escolhe entre caminhos alternativos</td><td>Seção 4</td></tr>
+          <tr><td>Repetitiva</td><td>repete um trecho enquanto valer uma condição</td><td>Seção 5</td></tr>
+        </table>
+        <div class="callout">Estrutura sequencial: uma instrução após a outra, de cima para baixo, <b>sem desvios e sem repetições</b>.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Programa completo">
+      <div class="eyebrow">O esqueleto de quase todo exercício da seção</div>
+      <h2>Ler, calcular, mostrar</h2>
+      <div class="code-block small">
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+
+<span class="com">// 1. ENTRADA</span>
+System.out.print(<span class="str">"Primeira nota: "</span>);
+<span class="kw">double</span> nota1 = sc.nextDouble();
+System.out.print(<span class="str">"Segunda nota: "</span>);
+<span class="kw">double</span> nota2 = sc.nextDouble();
+
+<span class="com">// 2. PROCESSAMENTO</span>
+<span class="kw">double</span> media = (nota1 + nota2) / 2.0;
+
+<span class="com">// 3. SAÍDA</span>
+System.out.printf(<span class="str">"Media: %.2f%n"</span>, media);
+
+sc.close();
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Teste de mesa">
+      <div class="eyebrow">A forma mais barata de achar um erro</div>
+      <h2>Teste de mesa</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> a = 10;
+<span class="kw">int</span> b = 3;
+<span class="kw">int</span> c = a / b;
+a = c + b;
+          </div>
+        </div>
+        <div>
+          <table class="deck-table" style="font-size:22px">
+            <tr><th>Linha</th><th class="mono">a</th><th class="mono">b</th><th class="mono">c</th></tr>
+            <tr><td class="mono">int a = 10;</td><td class="mono">10</td><td>—</td><td>—</td></tr>
+            <tr><td class="mono">int b = 3;</td><td class="mono">10</td><td class="mono">3</td><td>—</td></tr>
+            <tr><td class="mono">int c = a / b;</td><td class="mono">10</td><td class="mono">3</td><td class="mono">3</td></tr>
+            <tr><td class="mono">a = c + b;</td><td class="mono">6</td><td class="mono">3</td><td class="mono">3</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="callout"><span class="mono" style="font-family:Consolas,monospace">c</span> vale <b>3</b>, e não 3.33: a divisão entre dois <span class="mono" style="font-family:Consolas,monospace">int</span> é inteira.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Faça o teste de mesa: quanto vale <span class="mono" style="font-family:Consolas,monospace">x</span> no fim?</h2>
+      <div class="slide-body">
+        <div class="code-block small">
+<span class="kw">int</span> x = 7;
+<span class="kw">int</span> y = 2;
+<span class="kw">int</span> z = x / y;
+x = z * y;
+        </div>
+        <div class="chip-row" style="margin-top:24px">
+          <div class="chip" data-correct="false" data-explain="7 é o valor inicial, mas a última linha reatribui x. O teste de mesa serve justamente para não perder essa mudança de vista.">7</div>
+          <div class="chip" data-correct="true" data-explain="z = 7 / 2 dá 3, porque os dois são int e a divisão é inteira. Depois x = 3 * 2 = 6. O resto se perdeu na divisão e não volta.">6</div>
+          <div class="chip" data-correct="false" data-explain="8 sairia se 7 / 2 valesse 4 — mas a divisão inteira descarta a parte fracionária, não arredonda.">8</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:24px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">z = 7 / 2 dá 3, porque os dois são int e a divisão é inteira. Depois x = 3 * 2 = 6. O resto se perdeu na divisão e não volta.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Ache o erro</h2>
+      <div class="code-block small">
+<span class="com">// Média de duas notas</span>
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+
+<span class="kw">double</span> media = (n1 + n2) / 2.0;
+<span class="kw">double</span> n1 = sc.nextDouble();
+<span class="kw">double</span> n2 = sc.nextDouble();
+
+System.out.println(media);
+      </div>
+      <div class="fragment" style="margin-top:22px">
+        <span class="badge badge-amber">RESPOSTA</span>
+        <div class="callout" style="margin-top:14px">O <b>processamento</b> veio antes da <b>entrada</b>. O programa roda de cima para baixo: <span class="mono" style="font-family:Consolas,monospace">n1</span> e <span class="mono" style="font-family:Consolas,monospace">n2</span> precisam existir e já ter valor antes de entrar na conta. A ordem é sempre <b>entrada → processamento → saída</b>.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 3</div>
+      <h2>Pratique na IDE: entrada, processamento e saída</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Escreva um programa que lê o raio e mostra a área do círculo, separando as partes com os comentários <span class="mono" style="font-family:Consolas,monospace">// entrada</span>, <span class="mono" style="font-family:Consolas,monospace">// processamento</span> e <span class="mono" style="font-family:Consolas,monospace">// saída</span>.</li>
+          <li>Antes de executar, faça o teste de mesa no papel com raio 2. Depois rode e compare com o que você previu.</li>
+          <li>Mova a linha do cálculo para <b>antes</b> da leitura. Leia o erro de compilação e explique por que ele acontece.</li>
+          <li>Acrescente uma segunda saída mostrando também o perímetro — sem criar uma nova entrada.</li>
+          <li>Comente a linha da saída e execute de novo. O programa ainda calcula? Explique como ele pode processar sem mostrar nada.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 4">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 4 DE 6</div>
+      <h1>Saída de dados</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · print e println">
+      <div class="eyebrow">Três formas de escrever no console</div>
+      <h2><span class="mono" style="font-family:Consolas,monospace">print</span>, <span class="mono" style="font-family:Consolas,monospace">println</span> e <span class="mono" style="font-family:Consolas,monospace">printf</span></h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><td class="mono"><b>System.out.print(x)</b></td><td>escreve e <b>não</b> quebra a linha</td></tr>
+          <tr><td class="mono"><b>System.out.println(x)</b></td><td>escreve e quebra a linha</td></tr>
+          <tr><td class="mono"><b>System.out.println()</b></td><td>escreve apenas uma quebra de linha</td></tr>
+          <tr><td class="mono"><b>System.out.printf(f, ...)</b></td><td>escreve com formatação, <b>sem</b> quebrar a linha</td></tr>
+        </table>
+        <div class="callout">Existe também <span class="mono" style="font-family:Consolas,monospace">System.err</span>, a saída de erro — aquela que a IDE mostra em vermelho.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Concatenação">
+      <div class="eyebrow">O + que não soma</div>
+      <h2>Assim que entra uma String, tudo vira texto</h2>
+      <div class="code-block">
+System.out.println(<span class="str">"Total: "</span> + 2 + 3);     <span class="com">// Total: 23</span>
+System.out.println(<span class="str">"Total: "</span> + (2 + 3));   <span class="com">// Total: 5</span>
+System.out.println(2 + 3 + <span class="str">" itens"</span>);      <span class="com">// 5 itens</span>
+      </div>
+      <div class="callout amber">A avaliação é da <b>esquerda para a direita</b>. No primeiro caso, o <span class="mono" style="font-family:Consolas,monospace">2</span> já encontra uma String pela frente e é concatenado; no terceiro, a soma acontece antes de o texto aparecer.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Escapes">
+      <div class="eyebrow">Caracteres que a barra invertida libera</div>
+      <h2>Sequências de escape</h2>
+      <div class="two-col">
+        <div>
+          <table class="deck-table" style="font-size:23px">
+            <tr><th class="mono">Escape</th><th>Significado</th></tr>
+            <tr><td class="mono"><b>\n</b></td><td>quebra de linha</td></tr>
+            <tr><td class="mono"><b>\t</b></td><td>tabulação</td></tr>
+            <tr><td class="mono"><b>\"</b></td><td>aspas duplas</td></tr>
+            <tr><td class="mono"><b>\\</b></td><td>barra invertida</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="code-block small">
+<span class="str">"Linha 1\nLinha 2"</span>
+
+<span class="str">"Nome:\tMaria"</span>
+
+<span class="str">"Ele disse \"ola\""</span>
+
+<span class="str">"C:\\Users\\Maria"</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · printf">
+      <div class="eyebrow">Controlando como o número aparece</div>
+      <h2>Especificadores de formato</h2>
+      <div class="slide-body top">
+        <div class="sub" style="margin-bottom:14px">O primeiro argumento do <span class="mono" style="font-family:Consolas,monospace">printf</span> é o texto de formato; os demais preenchem os marcadores, na ordem.</div>
+        <table class="deck-table" style="font-size:23px">
+          <tr><th class="mono" style="width:130px">Marcador</th><th>Serve para</th><th class="mono">Com o argumento</th><th class="mono">Sai</th></tr>
+          <tr><td class="mono"><b>%d</b></td><td>inteiros</td><td class="mono">42</td><td class="mono">42</td></tr>
+          <tr><td class="mono"><b>%.2f</b></td><td>ponto flutuante</td><td class="mono">3.14159</td><td class="mono">3,14</td></tr>
+          <tr><td class="mono"><b>%s</b></td><td>texto e qualquer objeto</td><td class="mono">"Ana"</td><td class="mono">Ana</td></tr>
+          <tr><td class="mono"><b>%c</b></td><td>um caractere</td><td class="mono">'A'</td><td class="mono">A</td></tr>
+          <tr><td class="mono"><b>%b</b></td><td>booleano</td><td class="mono">true</td><td class="mono">true</td></tr>
+          <tr><td class="mono"><b>%%</b></td><td>um sinal de porcentagem</td><td>—</td><td class="mono">%</td></tr>
+          <tr><td class="mono"><b>%n</b></td><td>quebra de linha do sistema</td><td>—</td><td>—</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · printf">
+      <div class="eyebrow">Os sete marcadores em um programa só</div>
+      <h2>Como isso fica em código</h2>
+      <div class="slide-body top">
+        <div class="two-col">
+          <div>
+            <div class="col-title">O código</div>
+            <div class="code-block small">
+String nome = <span class="str">"Ana"</span>;
+<span class="kw">char</span> inicial = <span class="str">'A'</span>;
+<span class="kw">int</span> idade = 30;
+<span class="kw">double</span> altura = 1.6789;
+<span class="kw">boolean</span> ativo = <span class="kw">true</span>;
+
+printf(<span class="str">"Nome: %s (%c)%n"</span>, nome, inicial);
+printf(<span class="str">"Idade: %d anos%n"</span>, idade);
+printf(<span class="str">"Altura: %.2f m%n"</span>, altura);
+printf(<span class="str">"Ativo: %b%n"</span>, ativo);
+printf(<span class="str">"Desconto de %d%%%n"</span>, 15);
+            </div>
+          </div>
+          <div>
+            <div class="col-title">O que aparece no console</div>
+            <div class="code-block small">
+Nome: Ana (A)
+Idade: 30 anos
+Altura: 1,68 m
+Ativo: true
+Desconto de 15%
+            </div>
+            <div class="sub" style="font-size:20px; margin-top:14px">Cada marcador consome um argumento, na ordem em que aparece. Uma linha pode ter vários — a primeira usa dois.</div>
+          </div>
+        </div>
+        <div class="callout amber">Repare em <b>%.2f</b> com <span class="mono" style="font-family:Consolas,monospace">1.6789</span>: sai <b>1,68</b>. O printf <b>arredonda</b> na hora de mostrar; o valor guardado na variável continua 1.6789.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · printf">
+      <div class="eyebrow">De onde vêm os espaços</div>
+      <h2>Anatomia de <span class="mono" style="font-family:Consolas,monospace">%-10.2f</span></h2>
+      <div class="slide-body top">
+        <div class="two-col">
+          <div>
+            <div class="col-title">Parte por parte</div>
+            <table class="deck-table" style="font-size:21px">
+              <tr><td class="mono" style="width:70px"><b>%</b></td><td>começa o marcador</td></tr>
+              <tr><td class="mono"><b>-</b></td><td>alinha à <b>esquerda</b>; sem ele, à direita</td></tr>
+              <tr><td class="mono"><b>10</b></td><td><b>largura mínima</b>: o campo ocupa 10 caracteres</td></tr>
+              <tr><td class="mono"><b>.2</b></td><td>duas casas decimais</td></tr>
+              <tr><td class="mono"><b>f</b></td><td>o tipo: ponto flutuante</td></tr>
+            </table>
+          </div>
+          <div>
+            <div class="col-title">O mesmo valor, quatro formatos</div>
+            <div class="code-block small">
+printf(<span class="str">"[%10.2f]%n"</span>, 3.14159);
+<span class="com">// [      3,14]</span>
+printf(<span class="str">"[%-10.2f]%n"</span>, 3.14159);
+<span class="com">// [3,14      ]</span>
+printf(<span class="str">"[%05d]%n"</span>, 42);
+<span class="com">// [00042]</span>
+printf(<span class="str">"[%,d]%n"</span>, 1000000);
+<span class="com">// [1.000.000]</span>
+            </div>
+          </div>
+        </div>
+        <div class="callout">Os colchetes não fazem parte do formato — estão ali só para revelar o preenchimento. <b>3,14</b> tem 4 caracteres; os outros <b>6</b> são espaços até fechar a largura 10. Não é tabulação: é o campo sendo completado.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · printf">
+      <div class="eyebrow">Largura, alinhamento e preenchimento</div>
+      <h2>Tabelas alinhadas no console</h2>
+      <div class="slide-body top">
+        <div class="two-col">
+          <div>
+            <div class="col-title">O código</div>
+            <div class="code-block small">
+printf(<span class="str">"%-15s %8s%n"</span>,
+       <span class="str">"Produto"</span>, <span class="str">"Preço"</span>);
+printf(<span class="str">"%-15s %8.2f%n"</span>,
+       <span class="str">"Teclado"</span>, 89.9);
+printf(<span class="str">"%-15s %8.2f%n"</span>,
+       <span class="str">"Monitor"</span>, 1250.0);
+            </div>
+          </div>
+          <div>
+            <div class="col-title">O que aparece no console</div>
+            <div class="code-block small">
+Produto            Preço
+Teclado            89,90
+Monitor          1250,00
+            </div>
+            <div class="sub" style="font-size:20px; margin-top:12px">O nome ocupa 15 à esquerda; o número, 8 à direita. É o alinhamento à direita que faz a vírgula cair sempre na mesma coluna.</div>
+          </div>
+        </div>
+        <div class="callout"><b>%n</b> usa a quebra de linha do sistema operacional; <b>\n</b> é sempre o caractere LF. Em <span class="mono" style="font-family:Consolas,monospace">printf</span>, prefira <b>%n</b>.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · Locale">
+      <div class="eyebrow">Vírgula ou ponto?</div>
+      <h2>O idioma do sistema decide — a menos que você decida antes</h2>
+      <div class="code-block">
+<span class="kw">import</span> java.util.Locale;
+
+<span class="kw">public class</span> Formatacao {
+    <span class="kw">public static void</span> main(String[] args) {
+        Locale.setDefault(Locale.US);
+        System.out.printf(<span class="str">"%.2f%n"</span>, 3.14159);   <span class="com">// 3.14</span>
+    }
+}
+      </div>
+      <div class="callout amber">Sem essa linha, uma máquina configurada em português imprime <b>3,14</b>. Chame <span class="mono" style="font-family:Consolas,monospace">Locale.setDefault</span> uma única vez, no começo do <span class="mono" style="font-family:Consolas,monospace">main</span> — e lembre que isso também afeta a <b>leitura</b>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Text blocks">
+      <div class="eyebrow">Java 15 em diante</div>
+      <h2>Texto em várias linhas</h2>
+      <div class="code-block small">
+String menu = <span class="str">"""
+        === MENU ===
+        1 - Cadastrar
+        2 - Consultar
+        3 - Sair
+        """</span>;
+System.out.print(menu);
+      </div>
+      <div class="callout">A indentação comum a todas as linhas é removida automaticamente, então o bloco fica alinhado com o código sem sujar a saída.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>O que imprime <span class="mono" style="font-family:Consolas,monospace">System.out.println(1 + 2 + "3" + 4 + 5);</span>?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="true" data-explain="1 + 2 ainda é soma e dá 3. A partir da String &quot;3&quot;, tudo à direita vira concatenação: 3, 3, 4, 5.">3345</div>
+          <div class="chip" data-correct="false" data-explain="Isso exigiria que a soma acontecesse depois da String — mas a avaliação é da esquerda para a direita.">15</div>
+          <div class="chip" data-correct="false" data-explain="Só seria isso se o 1 + 2 também fosse concatenado — mas até ali não havia nenhuma String na expressão.">12345</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px"><span class="mono" style="font-family:Consolas,monospace">1 + 2</span> ainda é soma e dá <b>3</b>. A partir da String, tudo à direita vira concatenação.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 4</div>
+      <h2>Pratique na IDE: saída de dados</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Escreva três linhas com <span class="mono" style="font-family:Consolas,monospace">print</span> e depois as mesmas com <span class="mono" style="font-family:Consolas,monospace">println</span>. Compare o console nos dois casos.</li>
+          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">"Total: " + 2 + 3</span> e <span class="mono" style="font-family:Consolas,monospace">"Total: " + (2 + 3)</span>. Explique a diferença.</li>
+          <li>Monte um único <span class="mono" style="font-family:Consolas,monospace">printf</span> usando <span class="mono" style="font-family:Consolas,monospace">%s</span>, <span class="mono" style="font-family:Consolas,monospace">%d</span>, <span class="mono" style="font-family:Consolas,monospace">%.2f</span> e <span class="mono" style="font-family:Consolas,monospace">%b</span>, passando quatro variáveis na ordem.</li>
+          <li>Monte uma tabela de três produtos com <span class="mono" style="font-family:Consolas,monospace">"%-15s %8.2f%n"</span>. Confira se as vírgulas caem todas na mesma coluna.</li>
+          <li>Acrescente <span class="mono" style="font-family:Consolas,monospace">Locale.setDefault(Locale.US)</span> na primeira linha do <span class="mono" style="font-family:Consolas,monospace">main</span> e rode a tabela de novo. Anote o que mudou.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 5">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 5 DE 6</div>
+      <h1>Processamento de dados e casting</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Atribuição">
+      <div class="eyebrow">O = não é igualdade</div>
+      <h2>Atribuição copia o valor da direita para a esquerda</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Por isso isto faz sentido</div>
+          <div class="code-block small">
+<span class="kw">int</span> x = 5;
+x = x + 3;   <span class="com">// o novo x é o</span>
+             <span class="com">// x anterior mais 3</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Atribuição cumulativa</div>
+          <div class="code-block small">
+<span class="kw">int</span> x = 10;
+x += 5;   <span class="com">// 15</span>
+x -= 3;   <span class="com">// 12</span>
+x *= 2;   <span class="com">// 24</span>
+x /= 4;   <span class="com">// 6</span>
+x %= 4;   <span class="com">// 2</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Incremento">
+      <div class="eyebrow">A posição do operador importa</div>
+      <h2>Pré e pós-incremento</h2>
+      <div class="code-block">
+<span class="kw">int</span> a = 5;
+System.out.println(a++);   <span class="com">// imprime 5, depois a vira 6</span>
+
+<span class="kw">int</span> b = 5;
+System.out.println(++b);   <span class="com">// b vira 6, depois imprime 6</span>
+      </div>
+      <div class="callout">Em uma linha isolada, <span class="mono" style="font-family:Consolas,monospace">a++</span> e <span class="mono" style="font-family:Consolas,monospace">++a</span> dão no mesmo. A diferença só aparece quando o valor é <b>usado</b> na mesma expressão — e é aí que a certificação arma a pegadinha.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Conversão">
+      <div class="eyebrow">Para a direita é de graça; para a esquerda, você assina embaixo</div>
+      <h2>Conversão entre tipos numéricos</h2>
+      <div class="diagram-wrap"><img src="./conversao-numerica.svg" alt="Conversão entre tipos numéricos em Java"></div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Casting">
+      <div class="eyebrow">O casting trunca — e pode estourar em silêncio</div>
+      <h2>Duas coisas para nunca esquecer</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Trunca, não arredonda</div>
+          <div class="code-block small">
+<span class="kw">double</span> valor = 3.99;
+<span class="kw">int</span> i = (<span class="kw">int</span>) valor;   <span class="com">// 3</span>
+
+<span class="kw">int</span> errado = valor;
+<span class="com">// possible lossy conversion</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Estoura sem avisar</div>
+          <div class="code-block small">
+<span class="kw">int</span> grande = 300;
+<span class="kw">byte</span> p = (<span class="kw">byte</span>) grande;
+
+System.out.println(p);  <span class="com">// 44</span>
+<span class="com">// nenhum erro, nenhum aviso</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout amber">Para <b>arredondar</b> em vez de truncar, o caminho é <span class="mono" style="font-family:Consolas,monospace">Math.round</span>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Promoção">
+      <div class="eyebrow">Antes de calcular, Java iguala os tipos</div>
+      <h2>Promoção numérica, na ordem</h2>
+      <div class="slide-body">
+        <ul class="points compact">
+          <li>Se um operando for <b>double</b>, o outro vira <b>double</b>.</li>
+          <li>Senão, se um for <b>float</b>, o outro vira <b>float</b>.</li>
+          <li>Senão, se um for <b>long</b>, o outro vira <b>long</b>.</li>
+          <li>Senão, <b>ambos viram int</b> — inclusive <span class="mono" style="font-family:Consolas,monospace">byte</span>, <span class="mono" style="font-family:Consolas,monospace">short</span> e <span class="mono" style="font-family:Consolas,monospace">char</span>.</li>
+        </ul>
+        <div class="callout">A quarta regra é a que surpreende: <b>somar dois byte produz um int</b>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Ache o erro</h2>
+      <div class="code-block">
+<span class="kw">byte</span> a = 10;
+<span class="kw">byte</span> b = 20;
+<span class="kw">byte</span> soma = a + b;
+      </div>
+      <div class="fragment" style="margin-top:22px">
+        <span class="badge badge-amber">RESPOSTA</span>
+        <div class="callout" style="margin-top:14px"><span class="mono" style="font-family:Consolas,monospace">incompatible types: possible lossy conversion from int to byte</span> — em uma expressão aritmética, <span class="mono" style="font-family:Consolas,monospace">byte</span> é promovido a <span class="mono" style="font-family:Consolas,monospace">int</span>. O correto é <span class="mono" style="font-family:Consolas,monospace">byte soma = (byte) (a + b);</span></div>
+      </div>
+      <div class="fragment" style="margin-top:16px">
+        <div class="callout amber">Curiosidade que cai na prova: <span class="mono" style="font-family:Consolas,monospace">short s = 5; s += 1;</span> <b>compila</b> — os operadores cumulativos aplicam um casting implícito.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Texto e número">
+      <div class="eyebrow">Quando o dado chega como texto</div>
+      <h2>Convertendo nos dois sentidos</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Texto → número</div>
+          <div class="code-block small">
+Integer.parseInt(<span class="str">"42"</span>);
+Double.parseDouble(<span class="str">"3.14"</span>);
+Long.parseLong(<span class="str">"900000"</span>);
+
+Integer.parseInt(<span class="str">"abc"</span>);
+<span class="com">// NumberFormatException</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Número → texto</div>
+          <div class="code-block small">
+String.valueOf(42);   <span class="com">// "42"</span>
+<span class="str">""</span> + 42;             <span class="com">// "42"</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout"><span class="mono" style="font-family:Consolas,monospace">Double.parseDouble</span> exige o <b>ponto</b> como separador decimal, qualquer que seja o idioma do sistema.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Precisão">
+      <div class="eyebrow">Não é bug de Java</div>
+      <h2>Ponto flutuante é aproximado</h2>
+      <div class="code-block">
+System.out.println(0.1 + 0.2);          <span class="com">// 0.30000000000000004</span>
+System.out.println(0.1 + 0.2 == 0.3);   <span class="com">// false</span>
+      </div>
+      <div class="callout"><span class="mono" style="font-family:Consolas,monospace">double</span> e <span class="mono" style="font-family:Consolas,monospace">float</span> guardam números em base 2, e nem todo decimal tem representação exata. É o padrão IEEE 754, e vale para qualquer linguagem.</div>
+      <div class="callout amber" style="margin-top:14px">Para dinheiro e valores que exigem exatidão, existe <span class="mono" style="font-family:Consolas,monospace">BigDecimal</span> — assunto para mais adiante no curso.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Depois de <span class="mono" style="font-family:Consolas,monospace">int x = 5; x = x++;</span> quanto vale x?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="true" data-explain="O pós-incremento devolve o valor antigo (5) e incrementa x para 6; em seguida a atribuição sobrescreve x com o 5 devolvido.">5</div>
+          <div class="chip" data-correct="false" data-explain="Seria 6 se a linha fosse apenas x++; a atribuição é que desfaz o incremento, ao gravar de volta o valor antigo.">6</div>
+          <div class="chip" data-correct="false" data-explain="O código compila normalmente — o problema não é sintático, é de ordem de avaliação.">Não compila</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">O pós-incremento devolve o valor antigo (5) e incrementa <span class="mono" style="font-family:Consolas,monospace">x</span> para 6; a atribuição então sobrescreve <span class="mono" style="font-family:Consolas,monospace">x</span> com o 5 devolvido.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 5 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 5</div>
+      <h2>Pratique na IDE: processamento e casting</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Com <span class="mono" style="font-family:Consolas,monospace">double nota = 7.9;</span> imprima <span class="mono" style="font-family:Consolas,monospace">(int) nota</span>. Confirme que o casting <b>trunca</b> em vez de arredondar.</li>
+          <li>Declare <span class="mono" style="font-family:Consolas,monospace">byte a = 10, b = 20;</span> e depois tente <span class="mono" style="font-family:Consolas,monospace">byte soma = a + b;</span> Leia o erro e conserte com um cast.</li>
+          <li>Execute <span class="mono" style="font-family:Consolas,monospace">int x = 5;</span> seguido de <span class="mono" style="font-family:Consolas,monospace">println(x++)</span> e de <span class="mono" style="font-family:Consolas,monospace">println(++x)</span>. Explique cada uma das saídas.</li>
+          <li>Converta <span class="mono" style="font-family:Consolas,monospace">"7"</span> e <span class="mono" style="font-family:Consolas,monospace">"3"</span> com <span class="mono" style="font-family:Consolas,monospace">Integer.parseInt</span>, some os dois e devolva o resultado para <span class="mono" style="font-family:Consolas,monospace">String</span>.</li>
+          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">0.1 + 0.2</span> e compare com <span class="mono" style="font-family:Consolas,monospace">0.3</span>. Anote por que um teste de igualdade entre eles falha.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 6">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 6 DE 6</div>
+      <h1>Entrada de dados e funções matemáticas</h1>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 6 · Scanner">
+      <div class="eyebrow">Três passos obrigatórios</div>
+      <h2>Lendo do teclado com <span class="mono" style="font-family:Consolas,monospace">Scanner</span></h2>
+      <div class="code-block small">
+<span class="kw">import</span> java.util.Scanner;                      <span class="com">// 1. importar</span>
+
+<span class="kw">public class</span> Entrada {
+    <span class="kw">public static void</span> main(String[] args) {
+        Scanner sc = <span class="kw">new</span> Scanner(System.in);    <span class="com">// 2. criar</span>
+
+        System.out.print(<span class="str">"Digite seu nome: "</span>);
+        String nome = sc.nextLine();
+
+        System.out.println(<span class="str">"Ola, "</span> + nome + <span class="str">"!"</span>);
+
+        sc.close();                             <span class="com">// 3. fechar</span>
+    }
+}
+      </div>
+      <div class="callout"><span class="mono" style="font-family:Consolas,monospace">Scanner</span> não é primitivo: é uma classe, e por isso precisa de <span class="mono" style="font-family:Consolas,monospace">new</span>. Primeiro contato do curso com criação de objetos.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Scanner">
+      <div class="eyebrow">Um método por tipo</div>
+      <h2>Métodos de leitura</h2>
+      <div class="slide-body top">
+        <table class="deck-table" style="font-size:23px">
+          <tr><th class="mono">Método</th><th>Lê</th><th class="mono">Devolve</th></tr>
+          <tr><td class="mono"><b>sc.nextInt()</b></td><td>o próximo token como inteiro</td><td class="mono">int</td></tr>
+          <tr><td class="mono"><b>sc.nextDouble()</b></td><td>o próximo token como decimal</td><td class="mono">double</td></tr>
+          <tr><td class="mono"><b>sc.next()</b></td><td>o próximo token (uma "palavra")</td><td class="mono">String</td></tr>
+          <tr><td class="mono"><b>sc.nextLine()</b></td><td>o resto da linha, <b>inclusive espaços</b></td><td class="mono">String</td></tr>
+          <tr><td class="mono"><b>sc.nextBoolean()</b></td><td>true ou false</td><td class="mono">boolean</td></tr>
+          <tr><td class="mono"><b>sc.next().charAt(0)</b></td><td>o primeiro caractere do token</td><td class="mono">char</td></tr>
+        </table>
+        <div class="callout amber" style="margin-top:14px">Não existe <span class="mono" style="font-family:Consolas,monospace">nextChar()</span>. E um <b>token</b> é um pedaço de texto delimitado por espaço, tabulação ou quebra de linha.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Token e linha">
+      <div class="eyebrow">Token não é linha</div>
+      <h2>Três valores, uma linha só</h2>
+      <div class="code-block">
+System.out.print(<span class="str">"Digite tres valores: "</span>);
+<span class="kw">int</span> a = sc.nextInt();
+<span class="kw">int</span> b = sc.nextInt();
+<span class="kw">int</span> c = sc.nextInt();
+System.out.println(a + b + c);
+
+<span class="com">Digite tres valores: 10 20 30</span>
+<span class="com">60</span>
+      </div>
+      <div class="callout">Para o <span class="mono" style="font-family:Consolas,monospace">Scanner</span>, tanto faz se os valores vêm na mesma linha ou em linhas diferentes: ele lê <b>tokens</b>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · A pegadinha">
+      <div class="eyebrow">A dúvida número um da seção</div>
+      <h2>Por que o <span class="mono" style="font-family:Consolas,monospace">nextLine()</span> foi "pulado"</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1900 800" role="img" aria-labelledby="buf-title buf-desc" style="max-width:100%;max-height:100%">
+          <title id="buf-title">O que sobra no buffer depois de um nextInt</title>
+          <desc id="buf-desc">Três estados do buffer da entrada padrão: depois do Enter ele guarda 25 e a quebra de linha; o nextInt consome apenas os dígitos e deixa a quebra; o nextLine seguinte encontra essa quebra pendente e devolve uma String vazia.</desc>
+          <defs>
+            <marker id="setaBuf" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M 0 0 L 12 6 L 0 12 z" fill="#8f1614" />
+            </marker>
+          </defs>
+          <rect width="1900" height="800" fill="#ffffff" />
+          <g font-family="Arial, Helvetica, sans-serif">
+            <text x="950" y="48" font-size="30" text-anchor="middle" fill="#111827" font-weight="700">Você digitou 25 e apertou Enter — o buffer guardou as duas coisas</text>
+
+            <!-- estado 1: depois do Enter -->
+            <text x="340" y="120" font-size="24" text-anchor="middle" fill="#6b7280" font-weight="700">DEPOIS DO ENTER</text>
+            <rect x="105" y="146" width="470" height="126" rx="12" fill="#fbf8f5" stroke="#c7cbd1" stroke-width="3" />
+            <rect x="185" y="174" width="160" height="70" rx="10" fill="#ffd9a0" stroke="#b88600" stroke-width="3" />
+            <text x="265" y="222" font-size="36" text-anchor="middle" fill="#111827" font-family="Consolas, 'Courier New', monospace">25</text>
+            <rect x="375" y="174" width="120" height="70" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="3" />
+            <text x="435" y="221" font-size="32" text-anchor="middle" fill="#991b1b" font-family="Consolas, 'Courier New', monospace">\n</text>
+            <rect x="105" y="330" width="470" height="120" rx="12" fill="#f6f7f9" stroke="#d7dee7" stroke-width="3" />
+            <text x="340" y="398" font-size="25" text-anchor="middle" fill="#9ca3af" font-style="italic">nada foi lido ainda</text>
+
+            <!-- estado 2: depois do nextInt -->
+            <g class="fragment">
+              <text x="645" y="176" font-size="20" text-anchor="middle" fill="#8f1614" font-weight="700" font-family="Consolas, 'Courier New', monospace">nextInt()</text>
+              <path d="M 595 209 L 690 209" stroke="#8f1614" stroke-width="4" fill="none" marker-end="url(#setaBuf)" />
+              <text x="950" y="120" font-size="24" text-anchor="middle" fill="#6b7280" font-weight="700">DEPOIS DO nextInt()</text>
+              <rect x="715" y="146" width="470" height="126" rx="12" fill="#fbf8f5" stroke="#c7cbd1" stroke-width="3" />
+              <rect x="795" y="174" width="160" height="70" rx="10" fill="#ffffff" stroke="#c7cbd1" stroke-width="3" stroke-dasharray="8 7" />
+              <text x="875" y="216" font-size="20" text-anchor="middle" fill="#9ca3af">consumido</text>
+              <rect x="985" y="174" width="120" height="70" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="3" />
+              <text x="1045" y="221" font-size="32" text-anchor="middle" fill="#991b1b" font-family="Consolas, 'Courier New', monospace">\n</text>
+              <rect x="715" y="330" width="470" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="3" />
+              <text x="950" y="372" font-size="22" text-anchor="middle" fill="#166534" font-weight="700">leu só os dígitos</text>
+              <text x="950" y="420" font-size="32" text-anchor="middle" fill="#111827" font-family="Consolas, 'Courier New', monospace">idade = 25</text>
+            </g>
+
+            <!-- estado 3: depois do nextLine -->
+            <g class="fragment">
+              <text x="1255" y="176" font-size="20" text-anchor="middle" fill="#8f1614" font-weight="700" font-family="Consolas, 'Courier New', monospace">nextLine()</text>
+              <path d="M 1205 209 L 1300 209" stroke="#8f1614" stroke-width="4" fill="none" marker-end="url(#setaBuf)" />
+              <text x="1560" y="120" font-size="24" text-anchor="middle" fill="#6b7280" font-weight="700">DEPOIS DO nextLine()</text>
+              <rect x="1325" y="146" width="470" height="126" rx="12" fill="#fbf8f5" stroke="#c7cbd1" stroke-width="3" />
+              <text x="1560" y="219" font-size="25" text-anchor="middle" fill="#9ca3af" font-style="italic">buffer vazio</text>
+              <rect x="1325" y="330" width="470" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="3" />
+              <text x="1560" y="372" font-size="22" text-anchor="middle" fill="#991b1b" font-weight="700">achou a quebra pendente e parou ali</text>
+              <text x="1560" y="420" font-size="32" text-anchor="middle" fill="#111827" font-family="Consolas, 'Courier New', monospace">nome = ""</text>
+            </g>
+
+            <!-- conclusao -->
+            <g class="fragment">
+              <text x="950" y="558" font-size="30" text-anchor="middle" fill="#111827" font-weight="700">O nextLine() nem chega a esperar você digitar o nome</text>
+              <rect x="290" y="606" width="1320" height="132" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="3" />
+              <text x="950" y="660" font-size="27" text-anchor="middle" fill="#166534" font-weight="700">Solução: um sc.nextLine() extra logo depois, só para descartar a quebra</text>
+              <text x="950" y="708" font-size="23" text-anchor="middle" fill="#4b5563" font-style="italic">Sempre que um nextLine() vier depois de nextInt(), nextDouble() ou next().</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · A pegadinha">
+      <div class="eyebrow">Antes e depois</div>
+      <h2>Uma linha resolve</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Quebrado</div>
+          <div class="code-block small">
+System.out.print(<span class="str">"Idade: "</span>);
+<span class="kw">int</span> idade = sc.nextInt();
+
+System.out.print(<span class="str">"Nome: "</span>);
+String nome = sc.nextLine();
+<span class="com">// nome vem vazio</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Corrigido</div>
+          <div class="code-block small">
+System.out.print(<span class="str">"Idade: "</span>);
+<span class="kw">int</span> idade = sc.nextInt();
+sc.nextLine();   <span class="com">// descarta</span>
+System.out.print(<span class="str">"Nome: "</span>);
+String nome = sc.nextLine();
+<span class="com">// agora funciona</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Locale na entrada">
+      <div class="eyebrow">O Locale volta — agora na leitura</div>
+      <h2>Vírgula ou ponto ao digitar um decimal</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Antes de criar o Scanner</div>
+          <div class="code-block small">
+Locale.setDefault(Locale.US);
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Ou depois de criado</div>
+          <div class="code-block small">
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+sc.useLocale(Locale.US);
+          </div>
+        </div>
+      </div>
+      <div class="callout">Sem isso, em uma máquina em português, digitar <span class="mono" style="font-family:Consolas,monospace">3.14</span> em um <span class="mono" style="font-family:Consolas,monospace">nextDouble()</span> lança <span class="mono" style="font-family:Consolas,monospace">InputMismatchException</span>: ele espera <b>vírgula</b>.</div>
+      <div class="callout amber" style="margin-top:14px">Escolha uma convenção e mantenha-a na entrada <b>e</b> na saída. Misturar as duas é confusão garantida.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Math">
+      <div class="eyebrow">Sem operador de potência nem de raiz</div>
+      <h2>A classe <span class="mono" style="font-family:Consolas,monospace">Math</span></h2>
+      <div class="slide-body top">
+        <table class="deck-table" style="font-size:23px">
+          <tr><th class="mono">Método</th><th>O que faz</th><th class="mono">Exemplo</th></tr>
+          <tr><td class="mono"><b>Math.sqrt(x)</b></td><td>raiz quadrada</td><td class="mono">sqrt(81.0) → 9.0</td></tr>
+          <tr><td class="mono"><b>Math.pow(x, y)</b></td><td>x elevado a y</td><td class="mono">pow(2, 10) → 1024.0</td></tr>
+          <tr><td class="mono"><b>Math.abs(x)</b></td><td>valor absoluto</td><td class="mono">abs(-7) → 7</td></tr>
+          <tr><td class="mono"><b>Math.max / min</b></td><td>o maior / o menor dos dois</td><td class="mono">max(3, 9) → 9</td></tr>
+          <tr><td class="mono"><b>Math.round(x)</b></td><td>arredonda para o mais próximo</td><td class="mono">round(3.6) → 4</td></tr>
+          <tr><td class="mono"><b>Math.floor / ceil</b></td><td>arredonda para baixo / para cima</td><td class="mono">ceil(3.1) → 4.0</td></tr>
+          <tr><td class="mono"><b>Math.random()</b></td><td>decimal aleatório em [0.0, 1.0)</td><td class="mono">(int)(random()*6)+1</td></tr>
+        </table>
+        <div class="callout" style="margin-top:14px">Todos os métodos são <b>estáticos</b>: chamam-se pelo nome da classe, sem criar objeto. <span class="mono" style="font-family:Consolas,monospace">Math</span> nem sequer pode ser instanciada.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Math">
+      <div class="eyebrow">Detalhes que a prova adora</div>
+      <h2>Três surpresas da classe <span class="mono" style="font-family:Consolas,monospace">Math</span></h2>
+      <div class="slide-body">
+        <ul class="points compact">
+          <li><b>Tipos de retorno diferentes</b> — <span class="mono" style="font-family:Consolas,monospace">round(double)</span> devolve <span class="mono" style="font-family:Consolas,monospace">long</span>, <span class="mono" style="font-family:Consolas,monospace">round(float)</span> devolve <span class="mono" style="font-family:Consolas,monospace">int</span>, e <span class="mono" style="font-family:Consolas,monospace">floor</span>/<span class="mono" style="font-family:Consolas,monospace">ceil</span> devolvem <span class="mono" style="font-family:Consolas,monospace">double</span>.</li>
+          <li><b>sqrt e pow devolvem sempre double</b> — até <span class="mono" style="font-family:Consolas,monospace">Math.pow(2, 3)</span> vale <span class="mono" style="font-family:Consolas,monospace">8.0</span>, não <span class="mono" style="font-family:Consolas,monospace">8</span>.</li>
+          <li><b>round é floor(x + 0.5)</b> — por isso <span class="mono" style="font-family:Consolas,monospace">Math.round(-2.5)</span> é <span class="mono" style="font-family:Consolas,monospace">-2</span>, e não <span class="mono" style="font-family:Consolas,monospace">-3</span>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Programa completo">
+      <div class="eyebrow">Juntando os seis blocos</div>
+      <h2>Distância entre dois pontos</h2>
+      <div class="code-block small" style="line-height:1.36">
+Locale.setDefault(Locale.US);                       <span class="com">// ponto no lugar da vírgula</span>
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+
+<span class="com">// 1. ENTRADA</span>
+System.out.print(<span class="str">"x1, y1: "</span>);
+<span class="kw">double</span> x1 = sc.nextDouble(), y1 = sc.nextDouble();
+System.out.print(<span class="str">"x2, y2: "</span>);
+<span class="kw">double</span> x2 = sc.nextDouble(), y2 = sc.nextDouble();
+
+<span class="com">// 2. PROCESSAMENTO</span>
+<span class="kw">double</span> d = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+<span class="com">// 3. SAÍDA</span>
+System.out.printf(<span class="str">"Distancia: %.3f%n"</span>, d);        <span class="com">// três casas decimais</span>
+sc.close();
+      </div>
+      <div class="callout">O mesmo esqueleto do Bloco 3, agora com tudo o que a seção ensinou: <b>Locale</b>, <b>Scanner</b>, <b>Math</b> e <b>printf</b>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Quanto vale <span class="mono" style="font-family:Consolas,monospace">Math.round(-2.5)</span>?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Essa seria a resposta se o arredondamento fosse sempre para longe do zero — mas não é assim que Math.round funciona.">-3</div>
+          <div class="chip" data-correct="true" data-explain="Math.round(x) é definido como floor(x + 0.5): floor(-2.0) é -2. No meio do caminho, o resultado é puxado para cima.">-2</div>
+          <div class="chip" data-correct="false" data-explain="O sinal não se perde: Math.round não é Math.abs.">2</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px"><span class="mono" style="font-family:Consolas,monospace">Math.round(x)</span> é <span class="mono" style="font-family:Consolas,monospace">floor(x + 0.5)</span>: <span class="mono" style="font-family:Consolas,monospace">floor(-2.0)</span> é <b>-2</b>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 6</div>
+      <h2>Pratique na IDE: Scanner e Math</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Escreva um programa que lê nome, idade e salário com <span class="mono" style="font-family:Consolas,monospace">Scanner</span> e mostra os três formatados com <span class="mono" style="font-family:Consolas,monospace">printf</span>.</li>
+          <li>Leia um inteiro com <span class="mono" style="font-family:Consolas,monospace">nextInt()</span> e logo depois um texto com <span class="mono" style="font-family:Consolas,monospace">nextLine()</span>. Provoque a falha e conserte com o <span class="mono" style="font-family:Consolas,monospace">nextLine()</span> extra.</li>
+          <li>Leia três valores digitados na <b>mesma linha</b>, separados por espaço, e mostre a soma.</li>
+          <li>Digite um decimal com vírgula e depois com ponto. Descubra qual funciona na sua máquina e force o outro com <span class="mono" style="font-family:Consolas,monospace">Locale.setDefault</span>.</li>
+          <li>Calcule a distância entre dois pontos lidos do teclado, usando <span class="mono" style="font-family:Consolas,monospace">Math.pow</span> e <span class="mono" style="font-family:Consolas,monospace">Math.sqrt</span>.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Revisão">
+      <div class="eyebrow">Os cinco erros que mais aparecem</div>
+      <h2>Antes de pedir ajuda, confira isto</h2>
+      <div class="slide-body top">
+        <table class="deck-table" style="font-size:23px">
+          <tr><th>Sintoma</th><th>Causa</th></tr>
+          <tr><td>A média deu um número redondo estranho</td><td>divisão inteira — faltou um <span class="mono" style="font-family:Consolas,monospace">2.0</span> ou um cast</td></tr>
+          <tr><td>O programa "pulou" uma leitura</td><td>quebra de linha pendente antes do <span class="mono" style="font-family:Consolas,monospace">nextLine()</span></td></tr>
+          <tr><td><span class="mono">InputMismatchException</span></td><td>digitou ponto onde o <span class="mono">Locale</span> espera vírgula</td></tr>
+          <tr><td>Saiu <span class="mono">Total: 23</span> em vez de <span class="mono">5</span></td><td>faltou o parêntese antes de concatenar</td></tr>
+          <tr><td><span class="mono">possible lossy conversion</span></td><td>promoção a <span class="mono">int</span>, ou literal sem sufixo, ou falta de cast</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Revisão">
+      <div class="eyebrow">Fechando a Seção 3</div>
+      <h2>O que você já é capaz de fazer</h2>
+      <div class="slide-body">
+        <ul class="points compact">
+          <li>Prever o resultado de uma expressão aritmética, inclusive da divisão inteira</li>
+          <li>Declarar variáveis e escolher o tipo primitivo adequado</li>
+          <li>Imprimir resultados formatados com <span class="mono" style="font-family:Consolas,monospace">printf</span></li>
+          <li>Aplicar casting e prever a promoção numérica</li>
+          <li>Ler dados do teclado com <span class="mono" style="font-family:Consolas,monospace">Scanner</span> sem cair nas armadilhas</li>
+          <li>Usar as funções da classe <span class="mono" style="font-family:Consolas,monospace">Math</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Encerramento">
+      <div class="eyebrow">De olho na certificação</div>
+      <h2>Esta seção cai quase inteira na prova</h2>
+      <div class="slide-body">
+        <div class="callout">Ao contrário da Seção 2, que era sobretudo contexto, quase tudo daqui é cobrado no 1Z0-831: tipos, literais, operadores, casting, promoção numérica, formatação e <span class="mono" style="font-family:Consolas,monospace">Math</span>. O material A8 traz dez questões no estilo da prova.</div>
+        <div class="callout amber" style="margin-top:18px">A próxima seção introduz a estrutura condicional: expressões comparativas e lógicas, <span class="mono" style="font-family:Consolas,monospace">if-else</span>, <span class="mono" style="font-family:Consolas,monospace">switch-case</span> e escopo de variáveis.</div>
+      </div>
+    </section>
+
+    <section class="slide slide--end" data-section="Fim">
+      <img class="duke" src="./duke.svg" alt="">
+      <h1>Perguntas?</h1>
+      <div class="subtitle">Seção 3 — Estrutura sequencial</div>
+    </section>
+
+  </div>
+</div>
+
+<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+<div class="hud"><span class="sect" id="hudSection"></span><span id="hudCount"></span></div>
+<div class="hint">← → navegar · Espaço avança · Esc visão geral · F tela cheia</div>
+
+<div class="overview" id="overview">
+  <div class="overview-title">Visão geral — clique em um slide para ir até ele</div>
+  <div class="overview-grid" id="overviewGrid"></div>
+</div>
+
+<script>
+(function () {
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+  var fragIndex = 0;
+
+  function fragmentsOf(i) {
+    return Array.prototype.slice.call(slides[i].querySelectorAll('.fragment'));
+  }
+
+  function render() {
+    slides.forEach(function (s, i) { s.classList.toggle('active', i === current); });
+    var frags = fragmentsOf(current);
+    frags.forEach(function (f, i) { f.classList.toggle('visible', i < fragIndex); });
+
+    document.getElementById('hudSection').textContent = slides[current].getAttribute('data-section') || '';
+    document.getElementById('hudCount').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('progressFill').style.width = ((current + 1) / total * 100) + '%';
+
+    history.replaceState(null, '', '#/' + (current + 1));
+  }
+
+  function goTo(i, resetFrag) {
+    current = Math.max(0, Math.min(total - 1, i));
+    fragIndex = resetFrag === 'end' ? fragmentsOf(current).length : 0;
+    render();
+  }
+
+  function next() {
+    var frags = fragmentsOf(current);
+    if (fragIndex < frags.length) { fragIndex++; render(); return; }
+    if (current < total - 1) goTo(current + 1, 'start');
+  }
+
+  function prev() {
+    if (fragIndex > 0) { fragIndex--; render(); return; }
+    if (current > 0) goTo(current - 1, 'end');
+  }
+
+  function buildOverview() {
+    var grid = document.getElementById('overviewGrid');
+    slides.forEach(function (s, i) {
+      var title = s.querySelector('h1, h2');
+      var card = document.createElement('div');
+      card.className = 'overview-card';
+      card.innerHTML = '<div class="oc-num">' + (i + 1) + ' · ' + (s.getAttribute('data-section') || '') + '</div>' +
+                        '<div class="oc-title">' + (title ? title.textContent : '') + '</div>';
+      card.addEventListener('click', function () {
+        goTo(i, 'start');
+        toggleOverview(false);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function toggleOverview(force) {
+    var ov = document.getElementById('overview');
+    var show = typeof force === 'boolean' ? force : !ov.classList.contains('active');
+    ov.classList.toggle('active', show);
+  }
+
+  function scaleStage() {
+    var pad = 110;
+    var sw = (window.innerWidth - pad) / 1280;
+    var sh = (window.innerHeight - pad) / 720;
+    var scale = Math.min(sw, sh);
+    stage.style.transform = 'scale(' + scale + ')';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { toggleOverview(); return; }
+    if (document.getElementById('overview').classList.contains('active')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { goTo(0, 'start'); }
+    else if (e.key === 'End') { goTo(total - 1, 'start'); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.querySelectorAll('.chip[data-correct]').forEach(function (chip) {
+    chip.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var row = chip.closest('.chip-row');
+      row.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('chip-correct', 'chip-wrong'); });
+      var isCorrect = chip.dataset.correct === 'true';
+      if (isCorrect) {
+        chip.classList.add('chip-correct');
+      } else {
+        chip.classList.add('chip-wrong');
+        var right = row.querySelector('.chip[data-correct="true"]');
+        if (right) right.classList.add('chip-correct');
+      }
+      var slide = chip.closest('.slide');
+      var answerLabel = slide.querySelector('.js-answer-label');
+      var answerText = slide.querySelector('.js-answer-text');
+      if (answerText && chip.dataset.explain) {
+        answerText.textContent = chip.dataset.explain;
+        if (answerLabel) {
+          answerLabel.textContent = isCorrect ? 'RESPOSTA CERTA' : 'ISSO NÃO É BEM ASSIM';
+          answerLabel.className = 'badge js-answer-label ' + (isCorrect ? 'badge-amber' : 'badge-red');
+        }
+      }
+      var idx = slides.indexOf(slide);
+      var frags = fragmentsOf(idx);
+      frags.forEach(function (f) { f.classList.add('visible'); });
+      if (idx === current) fragIndex = frags.length;
+    });
+  });
+
+  window.addEventListener('resize', scaleStage);
+
+  buildOverview();
+  scaleStage();
+
+  var hash = window.location.hash.match(/#\/(\d+)/);
+  if (hash) goTo(parseInt(hash[1], 10) - 1, 'start'); else render();
+})();
+</script>
+</body>
+</html>

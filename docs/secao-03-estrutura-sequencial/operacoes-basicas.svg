@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 700" role="img" aria-labelledby="title description">
+  <title id="title">As tres operacoes basicas de programacao</title>
+  <desc id="description">Entrada de dados, processamento e saida de dados formam o ciclo basico de um programa de estrutura sequencial.</desc>
+
+  <defs>
+    <linearGradient id="boxGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd9a0" />
+      <stop offset="100%" stop-color="#ffbd0a" />
+    </linearGradient>
+    <linearGradient id="arrowGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#72b5e5" />
+      <stop offset="100%" stop-color="#347fbd" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#163d5c" flood-opacity="0.18" />
+    </filter>
+  </defs>
+
+  <rect width="1900" height="700" rx="20" fill="#ffffff" />
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="950" y="70" font-size="32" text-anchor="middle" fill="#111827" font-weight="700">Todo programa sequencial e feito destas tres operacoes, nesta ordem</text>
+
+    <!-- Entrada -->
+    <g filter="url(#shadow)">
+      <rect x="80" y="200" width="440" height="240" rx="12" fill="url(#boxGradient)" stroke="#b88600" stroke-width="3" />
+    </g>
+    <text x="300" y="270" font-size="36" text-anchor="middle" fill="#111827" font-weight="700">Entrada</text>
+    <text x="300" y="320" font-size="24" text-anchor="middle" fill="#5a4200">ler dados de fora do programa</text>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#1f2937">
+      <text x="300" y="370" text-anchor="middle">sc.nextInt()</text>
+      <text x="300" y="404" text-anchor="middle">IO.readln()</text>
+    </g>
+
+    <path d="M545 290 H655 V262 L700 312 L655 362 V334 H545 Z" fill="url(#arrowGradient)" stroke="#286ca4" stroke-width="3" />
+
+    <!-- Processamento -->
+    <g filter="url(#shadow)">
+      <rect x="730" y="200" width="440" height="240" rx="12" fill="url(#boxGradient)" stroke="#b88600" stroke-width="3" />
+    </g>
+    <text x="950" y="270" font-size="36" text-anchor="middle" fill="#111827" font-weight="700">Processamento</text>
+    <text x="950" y="320" font-size="24" text-anchor="middle" fill="#5a4200">calcular e guardar em variaveis</text>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#1f2937">
+      <text x="950" y="370" text-anchor="middle">area = base * altura;</text>
+      <text x="950" y="404" text-anchor="middle">media = (a + b) / 2.0;</text>
+    </g>
+
+    <path d="M1195 290 H1305 V262 L1350 312 L1305 362 V334 H1195 Z" fill="url(#arrowGradient)" stroke="#286ca4" stroke-width="3" />
+
+    <!-- Saida -->
+    <g filter="url(#shadow)">
+      <rect x="1380" y="200" width="440" height="240" rx="12" fill="url(#boxGradient)" stroke="#b88600" stroke-width="3" />
+    </g>
+    <text x="1600" y="270" font-size="36" text-anchor="middle" fill="#111827" font-weight="700">Saida</text>
+    <text x="1600" y="320" font-size="24" text-anchor="middle" fill="#5a4200">mostrar o resultado</text>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#1f2937">
+      <text x="1600" y="370" text-anchor="middle">System.out.println(x)</text>
+      <text x="1600" y="404" text-anchor="middle">System.out.printf(...)</text>
+    </g>
+
+    <text x="950" y="540" font-size="28" text-anchor="middle" fill="#111827">Estrutura sequencial: uma instrucao apos a outra, de cima para baixo, sem desvios</text>
+    <text x="950" y="600" font-size="24" text-anchor="middle" fill="#6b7280" font-style="italic">Nem todo programa tem entrada, mas praticamente todo programa tem processamento e saida</text>
+  </g>
+</svg>
