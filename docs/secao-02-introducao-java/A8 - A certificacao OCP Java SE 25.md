@@ -34,7 +34,7 @@ O grupo em destaque é o que toca diretamente esta seção.
 
 ## O que desta seção cai na prova
 
-### Módulos e empacotamento (materiais A3 e A4)
+### Módulos e empacotamento (materiais A2 e A4)
 
 Este é o assunto mais cobrado da seção. Do que **esta seção ensina**, a prova exige saber:
 
@@ -61,7 +61,7 @@ Cobrado dentro de *Applying Object-Oriented Principles*, do que **esta seção e
 
 > **Vai além desta seção:** `import static`, e conflitos de nome simples entre dois imports comuns (o conflito entre `import module`, esse sim, está no A7). Fica para quando for estudar diretamente para a prova.
 
-### O método `main` e a sintaxe do Java 25 (materiais A5 e A7)
+### O método `main` e a sintaxe do Java 25 (materiais A6 e A7)
 
 Aqui está a diferença real entre a prova do Java 21 e a do Java 25 — e o que a Seção 2 ensina quase todo:
 
@@ -74,7 +74,7 @@ Aqui está a diferença real entre a prova do Java 21 e a do Java 25 — e o que
 
 > **Vai além desta seção:** a exigência de um construtor sem argumentos e não privado para um `main` de instância depende do conceito de construtor, que só é ensinado na Seção 8. O A7 menciona a regra, mas a Seção 2 não ensina o suficiente sobre construtores para justificá-la a fundo.
 
-### Execução e ferramentas (material A3)
+### Execução e ferramentas (material A2)
 
 - o papel de `javac`, `java`, `jar`, `jlink`, `jdeps` e `jshell`;
 - a execução direta de um arquivo-fonte com `java Arquivo.java`.
@@ -96,9 +96,9 @@ Esses assuntos são fundamentais para entender a plataforma, mas a prova cobra *
 
 ## Exemplos no estilo da prova
 
-Todos os exemplos abaixo se resolvem só com o que os materiais A1, A3, A4, A5 e A7 desta seção ensinam.
+Todos os exemplos abaixo se resolvem só com o que os materiais A1, A2, A3, A4, A6 e A7 desta seção ensinam.
 
-### Versões (material A1)
+### Versões (material A3)
 
 **1.** Qual das versões abaixo é LTS?
 
@@ -110,7 +110,7 @@ Todos os exemplos abaixo se resolvem só com o que os materiais A1, A3, A4, A5 e
 **(d) Java 25.** As versões LTS cobertas no material são 8, 11, 17, 21 e 25, sempre com dois anos de intervalo. 22, 23 e 24 são *feature releases*, com suporte só até a versão seguinte.
 </details>
 
-### Plataforma e ferramentas (material A3)
+### Plataforma e ferramentas (material A2)
 
 **2.** Qual comando gera um arquivo `.jar` a partir de classes já compiladas?
 
@@ -163,7 +163,7 @@ public class Cliente { }
 **Sim.** `java.util` é exportado por `java.base`, e todo módulo depende de `java.base` implicitamente, sem precisar de `requires java.base;`.
 </details>
 
-### Primeiro programa (material A5)
+### Primeiro programa (material A6)
 
 **7.** O que acontece ao tentar compilar este arquivo?
 

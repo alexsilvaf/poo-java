@@ -112,7 +112,7 @@ public class Exemplo {
 
 Agrupamento de módulos relacionados.
 
-![Aplicacao](aplicacao.svg)
+![Aplicação](./aplicacao.svg)
 
 Na prática, uma aplicação é distribuída de uma destas formas:
 

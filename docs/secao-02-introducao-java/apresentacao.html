@@ -341,6 +341,53 @@
       </div>
     </section>
 
+    <section class="slide" data-section="Bloco 1 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Por que o mesmo arquivo <span class="mono" style="font-family:Consolas,monospace">.class</span> roda em Windows, Linux e Mac sem recompilar?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Se o compilador gerasse um executável por sistema, seria a abordagem compilada — exatamente o problema de portabilidade que o Java veio resolver.">Porque o compilador gera um executável para cada sistema</div>
+          <div class="chip" data-correct="true" data-explain="O bytecode é o mesmo em qualquer lugar; quem muda é a JVM, que existe em uma versão para cada sistema. Compila uma vez, roda em qualquer JVM.">Porque o bytecode é o mesmo e a JVM é que muda</div>
+          <div class="chip" data-correct="false" data-explain="Java não é interpretado linha a linha a partir do código-fonte: há uma compilação para bytecode antes. Por isso é chamado de híbrido.">Porque o Java é interpretado linha a linha</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">O bytecode é o mesmo em qualquer lugar; quem muda é a JVM, que existe em uma versão para cada sistema. Compila uma vez, roda em qualquer JVM.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Verdadeiro ou falso: Java é apenas uma linguagem de programação.</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="Só metade da história. A linguagem é uma das duas faces; sem a plataforma — API e JVM — não haveria bytecode nem portabilidade.">Verdadeiro</div>
+          <div class="chip" data-correct="true" data-explain="Falso — Java é linguagem e plataforma ao mesmo tempo: as regras da linguagem, mais a API e o ambiente de execução (a JVM).">Falso</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Falso — Java é linguagem e plataforma ao mesmo tempo: as regras da linguagem, mais a API e o ambiente de execução (a JVM).</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Você vai escrever um programa de console para rodar no seu próprio computador. Qual edição atende?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip" data-correct="false" data-explain="A Micro Edition é voltada a dispositivos embarcados, móveis e IoT — não é o caso de um programa de desktop.">Java ME</div>
+          <div class="chip" data-correct="true" data-explain="Java SE — a Standard Edition é o núcleo da linguagem, para desktop e servidores. É a edição usada neste curso.">Java SE</div>
+          <div class="chip" data-correct="false" data-explain="A Enterprise Edition é construída sobre o SE e existe para aplicações corporativas. Para um programa de console ela só acrescenta peso.">Java EE</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Java SE — a Standard Edition é o núcleo da linguagem, para desktop e servidores. É a edição usada neste curso.</div>
+        </div>
+      </div>
+    </section>
+
     <section class="slide slide--divider" data-section="Bloco 2">
       <img class="duke" src="./duke.svg" alt="">
       <div class="div-num">BLOCO 2 DE 6</div>
@@ -1238,12 +1285,6 @@ sc.close();
       if (!document.fullscreenElement) document.documentElement.requestFullscreen();
       else document.exitFullscreen();
     }
-  });
-
-  stage.addEventListener('click', function (e) {
-    var rect = stage.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    if (x < rect.width * 0.35) prev(); else next();
   });
 
   document.querySelectorAll('.chip[data-correct]').forEach(function (chip) {

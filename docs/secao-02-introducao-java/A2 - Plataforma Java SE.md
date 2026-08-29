@@ -44,10 +44,10 @@ O Java é definido por especificações públicas, e várias organizações dist
 ![Fluxo de compilação: código-fonte, compilador e código executável](./linguagem-compilada.svg)
 
 ### Exemplo de linguagem interpretada
-![Fluxo de interpretacao: código-fonte, interpretador e código executável](./linguagem-interpretada.svg)
+![Fluxo de interpretação: código-fonte, interpretador e código executável](./linguagem-interpretada.svg)
 
 ### Exemplo de linguagem híbrida
-![Fluxo hibrido: código-fonte, pré-compilador, bytecode e código executável sobre uma máquina virtual](./linguagem-hibrida.svg)
+![Fluxo híbrido: código-fonte, pré-compilador, bytecode e código executável sobre uma máquina virtual](./linguagem-hibrida.svg)
 
 ## Modelo de execução
 
