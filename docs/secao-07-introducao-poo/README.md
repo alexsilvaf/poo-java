@@ -1,22 +1,22 @@
-# Secao 7 - Introducao a Programacao Orientada a Objetos
+# Seção 7 - Introdução à Programação Orientada a Objetos
 
 **Aulas do curso:** 64 a 75  
-**Aulas de referencia:** 69 a 80
+**Aulas de referência:** 69 a 80
 
 ## Objetivos
 
-<!-- Descreva o que o aluno devera aprender nesta secao. -->
+<!-- Descreva o que o aluno deverá aprender nesta seção. -->
 
-## Conteudos
+## Conteúdos
 
-<!-- Liste os assuntos que serao abordados. -->
+<!-- Liste os assuntos que serão abordados. -->
 
 ## Planejamento das aulas
 
-| Aula | Tema | Atividade ou recurso | Observacoes |
+| Aula | Tema | Atividade ou recurso | Observações |
 | ---: | --- | --- | --- |
 <!-- Adicione uma linha para cada aula. -->
 
-## Observacoes
+## Observações
 
-<!-- Inclua decisoes, ajustes e lembretes para esta secao. -->
+<!-- Inclua decisões, ajustes e lembretes para esta seção. -->

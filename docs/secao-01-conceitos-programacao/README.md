@@ -27,7 +27,8 @@ Ao final desta seção, o aluno deverá ser capaz de:
 | Tempo | Conteúdo | Condução sugerida |
 | :---: | --- | --- |
 | 0–10 min | Algoritmo, automação e programa de computador | Apresentar os conceitos do A1 usando o exemplo da tarefa cotidiana |
-| 10–20 min | Linguagem de programação e tipos de erro | Relacionar léxica, sintaxe e semântica aos exemplos do A3 |
-| 20–30 min | Ferramentas de desenvolvimento | Explicar editor, IDE, compilador, interpretador e máquina virtual com base no A2 e no A4 |
+| 10–15 min | Panorama das ferramentas | Usar o A2 como mapa do que vem a seguir: linguagem, editor/IDE, tradutor e ambiente de execução |
+| 15–25 min | Linguagem de programação e tipos de erro | Relacionar léxica, sintaxe e semântica aos exemplos do A3 |
+| 25–30 min | Ambiente integrado de desenvolvimento | Mostrar com o A4 o que uma IDE agrega e por que ela não é obrigatória |
 | 30–50 min | Formas de tradução e execução | Percorrer os diagramas do A5 e comparar compilação, interpretação e abordagem híbrida |
 | 50–60 min | Revisão e exercícios | Usar o diagrama comparativo, responder dúvidas e realizar uma atividade curta de classificação |

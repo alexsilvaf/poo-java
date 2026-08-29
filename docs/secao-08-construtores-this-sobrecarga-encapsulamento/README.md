@@ -1,22 +1,22 @@
-# Secao 8 - Construtores, palavra this, sobrecarga e encapsulamento
+# Seção 8 - Construtores, palavra this, sobrecarga e encapsulamento
 
 **Aulas do curso:** 76 a 83  
-**Aulas de referencia:** 81 a 88
+**Aulas de referência:** 81 a 88
 
 ## Objetivos
 
-<!-- Descreva o que o aluno devera aprender nesta secao. -->
+<!-- Descreva o que o aluno deverá aprender nesta seção. -->
 
-## Conteudos
+## Conteúdos
 
-<!-- Liste os assuntos que serao abordados. -->
+<!-- Liste os assuntos que serão abordados. -->
 
 ## Planejamento das aulas
 
-| Aula | Tema | Atividade ou recurso | Observacoes |
+| Aula | Tema | Atividade ou recurso | Observações |
 | ---: | --- | --- | --- |
 <!-- Adicione uma linha para cada aula. -->
 
-## Observacoes
+## Observações
 
-<!-- Inclua decisoes, ajustes e lembretes para esta secao. -->
+<!-- Inclua decisões, ajustes e lembretes para esta seção. -->

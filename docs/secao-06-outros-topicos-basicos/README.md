@@ -1,22 +1,22 @@
-# Secao 6 - Outros topicos basicos sobre Java
+# Seção 6 - Outros tópicos básicos sobre Java
 
 **Aulas do curso:** 58 a 63  
-**Aulas de referencia:** 63 a 68
+**Aulas de referência:** 63 a 68
 
 ## Objetivos
 
-<!-- Descreva o que o aluno devera aprender nesta secao. -->
+<!-- Descreva o que o aluno deverá aprender nesta seção. -->
 
-## Conteudos
+## Conteúdos
 
-<!-- Liste os assuntos que serao abordados. -->
+<!-- Liste os assuntos que serão abordados. -->
 
 ## Planejamento das aulas
 
-| Aula | Tema | Atividade ou recurso | Observacoes |
+| Aula | Tema | Atividade ou recurso | Observações |
 | ---: | --- | --- | --- |
 <!-- Adicione uma linha para cada aula. -->
 
-## Observacoes
+## Observações
 
-<!-- Inclua decisoes, ajustes e lembretes para esta secao. -->
+<!-- Inclua decisões, ajustes e lembretes para esta seção. -->
