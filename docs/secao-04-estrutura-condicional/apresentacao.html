@@ -1,0 +1,2443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Seção 4 — Estrutura condicional</title>
+<!--
+  duke.svg — Duke, o mascote do Java.
+  Autor: sbmehta, via Wikimedia Commons ("Duke (Java mascot) waving.svg").
+  Licença: BSD. Duke foi liberado como código aberto pela Sun Microsystems em 2006.
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    /* Identidade Java / Oracle */
+    --java-red:#e12523;       /* vermelho Oracle */
+    --java-red-dark:#8f1614;
+    --java-red-deep:#5c0d0c;
+    --java-orange:#f89820;    /* laranja clássico do Duke/Java */
+    --java-orange-soft:#ffd9a0;
+    --java-blue:#5382a1;      /* azul do logo Java */
+    --java-blue-dark:#2f5f7a;
+
+    --blue-900:#1b3a4b; --blue-700:#2f5f7a; --blue-500:#5382a1; --blue-300:#8fb5cc; --blue-100:#e8f1f6;
+    --amber-600:#b8690a; --amber-400:#f89820; --amber-200:#ffe0b8;
+    --orange-600:#b55418; --orange-400:#ed7d31;
+    --green-600:#4f7f30; --green-400:#70ad47;
+    --ink-900:#1a1a1a; --ink-700:#3d3d3d; --ink-500:#6b6b6b;
+    --paper:#ffffff; --paper-alt:#fbf8f5;
+    --code-kw:#c026a3; --code-str:#b45309; --code-plain:#1f2937; --code-com:#6b7280;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: #1c0f0e;
+    background-image: radial-gradient(ellipse at 50% 0%, #3a1a16 0%, #1c0f0e 60%);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    overflow: hidden;
+  }
+  .deck {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stage {
+    position: relative;
+    width: 1280px; height: 720px;
+    background: var(--paper);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    border-radius: 6px;
+    overflow: hidden;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 64px 80px 56px;
+  }
+  .slide::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px;
+    background: linear-gradient(90deg, var(--java-red) 0%, var(--java-orange) 100%);
+  }
+  .slide--title::before, .slide--divider::before, .slide--end::before { display: none; }
+  .slide.active { display: flex; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .eyebrow {
+    font-size: 22px; font-weight: 700; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--java-red); margin: 0 0 10px;
+  }
+  h1 { font-size: 52px; margin: 0 0 18px; color: var(--ink-900); line-height: 1.12; }
+  h2 { font-size: 40px; margin: 0 0 22px; color: var(--ink-900); line-height: 1.15; }
+  .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+  .slide-body.top { justify-content: flex-start; }
+
+  ul.points { list-style: none; margin: 0; padding: 0; font-size: 30px; color: var(--ink-700); }
+  ul.points li {
+    position: relative; padding-left: 42px; margin-bottom: 22px; line-height: 1.35;
+    opacity: 1;
+  }
+  .fragment { opacity: 0; transition: opacity .35s ease, transform .35s ease; }
+  .fragment.visible { opacity: 1; }
+  ul.points li.fragment { transform: translateX(-10px); }
+  ul.points li.fragment.visible { transform: translateX(0); }
+  ul.points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0; color: var(--java-orange); font-size: 28px;
+  }
+  ul.points li b { color: var(--ink-900); }
+  ul.points.compact { font-size: 26px; }
+  ul.points.compact li { margin-bottom: 14px; }
+
+  .sub { color: var(--ink-500); font-size: 24px; }
+
+  table.deck-table { width: 100%; border-collapse: collapse; font-size: 25px; }
+  table.deck-table th, table.deck-table td {
+    text-align: left; padding: 14px 18px; border-bottom: 1px solid #e5e7eb;
+  }
+  table.deck-table th { color: var(--java-red-dark); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; }
+  table.deck-table td.mono, table.deck-table th.mono { font-family: Consolas, "Courier New", monospace; }
+  table.deck-table tr:last-child td { border-bottom: none; }
+  table.deck-table td b { color: var(--ink-900); }
+
+  .code-block {
+    background: #f8fafc; border: 1px solid #d7dee7; border-radius: 10px;
+    padding: 26px 30px; font-family: Consolas, "Courier New", monospace;
+    font-size: 25px; line-height: 1.55; color: var(--code-plain); white-space: pre;
+    box-shadow: 0 4px 14px rgba(17,24,39,.06);
+  }
+  .code-block .kw { color: var(--code-kw); }
+  .code-block .str { color: var(--code-str); }
+  .code-block .com { color: var(--code-com); font-style: italic; }
+  .code-block.small { font-size: 21px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .two-col.center { align-items: center; }
+  .col-title { font-size: 22px; font-weight: 700; color: var(--java-red-dark); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .03em; }
+
+  .diagram-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  .diagram-wrap img { max-width: 100%; max-height: 100%; }
+
+  .badge {
+    display: inline-block; padding: 6px 16px; border-radius: 999px;
+    font-size: 20px; font-weight: 700; letter-spacing: .02em;
+  }
+  .badge-blue { background: var(--blue-100); color: var(--blue-900); }
+  .badge-amber { background: var(--java-orange); color: #4d2c02; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+
+  .callout {
+    margin-top: 20px; padding: 18px 24px; border-left: 6px solid var(--java-red);
+    background: #fdf0ef; border-radius: 6px; font-size: 23px; color: #6b1512;
+  }
+  .callout.amber { border-left-color: var(--java-orange); background: #fff6e9; color: #7a4708; }
+
+  .kpi-row { display: flex; gap: 24px; margin-top: 10px; }
+  .kpi {
+    flex: 1; background: var(--paper-alt); border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .kpi .kpi-num { font-size: 40px; font-weight: 700; color: var(--java-red); }
+  .kpi .kpi-label { font-size: 20px; color: var(--ink-500); margin-top: 4px; }
+
+  .footer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 18px; color: var(--ink-500); margin-top: 18px;
+  }
+
+  ol.points {
+    list-style: none; margin: 0; padding: 0; font-size: 26px; color: var(--ink-700);
+    counter-reset: exercicio;
+  }
+  ol.points li {
+    position: relative; padding-left: 54px; margin-bottom: 18px; line-height: 1.35;
+    counter-increment: exercicio;
+  }
+  ol.points li::before {
+    content: counter(exercicio);
+    position: absolute; left: 0; top: 1px; width: 34px; height: 34px;
+    border-radius: 999px; background: var(--java-orange); color: #4d2c02;
+    font-size: 19px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.points li b { color: var(--ink-900); }
+  ol.points.compact { font-size: 23px; }
+  ol.points.compact li { margin-bottom: 12px; }
+
+  /* Slides mais densos: reduz tipografia e respiro para o conteúdo caber nos 720px */
+  .slide.compact h2 { font-size: 34px; margin-bottom: 16px; }
+  .slide.compact .eyebrow { margin-bottom: 6px; }
+  .slide.compact table.deck-table { font-size: 22px; }
+  .slide.compact table.deck-table th,
+  .slide.compact table.deck-table td { padding: 9px 18px; }
+  .slide.compact table.deck-table th { font-size: 20px; }
+  .slide.compact .code-block { font-size: 21px; padding: 20px 26px; line-height: 1.45; }
+  .slide.compact .code-block.small { font-size: 19px; }
+  .slide.compact .callout { font-size: 21px; margin-top: 14px; padding: 14px 20px; }
+
+  .slide.compact-2 h2 { font-size: 32px; margin-bottom: 12px; }
+  .slide.compact-2 .code-block { font-size: 18px; padding: 16px 22px; line-height: 1.4; }
+  .slide.compact-2 .code-block.small { font-size: 17px; }
+  .slide.compact-2 .callout { font-size: 20px; margin-top: 12px; padding: 12px 18px; }
+
+  .slide--divider {
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    justify-content: center; align-items: flex-start; padding: 0 90px;
+    overflow: hidden;
+  }
+  .slide--divider .div-num {
+    font-size: 26px; color: var(--java-orange); font-weight: 700; letter-spacing: .06em;
+  }
+  .slide--divider h1 { color: #ffffff; font-size: 58px; max-width: 700px; }
+  .slide--divider .div-num { max-width: 700px; }
+  .slide--divider .div-list { margin-top: 34px; font-size: 26px; color: #ffe0b8; }
+  .slide--divider .div-list div { margin-bottom: 10px; }
+
+  .slide--title {
+    justify-content: center; align-items: flex-start;
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    overflow: hidden;
+  }
+  .slide--title .kicker { color: var(--java-orange); font-size: 26px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .slide--title h1 { color: #ffffff; font-size: 60px; margin-top: 14px; max-width: 700px; }
+  .slide--title .subtitle { color: #ffeeda; font-size: 27px; margin-top: 10px; max-width: 680px; }
+  .slide--title .kicker { max-width: 700px; }
+  .slide--title .title-foot { margin-top: 48px; color: var(--java-orange-soft); font-size: 22px; }
+
+  .slide--end {
+    justify-content: center; align-items: center; text-align: center;
+    background: linear-gradient(145deg, var(--java-red-deep) 0%, var(--java-red-dark) 45%, var(--java-red) 100%);
+    overflow: hidden;
+  }
+  .slide--end h1 { color: #fff; }
+  .slide--end .subtitle { color: #ffe0b8; font-size: 30px; }
+
+  /* Duke — mascote do Java */
+  .duke {
+    position: absolute; right: 70px; bottom: 0; height: 78%;
+    pointer-events: none; z-index: 1;
+    filter: drop-shadow(0 10px 26px rgba(0,0,0,.35));
+  }
+  .slide--end .duke { right: 60px; bottom: 0; height: 62%; opacity: .95; }
+  .slide--divider .duke { right: 60px; height: 66%; opacity: .28; }
+  .slide--title > *:not(.duke),
+  .slide--divider > *:not(.duke),
+  .slide--end > *:not(.duke) { position: relative; z-index: 2; }
+
+  .chip-row { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
+  .chip {
+    background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 12px;
+    padding: 16px 22px; font-size: 24px; color: var(--ink-700); font-weight: 700;
+  }
+  .chip.on { border-color: var(--java-red); color: var(--java-red-dark); background: #fdf0ef; }
+  .chip[data-correct] { cursor: pointer; transition: transform .15s ease, background .2s ease, border-color .2s ease; }
+  .chip[data-correct]:hover { transform: translateY(-2px); border-color: var(--java-orange); }
+  .chip-correct { background: #dcfce7 !important; border-color: #16a34a !important; color: #166534 !important; }
+  .chip-correct::after { content: " ✓"; }
+  .chip-wrong { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
+  .chip-wrong::after { content: " ✗"; }
+
+  .arrow-chain { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 34px; font-weight: 700; color: var(--ink-900); flex-wrap: wrap; }
+  .arrow-chain .node {
+    background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 14px; padding: 18px 30px;
+  }
+  .arrow-chain .arrow { color: var(--java-red); font-size: 40px; }
+
+  /* HUD */
+  .hud {
+    position: fixed; right: 22px; bottom: 16px; color: #b89a90;
+    font-family: Arial, sans-serif; font-size: 14px; z-index: 20; user-select: none;
+  }
+  .hud .sect { color: var(--java-orange); margin-right: 10px; }
+  .progress {
+    position: fixed; left: 0; bottom: 0; height: 4px; width: 100%;
+    background: rgba(255,255,255,.08); z-index: 20;
+  }
+  .progress-fill {
+    height: 100%; width: 0%; transition: width .25s ease;
+    background: linear-gradient(90deg, var(--java-red) 0%, var(--java-orange) 100%);
+  }
+
+  .hint {
+    position: fixed; left: 22px; bottom: 16px; color: #8a6f66; font-size: 13px; z-index: 20; user-select: none;
+  }
+
+  .overview {
+    position: fixed; inset: 0; z-index: 30; background: rgba(28,15,14,.97);
+    display: none; padding: 50px; overflow-y: auto;
+  }
+  .overview.active { display: block; }
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; max-width: 1500px; margin: 0 auto;
+  }
+  .overview-card {
+    background: #2e1a17; border: 2px solid #4a2a25; border-radius: 8px; padding: 14px;
+    color: #e3d3cd; cursor: pointer; font-size: 13px; min-height: 90px;
+  }
+  .overview-card:hover { border-color: var(--java-orange); }
+  .overview-card .oc-num { color: #a07c70; font-size: 12px; margin-bottom: 6px; }
+  .overview-card .oc-title { font-weight: 700; color: #fff6f0; font-size: 14px; line-height: 1.3; }
+  .overview-title {
+    color: #fff6f0; text-align: center; font-size: 22px; margin-bottom: 30px; font-family: Arial, sans-serif;
+  }
+
+  /* ---- Acréscimos da Seção 4 ---- */
+  code, .mono { font-family: Consolas, "Courier New", monospace; }
+
+  /* Valores booleanos em tabelas-verdade e testes de mesa */
+  .v-true { color: #166534; font-weight: 700; }
+  .v-false { color: #991b1b; font-weight: 700; }
+  .v-skip { color: #9ca3af; font-style: italic; }
+
+  .two-col.wide-left { grid-template-columns: 1.3fr 1fr; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr .72fr; gap: 34px; align-items: start; }
+  .formula {
+    display: inline-block; font-family: Consolas, "Courier New", monospace; font-size: 30px;
+    background: #fff6e9; border: 2px solid var(--java-orange); border-radius: 12px;
+    padding: 14px 28px; color: var(--ink-900);
+  }
+  .formula .part { color: var(--java-red-dark); font-weight: 700; }
+
+  /* Traçador: um clique escolhe o valor e o código acende só o caminho percorrido */
+  .trace-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  .trace-btn {
+    font-family: Consolas, "Courier New", monospace; font-size: 22px; font-weight: 700;
+    background: var(--paper-alt); border: 2px solid #e5e7eb; border-radius: 10px;
+    padding: 8px 16px; color: var(--ink-700); cursor: pointer;
+    transition: transform .15s ease, border-color .2s ease, background .2s ease;
+  }
+  .trace-btn:hover { transform: translateY(-2px); border-color: var(--java-orange); }
+  .trace-btn.on { border-color: var(--java-red); background: #fdf0ef; color: var(--java-red-dark); }
+  .trace .tl { border-radius: 4px; transition: opacity .25s ease, background .25s ease; }
+  .trace.active .tl { opacity: .3; }
+  .trace.active .tl.is-true, .trace.active .tl.is-false,
+  .trace.active .tl.is-run, .trace.active .tl.is-pass { opacity: 1; }
+  .trace.active .tl.is-true { background: #dcfce7; }
+  .trace.active .tl.is-false { background: #fee2e2; }
+  .trace.active .tl.is-run { background: #ffe7c2; }
+  .pill {
+    display: inline-block; margin-left: 12px; padding: 0 12px; border-radius: 999px;
+    font-family: Arial, Helvetica, sans-serif; font-size: .72em; font-weight: 700;
+    line-height: 1.55; vertical-align: 2px; white-space: nowrap;
+  }
+  .pill:empty { display: none; }
+  .pill.is-true { background: #16a34a; color: #ffffff; }
+  .pill.is-false { background: #dc2626; color: #ffffff; }
+  .pill.is-skip { background: #e5e7eb; color: #6b7280; }
+  .pill.is-pass { background: #ffffff; color: #6b7280; border: 2px dashed #c7cbd1; }
+  .trace-console { min-height: 64px; }
+  .trace-console.tall { min-height: 132px; }
+
+  /* Escopo: blocos desenhados como caixas aninhadas */
+  .code-block.scope-demo { white-space: normal; }
+  .scope-demo .ln { white-space: pre; }
+  .scope { position: relative; border-radius: 10px; padding: 32px 18px 10px; }
+  .scope-main { background: #eef4f8; border: 2px solid var(--blue-300); }
+  .scope-if { background: #fff1d6; border: 2px solid var(--java-orange); margin: 6px 0 6px 38px; }
+  .scope-tag {
+    position: absolute; top: 6px; right: 12px; font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--blue-700);
+  }
+  .scope-if > .scope-tag { color: var(--amber-600); }
+  .ln-err { background: #fee2e2; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="deck">
+  <div class="stage" id="stage">
+
+    <section class="slide slide--title" data-section="Abertura">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="kicker">Curso de Java — rumo à OCP Java SE 25</div>
+      <h1>Estrutura condicional</h1>
+      <div class="subtitle">Comparações, lógica booleana, if-else, switch e o operador ternário: o programa deixa de executar tudo e passa a escolher o caminho.</div>
+      <div class="title-foot">Seção 4 · Aulas 33 a 43</div>
+    </section>
+
+    <section class="slide" data-section="Abertura">
+      <div class="eyebrow">Onde estamos no curso</div>
+      <h2>Da linha reta para a bifurcação</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Estrutura</th><th>O que faz</th><th>Onde</th></tr>
+          <tr><td>Sequencial</td><td>executa tudo em ordem, uma vez</td><td>Seção 3</td></tr>
+          <tr><td><b>Condicional</b></td><td>escolhe entre caminhos alternativos</td><td><span class="badge badge-amber">Seção 4</span></td></tr>
+          <tr><td>Repetitiva</td><td>repete um trecho enquanto valer uma condição</td><td>Seção 5</td></tr>
+        </table>
+        <div class="callout">Até aqui, toda instrução executava sempre, exatamente uma vez. A partir de agora, algumas instruções podem <b>não</b> executar — e quem decide é uma <b>condição</b>, que vale <code>true</code> ou <code>false</code>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Abertura">
+      <div class="eyebrow">Roteiro da aula</div>
+      <h2>Sete blocos de conteúdo</h2>
+      <div class="slide-body top">
+        <table class="deck-table">
+          <tr><th style="width:110px">Bloco</th><th>Conteúdo</th></tr>
+          <tr><td><b>1</b></td><td>Expressões comparativas</td></tr>
+          <tr><td><b>2</b></td><td>Expressões lógicas</td></tr>
+          <tr><td><b>3</b></td><td>Estrutura condicional <code>if-else</code></td></tr>
+          <tr><td><b>4</b></td><td>Operadores de atribuição cumulativa</td></tr>
+          <tr><td><b>5</b></td><td>Estrutura <code>switch-case</code></td></tr>
+          <tr><td><b>6</b></td><td>Expressão condicional ternária</td></tr>
+          <tr><td><b>7</b></td><td>Escopo e inicialização</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 1">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 1 DE 7</div>
+      <h1>Expressões comparativas</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · boolean">
+      <div class="eyebrow">Uma pergunta, duas respostas possíveis</div>
+      <h2>Toda comparação produz um <code>boolean</code></h2>
+      <div class="code-block">
+<span class="kw">int</span> idade = 20;
+<span class="kw">boolean</span> maiorDeIdade = idade >= 18;
+
+System.out.println(maiorDeIdade);   <span class="com">// true</span>
+System.out.println(idade &lt; 18);     <span class="com">// false</span>
+      </div>
+      <div class="callout">Na Seção 3, as expressões produziam números. Uma comparação produz <code>true</code> ou <code>false</code> — e esse valor pode ser impresso, guardado em uma variável ou usado para decidir o que o programa executa.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Operadores">
+      <div class="eyebrow">São seis, e todos devolvem boolean</div>
+      <h2>Os operadores de comparação</h2>
+      <div class="slide-body top">
+        <table class="deck-table">
+          <tr><th class="mono" style="width:140px">Operador</th><th>Leitura</th><th class="mono">Exemplo</th><th class="mono">Resultado</th></tr>
+          <tr><td class="mono"><b>></b></td><td>maior que</td><td class="mono">8 > 5</td><td class="mono v-true">true</td></tr>
+          <tr><td class="mono"><b>&lt;</b></td><td>menor que</td><td class="mono">8 &lt; 5</td><td class="mono v-false">false</td></tr>
+          <tr><td class="mono"><b>>=</b></td><td>maior ou igual a</td><td class="mono">8 >= 8</td><td class="mono v-true">true</td></tr>
+          <tr><td class="mono"><b>&lt;=</b></td><td>menor ou igual a</td><td class="mono">7 &lt;= 6</td><td class="mono v-false">false</td></tr>
+          <tr><td class="mono"><b>==</b></td><td>igual a</td><td class="mono">4 == 4</td><td class="mono v-true">true</td></tr>
+          <tr><td class="mono"><b>!=</b></td><td>diferente de</td><td class="mono">4 != 4</td><td class="mono v-false">false</td></tr>
+        </table>
+        <div class="callout">A igualdade é <code>==</code>, com <b>dois</b> sinais. Um <code>=</code> sozinho continua sendo atribuição: <code>quantidade = 10</code> guarda o 10; <code>quantidade == 10</code> pergunta se ela vale 10.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Pergunta e resposta">
+      <div class="eyebrow">Leia a expressão em voz alta</div>
+      <h2>Separe a pergunta da resposta</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th class="mono">Expressão</th><th>Pergunta feita</th><th>Resposta</th></tr>
+          <tr><td class="mono">nota >= 6.0</td><td>a nota é pelo menos 6?</td><td class="mono">true ou false</td></tr>
+          <tr><td class="mono">idade &lt; 18</td><td>a idade é menor que 18?</td><td class="mono">true ou false</td></tr>
+          <tr><td class="mono">numero % 2 == 0</td><td>o resto da divisão por 2 é zero?</td><td class="mono">true ou false</td></tr>
+        </table>
+        <div class="callout amber">No último exemplo, a aritmética acontece <b>antes</b> da comparação: primeiro <code>numero % 2</code>, depois <code>== 0</code>. O contrário nem compila — em <code>x + (y > 5)</code>, não se soma <code>int</code> com <code>boolean</code>.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Números e char">
+      <div class="eyebrow">Tipos diferentes também se comparam</div>
+      <h2>Comparando números e caracteres</h2>
+      <div class="code-block">
+<span class="kw">int</span> a = 10;
+<span class="kw">double</span> b = 10.0;
+
+System.out.println(a == b);      <span class="com">// true: o 10 vira 10.0 antes</span>
+System.out.println(a &lt; 12);      <span class="com">// true</span>
+System.out.println(<span class="str">'A'</span> &lt; <span class="str">'B'</span>);   <span class="com">// true: 65 &lt; 66</span>
+System.out.println(<span class="str">'a'</span> > <span class="str">'Z'</span>);   <span class="com">// true: 97 > 90</span>
+      </div>
+      <div class="callout">Java promove o tipo menor antes de comparar — a mesma promoção numérica da Seção 3. Um <code>char</code> é comparado pelo seu <b>código Unicode</b>: por isso o <code>'a'</code> minúsculo é "maior" que o <code>'Z'</code> maiúsculo.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Limites">
+      <div class="eyebrow">Onde mora a maior parte dos erros</div>
+      <h2>O operador decide se o limite entra</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1120 390" role="img" aria-labelledby="limA-title limA-desc" style="max-width:100%;max-height:100%">
+          <title id="limA-title">O operador decide se o limite entra</title>
+          <desc id="limA-desc">Quatro retas numéricas para a idade. Em idade maior que 18 e idade menor que 18, a bolinha sobre o 18 é aberta: o 18 fica de fora. Em idade maior ou igual a 18 e idade menor ou igual a 18, a bolinha é fechada: o 18 entra.</desc>
+          <defs>
+            <marker id="limSeta" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="22" markerHeight="22" markerUnits="userSpaceOnUse" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f5f7a" />
+            </marker>
+          </defs>
+          <rect width="1120" height="390" fill="#ffffff" />
+          <g font-family="Arial, Helvetica, sans-serif">
+            <line x1="525" y1="12" x2="525" y2="372" stroke="#e12523" stroke-width="2" stroke-dasharray="7 7" opacity=".5" />
+
+            <!-- idade > 18 -->
+            <g transform="translate(0 50)">
+              <text x="265" y="10" font-size="28" text-anchor="end" fill="#111827" font-family="Consolas, 'Courier New', monospace">idade > 18</text>
+              <line x1="300" y1="0" x2="750" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <g stroke="#9ca3af" stroke-width="2"><line x1="330" y1="-8" x2="330" y2="8" /><line x1="395" y1="-8" x2="395" y2="8" /><line x1="460" y1="-8" x2="460" y2="8" /><line x1="525" y1="-8" x2="525" y2="8" /><line x1="590" y1="-8" x2="590" y2="8" /><line x1="655" y1="-8" x2="655" y2="8" /><line x1="720" y1="-8" x2="720" y2="8" /></g>
+              <g font-size="17" fill="#9ca3af" text-anchor="middle"><text x="330" y="34">15</text><text x="395" y="34">16</text><text x="460" y="34">17</text><text x="525" y="34" fill="#111827" font-weight="700">18</text><text x="590" y="34">19</text><text x="655" y="34">20</text><text x="720" y="34">21</text></g>
+              <line x1="537" y1="0" x2="742" y2="0" stroke="#5382a1" stroke-width="8" marker-end="url(#limSeta)" />
+              <circle cx="525" cy="0" r="11" fill="#ffffff" stroke="#2f5f7a" stroke-width="4" />
+              <text x="800" y="-2" font-size="24" font-weight="700" fill="#111827">maior que 18</text>
+              <text x="800" y="26" font-size="20" fill="#991b1b">o 18 fica de fora</text>
+            </g>
+
+            <!-- idade >= 18 -->
+            <g transform="translate(0 140)">
+              <text x="265" y="10" font-size="28" text-anchor="end" fill="#111827" font-family="Consolas, 'Courier New', monospace">idade >= 18</text>
+              <line x1="300" y1="0" x2="750" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <g stroke="#9ca3af" stroke-width="2"><line x1="330" y1="-8" x2="330" y2="8" /><line x1="395" y1="-8" x2="395" y2="8" /><line x1="460" y1="-8" x2="460" y2="8" /><line x1="525" y1="-8" x2="525" y2="8" /><line x1="590" y1="-8" x2="590" y2="8" /><line x1="655" y1="-8" x2="655" y2="8" /><line x1="720" y1="-8" x2="720" y2="8" /></g>
+              <g font-size="17" fill="#9ca3af" text-anchor="middle"><text x="330" y="34">15</text><text x="395" y="34">16</text><text x="460" y="34">17</text><text x="525" y="34" fill="#111827" font-weight="700">18</text><text x="590" y="34">19</text><text x="655" y="34">20</text><text x="720" y="34">21</text></g>
+              <line x1="525" y1="0" x2="742" y2="0" stroke="#5382a1" stroke-width="8" marker-end="url(#limSeta)" />
+              <circle cx="525" cy="0" r="11" fill="#2f5f7a" stroke="#2f5f7a" stroke-width="4" />
+              <text x="800" y="-2" font-size="24" font-weight="700" fill="#111827">a partir de 18</text>
+              <text x="800" y="26" font-size="20" fill="#166534">o 18 entra</text>
+            </g>
+
+            <!-- idade < 18 -->
+            <g transform="translate(0 230)">
+              <text x="265" y="10" font-size="28" text-anchor="end" fill="#111827" font-family="Consolas, 'Courier New', monospace">idade &lt; 18</text>
+              <line x1="300" y1="0" x2="750" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <g stroke="#9ca3af" stroke-width="2"><line x1="330" y1="-8" x2="330" y2="8" /><line x1="395" y1="-8" x2="395" y2="8" /><line x1="460" y1="-8" x2="460" y2="8" /><line x1="525" y1="-8" x2="525" y2="8" /><line x1="590" y1="-8" x2="590" y2="8" /><line x1="655" y1="-8" x2="655" y2="8" /><line x1="720" y1="-8" x2="720" y2="8" /></g>
+              <g font-size="17" fill="#9ca3af" text-anchor="middle"><text x="330" y="34">15</text><text x="395" y="34">16</text><text x="460" y="34">17</text><text x="525" y="34" fill="#111827" font-weight="700">18</text><text x="590" y="34">19</text><text x="655" y="34">20</text><text x="720" y="34">21</text></g>
+              <line x1="513" y1="0" x2="308" y2="0" stroke="#5382a1" stroke-width="8" marker-end="url(#limSeta)" />
+              <circle cx="525" cy="0" r="11" fill="#ffffff" stroke="#2f5f7a" stroke-width="4" />
+              <text x="800" y="-2" font-size="24" font-weight="700" fill="#111827">menos de 18</text>
+              <text x="800" y="26" font-size="20" fill="#991b1b">o 18 fica de fora</text>
+            </g>
+
+            <!-- idade <= 18 -->
+            <g transform="translate(0 320)">
+              <text x="265" y="10" font-size="28" text-anchor="end" fill="#111827" font-family="Consolas, 'Courier New', monospace">idade &lt;= 18</text>
+              <line x1="300" y1="0" x2="750" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <g stroke="#9ca3af" stroke-width="2"><line x1="330" y1="-8" x2="330" y2="8" /><line x1="395" y1="-8" x2="395" y2="8" /><line x1="460" y1="-8" x2="460" y2="8" /><line x1="525" y1="-8" x2="525" y2="8" /><line x1="590" y1="-8" x2="590" y2="8" /><line x1="655" y1="-8" x2="655" y2="8" /><line x1="720" y1="-8" x2="720" y2="8" /></g>
+              <g font-size="17" fill="#9ca3af" text-anchor="middle"><text x="330" y="34">15</text><text x="395" y="34">16</text><text x="460" y="34">17</text><text x="525" y="34" fill="#111827" font-weight="700">18</text><text x="590" y="34">19</text><text x="655" y="34">20</text><text x="720" y="34">21</text></g>
+              <line x1="525" y1="0" x2="308" y2="0" stroke="#5382a1" stroke-width="8" marker-end="url(#limSeta)" />
+              <circle cx="525" cy="0" r="11" fill="#2f5f7a" stroke="#2f5f7a" stroke-width="4" />
+              <text x="800" y="-2" font-size="24" font-weight="700" fill="#111827">no máximo 18</text>
+              <text x="800" y="26" font-size="20" fill="#166534">o 18 entra</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="callout amber">Bolinha aberta exclui o limite; bolinha fechada inclui. Antes de escolher o operador, leia o requisito: <b>maior que</b> e <b>menos de</b> deixam o 18 de fora; <b>a partir de</b> e <b>no máximo</b> o incluem.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Ponto flutuante">
+      <div class="eyebrow">A Seção 3 deixou esta pergunta no ar</div>
+      <h2><code>0.1 + 0.2</code> é igual a <code>0.3</code>?</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Com ==, não</div>
+          <div class="code-block small">
+<span class="kw">double</span> resultado = 0.1 + 0.2;
+
+System.out.println(resultado);
+<span class="com">// 0.30000000000000004</span>
+
+System.out.println(resultado == 0.3);
+<span class="com">// false</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Com uma tolerância, sim</div>
+          <div class="code-block small">
+<span class="kw">double</span> diferenca =
+        Math.abs(resultado - 0.3);
+
+<span class="kw">boolean</span> quaseIgual =
+        diferenca &lt; 0.000001;
+
+System.out.println(quaseIgual);  <span class="com">// true</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Um <code>double</code> pode guardar uma pequena aproximação. Quando uma tolerância for aceitável, compare a <b>distância</b> entre os valores. Nada de novo aqui: <code>Math.abs</code> é da Seção 3.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Textos">
+      <div class="eyebrow">String não é um tipo primitivo</div>
+      <h2>Não use <code>==</code> para comparar textos</h2>
+      <div class="code-block">
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+
+String resposta = sc.next();             <span class="com">// o usuário digita: sim</span>
+System.out.println(resposta == <span class="str">"sim"</span>);   <span class="com">// false</span>
+      </div>
+      <div class="callout">Para tipos por referência, como <code>String</code>, o <code>==</code> pergunta se as duas variáveis apontam para o <b>mesmo objeto</b> — e não se os textos têm as mesmas letras. Com dois literais iguais pode até dar <code>true</code>, o que torna o erro ainda mais traiçoeiro.</div>
+      <div class="callout amber">A comparação de conteúdo fica para quando o curso aprofundar objetos. Nesta seção, as decisões usam números, <code>char</code> e <code>boolean</code>.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Teste rápido">
+      <div class="eyebrow">Preveja antes de revelar</div>
+      <h2>Teste rápido com <code>int x = 8;</code> e <code>int y = 3;</code></h2>
+      <div class="slide-body top">
+        <table class="deck-table" style="max-width:720px">
+          <tr><th class="mono">Expressão</th><th class="mono">Resultado</th></tr>
+          <tr><td class="mono">x > y</td><td class="mono"><span class="fragment v-true">true</span></td></tr>
+          <tr><td class="mono">x &lt;= 8</td><td class="mono"><span class="fragment v-true">true</span></td></tr>
+          <tr><td class="mono">x == y</td><td class="mono"><span class="fragment v-false">false</span></td></tr>
+          <tr><td class="mono">x != y</td><td class="mono"><span class="fragment v-true">true</span></td></tr>
+          <tr><td class="mono">x % 2 == 0</td><td class="mono"><span class="fragment v-true">true</span></td></tr>
+          <tr><td class="mono">y % 2 != 0</td><td class="mono"><span class="fragment v-true">true</span></td></tr>
+        </table>
+        <div class="callout fragment">Avaliar cada expressão isoladamente, no papel, é o primeiro passo do teste de mesa — antes de a condição ir parar dentro de um <code>if</code>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 1 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Qual condição reconhece <b>qualquer</b> número ímpar, inclusive negativo?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip mono" data-correct="false" data-explain="Falha nos negativos: em Java, o resto tem o sinal do dividendo. -7 % 2 vale -1, e -1 == 1 é false — o -7 seria tratado como par.">n % 2 == 1</div>
+          <div class="chip mono" data-correct="true" data-explain="O resto de um ímpar é 1 ou -1, mas nunca 0. Perguntar se ele é diferente de zero funciona para positivos e negativos.">n % 2 != 0</div>
+          <div class="chip mono" data-correct="false" data-explain="n / 2 é a divisão inteira, não o resto: 4 / 2 vale 2, que é diferente de zero — e 4 é par.">n / 2 != 0</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">O resto de um ímpar é <code>1</code> ou <code>-1</code>, mas nunca <code>0</code>. Em Java, o resto tem o sinal do dividendo: <code>-7 % 2</code> vale <code>-1</code>, e por isso <code>n % 2 == 1</code> falha nos negativos.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 1 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 1</div>
+      <h2>Pratique na IDE: expressões comparativas</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Guarde em <code>boolean maiorDeIdade</code> o resultado de <code>idade >= 18</code> e imprima para as idades 17, 18 e 19.</li>
+          <li>Com <code>int quantidade</code> declarada, escreva <code>boolean temDez = quantidade = 10;</code> Leia o erro e corrija trocando <code>=</code> por <code>==</code>.</li>
+          <li>Imprima <code>10 == 10.0</code>, <code>'A' &lt; 'B'</code> e <code>'a' > 'Z'</code>. Depois imprima <code>(int) 'a'</code> e <code>(int) 'Z'</code> para conferir os códigos.</li>
+          <li>Imprima <code>0.1 + 0.2 == 0.3</code>. Em seguida, refaça a comparação com <code>Math.abs(...) &lt; 0.000001</code>.</li>
+          <li>Teste <code>n % 2 == 1</code> e <code>n % 2 != 0</code> com 7, -7 e 0. Anote qual das duas acerta todos os casos.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 2">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 2 DE 7</div>
+      <h1>Expressões lógicas</h1>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · Tabelas-verdade">
+      <div class="eyebrow">Combinar e inverter valores boolean</div>
+      <h2>Três operadores, três tabelas-verdade</h2>
+      <div class="slide-body top">
+        <div class="three-col">
+          <div>
+            <div class="col-title">&amp;&amp; · E lógico</div>
+            <table class="deck-table">
+              <tr><th class="mono">a</th><th class="mono">b</th><th class="mono">a &amp;&amp; b</th></tr>
+              <tr><td class="mono">false</td><td class="mono">false</td><td class="mono v-false">false</td></tr>
+              <tr><td class="mono">false</td><td class="mono">true</td><td class="mono v-false">false</td></tr>
+              <tr><td class="mono">true</td><td class="mono">false</td><td class="mono v-false">false</td></tr>
+              <tr><td class="mono">true</td><td class="mono">true</td><td class="mono v-true">true</td></tr>
+            </table>
+          </div>
+          <div>
+            <div class="col-title">|| · OU lógico</div>
+            <table class="deck-table">
+              <tr><th class="mono">a</th><th class="mono">b</th><th class="mono">a || b</th></tr>
+              <tr><td class="mono">false</td><td class="mono">false</td><td class="mono v-false">false</td></tr>
+              <tr><td class="mono">false</td><td class="mono">true</td><td class="mono v-true">true</td></tr>
+              <tr><td class="mono">true</td><td class="mono">false</td><td class="mono v-true">true</td></tr>
+              <tr><td class="mono">true</td><td class="mono">true</td><td class="mono v-true">true</td></tr>
+            </table>
+          </div>
+          <div>
+            <div class="col-title">! · NÃO lógico</div>
+            <table class="deck-table">
+              <tr><th class="mono">a</th><th class="mono">!a</th></tr>
+              <tr><td class="mono">false</td><td class="mono v-true">true</td></tr>
+              <tr><td class="mono">true</td><td class="mono v-false">false</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="callout"><code>&amp;&amp;</code> só dá <code>true</code> quando <b>as duas</b> partes são <code>true</code>. <code>||</code> só dá <code>false</code> quando <b>as duas</b> são <code>false</code>. <code>!</code> inverte — e, em <code>!(idade >= 18)</code>, os parênteses mostram o que está sendo negado.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · && e ||">
+      <div class="eyebrow">Perguntas simples viram perguntas completas</div>
+      <h2>Dentro e fora do intervalo de 0 a 10</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">&amp;&amp; · todas precisam valer</div>
+          <div class="code-block small">
+<span class="kw">double</span> nota = 7.5;
+
+<span class="kw">boolean</span> notaValida =
+        nota >= 0.0 &amp;&amp; nota &lt;= 10.0;
+
+<span class="com">// true &amp;&amp; true  →  true</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">|| · uma basta</div>
+          <div class="code-block small">
+<span class="kw">double</span> nota = 12.0;
+
+<span class="kw">boolean</span> foraDoIntervalo =
+        nota &lt; 0.0 || nota > 10.0;
+
+<span class="com">// false || true  →  true</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout amber">Java não aceita a notação da matemática <code>0 &lt;= nota &lt;= 10</code>: <code>0 &lt;= nota</code> já vira <code>boolean</code>, e <code>boolean</code> não se compara com 10. É preciso repetir a variável: <code>nota >= 0 &amp;&amp; nota &lt;= 10</code>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Intervalos">
+      <div class="eyebrow">O &amp;&amp; estreita; o || alarga</div>
+      <h2>Intervalos na reta numérica</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1120 390" role="img" aria-labelledby="limB-title limB-desc" style="max-width:100%;max-height:100%">
+          <title id="limB-title">Intervalos com E e com OU</title>
+          <desc id="limB-desc">Idade maior ou igual a 18 é uma semirreta para a direita; idade menor ou igual a 65 é uma semirreta para a esquerda. Com E, sobra apenas o trecho de 18 a 65, onde as duas valem. Com OU, a condição idade menor que 18 ou idade maior que 65 cobre as duas pontas de fora do intervalo.</desc>
+          <defs>
+            <marker id="limSetaAzul" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="22" markerHeight="22" markerUnits="userSpaceOnUse" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f5f7a" />
+            </marker>
+            <marker id="limSetaVermelha" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="22" markerHeight="22" markerUnits="userSpaceOnUse" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#991b1b" />
+            </marker>
+          </defs>
+          <rect width="1120" height="390" fill="#ffffff" />
+          <g font-family="Arial, Helvetica, sans-serif">
+            <line x1="401" y1="30" x2="401" y2="378" stroke="#e12523" stroke-width="2" stroke-dasharray="7 7" opacity=".5" />
+            <line x1="664" y1="30" x2="664" y2="378" stroke="#e12523" stroke-width="2" stroke-dasharray="7 7" opacity=".5" />
+            <text x="401" y="22" font-size="20" font-weight="700" text-anchor="middle" fill="#8f1614">18</text>
+            <text x="664" y="22" font-size="20" font-weight="700" text-anchor="middle" fill="#8f1614">65</text>
+
+            <!-- idade >= 18 -->
+            <g transform="translate(0 70)">
+              <text x="265" y="10" font-size="27" text-anchor="end" fill="#111827" font-family="Consolas, 'Courier New', monospace">idade >= 18</text>
+              <line x1="290" y1="0" x2="760" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <line x1="401" y1="0" x2="746" y2="0" stroke="#5382a1" stroke-width="8" marker-end="url(#limSetaAzul)" />
+              <circle cx="401" cy="0" r="11" fill="#2f5f7a" stroke="#2f5f7a" stroke-width="4" />
+              <text x="800" y="9" font-size="24" font-weight="700" fill="#111827">a partir de 18</text>
+            </g>
+
+            <!-- idade <= 65 -->
+            <g transform="translate(0 160)">
+              <text x="265" y="10" font-size="27" text-anchor="end" fill="#111827" font-family="Consolas, 'Courier New', monospace">idade &lt;= 65</text>
+              <line x1="290" y1="0" x2="760" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <line x1="664" y1="0" x2="304" y2="0" stroke="#5382a1" stroke-width="8" marker-end="url(#limSetaAzul)" />
+              <circle cx="664" cy="0" r="11" fill="#2f5f7a" stroke="#2f5f7a" stroke-width="4" />
+              <text x="800" y="9" font-size="24" font-weight="700" fill="#111827">no máximo 65</text>
+            </g>
+
+            <!-- && -->
+            <g class="fragment" transform="translate(0 250)">
+              <text x="265" y="12" font-size="34" font-weight="700" text-anchor="end" fill="#b8690a" font-family="Consolas, 'Courier New', monospace">&amp;&amp;</text>
+              <line x1="290" y1="0" x2="760" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <line x1="401" y1="0" x2="664" y2="0" stroke="#16a34a" stroke-width="10" />
+              <circle cx="401" cy="0" r="11" fill="#166534" stroke="#166534" stroke-width="4" />
+              <circle cx="664" cy="0" r="11" fill="#166534" stroke="#166534" stroke-width="4" />
+              <text x="800" y="-4" font-size="24" font-weight="700" fill="#166534">dentro: as duas valem</text>
+              <text x="800" y="24" font-size="20" fill="#374151" font-family="Consolas, 'Courier New', monospace">idade >= 18 &amp;&amp; idade &lt;= 65</text>
+            </g>
+
+            <!-- || -->
+            <g class="fragment" transform="translate(0 340)">
+              <text x="265" y="12" font-size="34" font-weight="700" text-anchor="end" fill="#b8690a" font-family="Consolas, 'Courier New', monospace">||</text>
+              <line x1="290" y1="0" x2="760" y2="0" stroke="#d7dee7" stroke-width="4" />
+              <line x1="389" y1="0" x2="304" y2="0" stroke="#dc2626" stroke-width="8" marker-end="url(#limSetaVermelha)" />
+              <line x1="676" y1="0" x2="746" y2="0" stroke="#dc2626" stroke-width="8" marker-end="url(#limSetaVermelha)" />
+              <circle cx="401" cy="0" r="11" fill="#ffffff" stroke="#991b1b" stroke-width="4" />
+              <circle cx="664" cy="0" r="11" fill="#ffffff" stroke="#991b1b" stroke-width="4" />
+              <text x="800" y="-4" font-size="24" font-weight="700" fill="#991b1b">fora: basta uma valer</text>
+              <text x="800" y="24" font-size="20" fill="#374151" font-family="Consolas, 'Courier New', monospace">idade &lt; 18 || idade > 65</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · Traduzindo">
+      <div class="eyebrow">Traduza antes de revelar</div>
+      <h2>Do requisito para a condição</h2>
+      <div class="slide-body top">
+        <table class="deck-table">
+          <tr><th>Requisito</th><th class="mono">Expressão Java</th></tr>
+          <tr><td>idade entre 18 e 65, inclusive</td><td class="mono"><span class="fragment">idade >= 18 &amp;&amp; idade &lt;= 65</span></td></tr>
+          <tr><td>temperatura abaixo de 10 ou acima de 35</td><td class="mono"><span class="fragment">temperatura &lt; 10 || temperatura > 35</span></td></tr>
+          <tr><td>número não é zero</td><td class="mono"><span class="fragment">numero != 0</span></td></tr>
+          <tr><td>número é par e positivo</td><td class="mono"><span class="fragment">numero % 2 == 0 &amp;&amp; numero > 0</span></td></tr>
+          <tr><td>não está aprovado</td><td class="mono"><span class="fragment">!aprovado</span></td></tr>
+        </table>
+        <div class="callout">Escreva primeiro cada pergunta simples. Depois escolha o conector: <code>&amp;&amp;</code> quando todas precisam valer, <code>||</code> quando uma delas basta.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · Curto-circuito">
+      <div class="eyebrow">Quando o resultado já está decidido</div>
+      <h2>Curto-circuito: o <code>&amp;&amp;</code> para assim que pode</h2>
+      <div class="two-col wide-left trace">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> divisor = <span data-f="div">0</span>;
+
+<span class="kw">boolean</span> podeDividir = <span class="tl" data-k="p1">divisor != 0</span><span class="pill" data-k="p1" data-f="p1"></span>
+                   &amp;&amp; <span class="tl" data-k="p2">10 / divisor > 2</span>;<span class="pill" data-k="p2" data-f="p2"></span>
+
+System.out.println(podeDividir);
+          </div>
+          <div class="col-title" style="margin-top:18px">Saída</div>
+          <div class="code-block small trace-console" data-f="out"><span class="com">escolha um divisor ao lado</span></div>
+        </div>
+        <div>
+          <div class="col-title">Escolha o divisor</div>
+          <div class="trace-row">
+            <button type="button" class="trace-btn" data-state='{"p1":"false","p2":"skip"}' data-fill='{"div":"0","p1":"false","p2":"não avaliada","out":"false","why":"A 1ª parte já é false, e false &amp;&amp; qualquer coisa dá false. O Java nem avalia a 2ª parte: a divisão por zero nunca acontece."}'>0</button>
+            <button type="button" class="trace-btn" data-state='{"p1":"true","p2":"true"}' data-fill='{"div":"2","p1":"true","p2":"true","out":"true","why":"A 1ª parte é true, então o resultado depende da 2ª: 10 / 2 é 5, e 5 > 2 é true."}'>2</button>
+            <button type="button" class="trace-btn" data-state='{"p1":"true","p2":"false"}' data-fill='{"div":"5","p1":"true","p2":"false","out":"false","why":"As duas partes são avaliadas: 10 / 5 é 2, e 2 > 2 é false."}'>5</button>
+          </div>
+          <div class="callout amber" data-f="why">Preveja o resultado antes de clicar.</div>
+          <div class="callout">No <code>||</code> é igual, ao contrário: se a 1ª parte é <code>true</code>, o resultado já é <code>true</code> e a 2ª não é avaliada.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · A ordem protege">
+      <div class="eyebrow">Duas formas de perder a proteção</div>
+      <h2>A divisão por zero volta</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Proteção na ordem errada</div>
+          <div class="code-block small">
+<span class="kw">int</span> divisor = 0;
+
+<span class="kw">boolean</span> ok = 10 / divisor > 2
+          &amp;&amp; divisor != 0;
+
+<span class="com">// ArithmeticException: / by zero</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">&amp; no lugar de &amp;&amp;</div>
+          <div class="code-block small">
+<span class="kw">int</span> divisor = 0;
+
+<span class="kw">boolean</span> ok = divisor != 0
+           &amp; 10 / divisor > 2;
+
+<span class="com">// ArithmeticException: / by zero</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Coloque <b>primeiro</b> a condição que protege a segunda. E prefira <code>&amp;&amp;</code> e <code>||</code>: com <code>boolean</code>, <code>&amp;</code> e <code>|</code> dão o mesmo resultado lógico, mas avaliam <b>sempre</b> as duas partes.</div>
+      <div class="callout amber"><code>&amp;</code> e <code>|</code> entre números são operadores <i>bitwise</i> — assunto da Seção 6.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · Precedência">
+      <div class="eyebrow">Do mais forte para o mais fraco</div>
+      <h2>Precedência dos operadores vistos até aqui</h2>
+      <div class="two-col">
+        <div>
+          <table class="deck-table">
+            <tr><th style="width:60px">#</th><th>Operadores</th></tr>
+            <tr><td>1</td><td class="mono">!  +  - <span style="font-family:Arial">(unários)</span></td></tr>
+            <tr><td>2</td><td class="mono">*  /  %</td></tr>
+            <tr><td>3</td><td class="mono">+  -</td></tr>
+            <tr><td>4</td><td class="mono">&lt;  &lt;=  >  >=</td></tr>
+            <tr><td>5</td><td class="mono">==  !=</td></tr>
+            <tr><td>6</td><td class="mono">&amp;&amp;</td></tr>
+            <tr><td>7</td><td class="mono">||</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="col-title">O &amp;&amp; vem antes do ||</div>
+          <div class="code-block small">
+<span class="kw">int</span> idade = 20;
+<span class="kw">double</span> renda = 1800.0;
+<span class="kw">boolean</span> estudante = <span class="kw">true</span>;
+
+<span class="kw">boolean</span> desconto = idade &lt; 18
+    || renda &lt; 2000.0 &amp;&amp; estudante;
+
+<span class="com">// idade &lt; 18 || (renda &lt; 2000.0 &amp;&amp; estudante)</span>
+<span class="com">// false || true  →  true</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Mesmo quando não são obrigatórios, os parênteses mostram como a regra foi pensada. Use-os.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · Negação">
+      <div class="eyebrow">Negar um intervalo</div>
+      <h2>Inverta a comparação e troque o conector</h2>
+      <div class="code-block">
+<span class="kw">boolean</span> dentro = idade >= 18 &amp;&amp; idade &lt;= 65;
+<span class="kw">boolean</span> fora   = idade &lt; 18  || idade > 65;    <span class="com">// o oposto exato</span>
+      </div>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th class="mono">Esta negação</th><th class="mono">equivale a</th></tr>
+          <tr><td class="mono">!(a &amp;&amp; b)</td><td class="mono">!a || !b</td></tr>
+          <tr><td class="mono">!(a || b)</td><td class="mono">!a &amp;&amp; !b</td></tr>
+        </table>
+        <div class="callout amber">Não precisa decorar a regra: teste valores antes, sobre e depois de cada limite, e confira se a condição responde à pergunta certa.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Teste de mesa">
+      <div class="eyebrow">Um valor no meio do intervalo não basta</div>
+      <h2>Teste de mesa de <code>idade >= 18 &amp;&amp; idade &lt;= 65</code></h2>
+      <div class="slide-body top">
+        <table class="deck-table">
+          <tr><th class="mono">idade</th><th class="mono">idade >= 18</th><th class="mono">idade &lt;= 65</th><th>Resultado</th></tr>
+          <tr class="fragment"><td class="mono">17</td><td class="mono v-false">false</td><td class="mono v-true">true</td><td class="mono v-false">false</td></tr>
+          <tr class="fragment"><td class="mono">18</td><td class="mono v-true">true</td><td class="mono v-true">true</td><td class="mono v-true">true</td></tr>
+          <tr class="fragment"><td class="mono">65</td><td class="mono v-true">true</td><td class="mono v-true">true</td><td class="mono v-true">true</td></tr>
+          <tr class="fragment"><td class="mono">66</td><td class="mono v-true">true</td><td class="mono v-false">false</td><td class="mono v-false">false</td></tr>
+        </table>
+        <div class="callout">Antes do limite, sobre o limite e depois dele: é assim que se descobre, rapidinho, um <code>></code> que deveria ser <code>>=</code>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 2 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Quanto vale <code>true || false &amp;&amp; false</code>?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip mono" data-correct="true" data-explain="O &amp;&amp; tem precedência maior que o ||: a expressão é true || (false &amp;&amp; false). Como o lado esquerdo do || já é true, o resultado é true — e o curto-circuito nem avalia o resto.">true</div>
+          <div class="chip mono" data-correct="false" data-explain="Esse seria o resultado lendo da esquerda para a direita: (true || false) &amp;&amp; false. Mas o &amp;&amp; é avaliado antes do ||.">false</div>
+          <div class="chip" data-correct="false" data-explain="Compila: todos os operandos são boolean, e &amp;&amp; e || aceitam boolean.">Não compila</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">O <code>&amp;&amp;</code> vem antes do <code>||</code>: a expressão é <code>true || (false &amp;&amp; false)</code>. O lado esquerdo do <code>||</code> já é <code>true</code>, então o resultado é <code>true</code>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 2 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 2</div>
+      <h2>Pratique na IDE: expressões lógicas</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Imprima as quatro combinações de <code>true</code> e <code>false</code> com <code>&amp;&amp;</code> e com <code>||</code>. Monte as duas tabelas-verdade no caderno.</li>
+          <li>Escreva <code>boolean notaValida</code> para uma nota de 0 a 10 e teste com -1, 0, 10 e 11.</li>
+          <li>Tente escrever <code>0 &lt;= nota &lt;= 10</code>. Leia o erro e reescreva a condição com <code>&amp;&amp;</code>.</li>
+          <li>Com <code>int divisor = 0;</code>, avalie <code>divisor != 0 &amp;&amp; 10 / divisor > 2</code>. Depois inverta a ordem das partes e, por fim, troque <code>&amp;&amp;</code> por <code>&amp;</code>. Anote quando aparece a <code>ArithmeticException</code>.</li>
+          <li>Escreva "fora do intervalo de 18 a 65" com <code>!(...)</code> e sem <code>!</code>. Confira as duas versões com 17, 18, 65 e 66.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 3">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 3 DE 7</div>
+      <h1>Estrutura condicional if-else</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · Fluxo">
+      <div class="eyebrow">A sequência ganha uma bifurcação</div>
+      <h2>O programa passa a escolher um caminho</h2>
+      <div class="diagram-wrap"><img src="./fluxo-if-else.svg" alt="Fluxo de uma estrutura if-else: a condição divide o fluxo entre o bloco do if e o bloco do else, que voltam ao mesmo ponto"></div>
+      <div class="sub" style="text-align:center">Só um dos dois blocos executa. Depois deles, os caminhos se reencontram e a execução segue normalmente.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · if">
+      <div class="eyebrow">A forma mais simples</div>
+      <h2><code>if</code>: executar só quando for verdadeiro</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Saque só se houver saldo</div>
+          <div class="code-block small">
+<span class="kw">double</span> saldo = 500.0;
+<span class="kw">double</span> saque = 120.0;
+
+<span class="kw">if</span> (saque &lt;= saldo) {
+    saldo = saldo - saque;
+}
+
+System.out.printf(<span class="str">"Saldo: %.2f%n"</span>, saldo);
+          </div>
+        </div>
+        <div>
+          <div class="col-title">A condição precisa ser boolean</div>
+          <div class="code-block small">
+<span class="kw">int</span> quantidade = 3;
+
+<span class="kw">if</span> (quantidade) { }      <span class="com">// erro</span>
+
+<span class="kw">if</span> (quantidade > 0) {    <span class="com">// ok</span>
+    System.out.println(<span class="str">"Ha itens."</span>);
+}
+          </div>
+        </div>
+      </div>
+      <div class="callout">Se a condição for <code>false</code>, o bloco entre chaves é ignorado e a execução continua depois do <code>if</code>. E Java não converte <code>0</code> em <code>false</code> nem outros inteiros em <code>true</code>, como fazem C e JavaScript: a condição tem de ser <code>boolean</code>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 3 · if-else">
+      <div class="eyebrow">Exatamente um dos dois</div>
+      <h2><code>if-else</code>: escolher entre dois caminhos</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">double</span> nota = 7.0;
+
+<span class="kw">if</span> (nota >= 6.0) {
+    System.out.println(<span class="str">"Aprovado"</span>);
+} <span class="kw">else</span> {
+    System.out.println(<span class="str">"Reprovado"</span>);
+}
+          </div>
+        </div>
+        <div>
+          <table class="deck-table" style="font-size:23px">
+            <tr><th class="mono">nota</th><th class="mono">nota >= 6.0</th><th>Saída</th></tr>
+            <tr><td class="mono">8.0</td><td class="mono v-true">true</td><td class="mono">Aprovado</td></tr>
+            <tr><td class="mono"><b>6.0</b></td><td class="mono v-true">true</td><td class="mono">Aprovado</td></tr>
+            <tr><td class="mono">5.9</td><td class="mono v-false">false</td><td class="mono">Reprovado</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="callout">O <code>else</code> não recebe condição: ele significa "caso contrário". Repare no <b>6.0</b>, exatamente no limite — um teste de mesa sempre inclui os limites.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · else if">
+      <div class="eyebrow">De cima para baixo, o primeiro true vence</div>
+      <h2>Encadeamento com <code>else if</code></h2>
+      <div class="two-col wide-left trace">
+        <div>
+          <div class="code-block small">
+<span class="kw">double</span> nota = <span data-f="nota">7.5</span>;
+
+<span class="tl" data-k="c1"><span class="kw">if</span> (nota >= 9.0) {</span><span class="pill" data-k="c1" data-f="c1"></span>
+    <span class="tl" data-k="b1">System.out.println(<span class="str">"Conceito A"</span>);</span>
+<span class="tl" data-k="c2">} <span class="kw">else if</span> (nota >= 7.0) {</span><span class="pill" data-k="c2" data-f="c2"></span>
+    <span class="tl" data-k="b2">System.out.println(<span class="str">"Conceito B"</span>);</span>
+<span class="tl" data-k="c3">} <span class="kw">else if</span> (nota >= 6.0) {</span><span class="pill" data-k="c3" data-f="c3"></span>
+    <span class="tl" data-k="b3">System.out.println(<span class="str">"Conceito C"</span>);</span>
+<span class="tl" data-k="c4">} <span class="kw">else</span> {</span>
+    <span class="tl" data-k="b4">System.out.println(<span class="str">"Conceito D"</span>);</span>
+<span class="tl">}</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Escolha a nota</div>
+          <div class="trace-row">
+            <button type="button" class="trace-btn" data-state='{"c1":"true","b1":"run","c2":"skip","c3":"skip"}' data-fill='{"nota":"9.5","c1":"true","c2":"não avaliada","c3":"não avaliada","out":"Conceito A","why":"9.5 >= 9.0 é true: o primeiro bloco executa e o resto da cadeia é pulado. As outras condições também seriam true, mas nem chegam a ser testadas."}'>9.5</button>
+            <button type="button" class="trace-btn" data-state='{"c1":"false","c2":"true","b2":"run","c3":"skip"}' data-fill='{"nota":"7.5","c1":"false","c2":"true","c3":"não avaliada","out":"Conceito B","why":"A primeira condição é false, a segunda é true. O último else if nem é avaliado."}'>7.5</button>
+            <button type="button" class="trace-btn" data-state='{"c1":"false","c2":"false","c3":"true","b3":"run"}' data-fill='{"nota":"6.0","c1":"false","c2":"false","c3":"true","out":"Conceito C","why":"6.0 >= 6.0 é true: o limite entra. Todo teste de mesa precisa passar pelo valor exato do limite."}'>6.0</button>
+            <button type="button" class="trace-btn" data-state='{"c1":"false","c2":"false","c3":"false","c4":"run","b4":"run"}' data-fill='{"nota":"4.0","c1":"false","c2":"false","c3":"false","out":"Conceito D","why":"Todas as condições são false: sobra o else, que não tem condição nenhuma."}'>4.0</button>
+          </div>
+          <div class="col-title">Saída</div>
+          <div class="code-block small trace-console" data-f="out"><span class="com">escolha uma nota</span></div>
+          <div class="callout amber" data-f="why">Preveja a saída antes de clicar.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Ordem">
+      <div class="eyebrow">A condição mais ampla esconde as outras</div>
+      <h2>A ordem das condições importa</h2>
+      <div class="code-block">
+<span class="kw">double</span> nota = 9.5;
+
+<span class="kw">if</span> (nota >= 6.0) {
+    System.out.println(<span class="str">"Conceito C ou melhor"</span>);
+} <span class="kw">else if</span> (nota >= 9.0) {
+    System.out.println(<span class="str">"Conceito A"</span>);    <span class="com">// nunca é alcançado</span>
+}
+      </div>
+      <div class="callout">Toda nota que passa em <code>nota >= 9.0</code> já passou em <code>nota >= 6.0</code> — e, na cadeia, só o primeiro <code>true</code> executa. Em classificações por limite, vá do <b>maior</b> para o <b>menor</b>, ou escreva os intervalos completos.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · if independentes">
+      <div class="eyebrow">Nem toda decisão é uma cadeia</div>
+      <h2>Dois <code>if</code> separados podem executar juntos</h2>
+      <div class="two-col">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> numero = 6;
+
+<span class="kw">if</span> (numero > 0) {
+    System.out.println(<span class="str">"Positivo"</span>);
+}
+
+<span class="kw">if</span> (numero % 2 == 0) {
+    System.out.println(<span class="str">"Par"</span>);
+}
+          </div>
+        </div>
+        <div>
+          <div class="col-title">O que aparece no console</div>
+          <div class="code-block small">
+Positivo
+Par
+          </div>
+        </div>
+      </div>
+      <div class="callout">"Positivo" e "par" são características <b>independentes</b>, e as duas perguntas precisam ser feitas. Use <code>else if</code> só quando os caminhos forem alternativas que se excluem.</div>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 3 · Aninhadas">
+      <div class="eyebrow">Um if dentro do outro</div>
+      <h2>Aninhar ou combinar com <code>&amp;&amp;</code>?</h2>
+      <div class="two-col wide-left">
+        <div>
+          <div class="col-title">Aninhado: preserva o motivo</div>
+          <div class="code-block small">
+<span class="kw">if</span> (nota >= 6.0) {
+    <span class="kw">if</span> (faltas &lt;= 5) {
+        System.out.println(<span class="str">"Aprovado"</span>);
+    } <span class="kw">else</span> {
+        System.out.println(<span class="str">"Reprovado por faltas"</span>);
+    }
+} <span class="kw">else</span> {
+    System.out.println(<span class="str">"Reprovado por nota"</span>);
+}
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Composto: só o resultado</div>
+          <div class="code-block small">
+<span class="kw">if</span> (nota >= 6.0 &amp;&amp; faltas &lt;= 5) {
+    System.out.println(<span class="str">"Aprovado"</span>);
+} <span class="kw">else</span> {
+    System.out.println(<span class="str">"Reprovado"</span>);
+}
+          </div>
+        </div>
+      </div>
+      <div class="callout">Aninhe apenas quando a segunda pergunta depende da primeira. Se só interessa saber se as duas exigências foram atendidas, a condição composta é mais simples.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Chaves">
+      <div class="eyebrow">A indentação não muda a execução</div>
+      <h2>Use chaves, mesmo com uma linha só</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">O que parece</div>
+          <div class="code-block small">
+<span class="kw">if</span> (saldo &lt; 0)
+    System.out.println(<span class="str">"Saldo negativo"</span>);
+    System.out.println(<span class="str">"Verifique a conta"</span>);
+          </div>
+        </div>
+        <div>
+          <div class="col-title">O que o Java entende</div>
+          <div class="code-block small">
+<span class="kw">if</span> (saldo &lt; 0) {
+    System.out.println(<span class="str">"Saldo negativo"</span>);
+}
+System.out.println(<span class="str">"Verifique a conta"</span>);
+          </div>
+        </div>
+      </div>
+      <div class="callout">Sem chaves, <b>só a primeira instrução</b> pertence ao <code>if</code>; a segunda executa sempre. Durante o curso, mantenha as chaves: elas evitam o erro quando alguém acrescenta mais uma linha depois.</div>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 3 · Programa completo">
+      <div class="eyebrow">Juntando entrada, condição e saída</div>
+      <h2>Sinal e paridade de um número</h2>
+      <div class="two-col wide-left">
+        <div>
+          <div class="col-title">Leitura e 1ª decisão: o sinal</div>
+          <div class="code-block small">
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+System.out.print(<span class="str">"Digite um numero inteiro: "</span>);
+<span class="kw">int</span> numero = sc.nextInt();
+
+<span class="kw">if</span> (numero > 0) {
+    System.out.println(<span class="str">"Positivo"</span>);
+} <span class="kw">else if</span> (numero &lt; 0) {
+    System.out.println(<span class="str">"Negativo"</span>);
+} <span class="kw">else</span> {
+    System.out.println(<span class="str">"Zero"</span>);
+}
+          </div>
+        </div>
+        <div>
+          <div class="col-title">2ª decisão: a paridade</div>
+          <div class="code-block small">
+<span class="kw">if</span> (numero % 2 == 0) {
+    System.out.println(<span class="str">"Par"</span>);
+} <span class="kw">else</span> {
+    System.out.println(<span class="str">"Impar"</span>);
+}
+sc.close();
+          </div>
+          <table class="deck-table" style="font-size:19px; margin-top:12px">
+            <tr><th>Entrada</th><th>Saída</th></tr>
+            <tr><td class="mono">7</td><td class="mono">Positivo, Impar</td></tr>
+            <tr><td class="mono">-4</td><td class="mono">Negativo, Par</td></tr>
+            <tr><td class="mono">0</td><td class="mono">Zero, Par</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="callout">Duas decisões independentes: uma cadeia para o sinal, um <code>if-else</code> para a paridade. Zero é par, porque <code>0 % 2</code> vale <code>0</code>.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Teste de mesa">
+      <div class="eyebrow">Só o caminho percorrido entra na tabela</div>
+      <h2>Teste de mesa com <code>if-else</code></h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> x = 10;
+<span class="kw">int</span> y = 4;
+
+<span class="kw">if</span> (x > y) {
+    x = x - y;
+} <span class="kw">else</span> {
+    y = y - x;
+}
+
+System.out.println(x + <span class="str">" "</span> + y);
+          </div>
+        </div>
+        <div>
+          <table class="deck-table" style="font-size:22px">
+            <tr><th>Etapa</th><th class="mono">x</th><th class="mono">y</th></tr>
+            <tr class="fragment"><td>valores iniciais</td><td class="mono">10</td><td class="mono">4</td></tr>
+            <tr class="fragment"><td><code>x > y</code> → <span class="v-true mono">true</span></td><td class="mono">10</td><td class="mono">4</td></tr>
+            <tr class="fragment"><td>bloco do <code>if</code>: <code>x = 10 - 4</code></td><td class="mono"><b>6</b></td><td class="mono">4</td></tr>
+            <tr class="fragment"><td>saída: <code>6 4</code></td><td class="mono">6</td><td class="mono">4</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="callout fragment">O bloco do <code>else</code> não executa, então não aparece na tabela: o teste de mesa registra <b>somente</b> o caminho percorrido.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>O que este trecho imprime?</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> x = 3;
+
+<span class="kw">if</span> (x > 10); {
+    System.out.println(<span class="str">"Maior que 10"</span>);
+}
+          </div>
+        </div>
+        <div>
+          <div class="chip-row">
+            <div class="chip" data-correct="false" data-explain="Parece que nada, porque 3 > 10 é false. Mas o ; logo depois da condição encerrou o if: o bloco de baixo não pertence mais a ele.">Nada</div>
+            <div class="chip" data-correct="true" data-explain="O ; depois da condição é uma instrução vazia — é ela que o if controla. O bloco entre chaves vem depois, é independente e executa sempre.">Maior que 10</div>
+            <div class="chip" data-correct="false" data-explain="Compila: um ; sozinho é uma instrução válida (vazia), e um bloco { } solto também é permitido.">Não compila</div>
+          </div>
+          <div class="fragment js-answer" style="margin-top:28px">
+            <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+            <div class="callout js-answer-text" style="margin-top:14px">O <code>;</code> depois da condição é uma instrução vazia, e é ela que o <code>if</code> controla. O bloco entre chaves é independente e executa sempre: imprime <b>Maior que 10</b>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>E este, o que imprime?</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> x = 5;
+
+<span class="kw">if</span> (x > 10)
+    <span class="kw">if</span> (x > 20)
+        System.out.println(<span class="str">"A"</span>);
+<span class="kw">else</span>
+    System.out.println(<span class="str">"B"</span>);
+          </div>
+        </div>
+        <div>
+          <div class="chip-row">
+            <div class="chip" data-correct="false" data-explain="A indentação sugere que o else é do primeiro if — mas o compilador ignora a indentação.">B</div>
+            <div class="chip" data-correct="true" data-explain="O else pertence ao if sem else mais próximo: o de dentro. Como x > 10 é false, o if de fora pula tudo, inclusive esse else.">Nada</div>
+            <div class="chip" data-correct="false" data-explain="Para imprimir A, x precisaria ser maior que 20.">A</div>
+          </div>
+          <div class="fragment js-answer" style="margin-top:28px">
+            <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+            <div class="callout js-answer-text" style="margin-top:14px">O <code>else</code> pertence ao <code>if</code> sem <code>else</code> mais próximo — o de dentro. Como <code>x > 10</code> é <code>false</code>, nada é impresso. Com chaves, a dúvida nem existiria.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 3 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 3</div>
+      <h2>Pratique na IDE: if, else if e else</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Leia uma nota e imprima "Aprovado" ou "Reprovado". Teste com 5.9, 6.0 e 6.1.</li>
+          <li>Classifique a nota nos conceitos A, B, C e D com <code>else if</code>. Depois coloque <code>nota >= 6.0</code> como primeira condição e descubra qual conceito deixa de aparecer.</li>
+          <li>Escreva o programa do sinal e da paridade e teste com 7, -4 e 0.</li>
+          <li>Escreva um <code>if</code> sem chaves com duas linhas indentadas embaixo. Execute com a condição falsa e explique a saída.</li>
+          <li>Faça no papel o teste de mesa do trecho com <code>x = 10</code> e <code>y = 4</code>. Repita com <code>x = 3</code> e <code>y = 8</code> e confira executando.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 4">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 4 DE 7</div>
+      <h1>Operadores de atribuição cumulativa</h1>
+    </section>
+
+    <section class="slide" data-section="Bloco 4 · Ideia">
+      <div class="eyebrow">A variável recebe um valor calculado a partir dela mesma</div>
+      <h2>Uma escrita mais curta para atualizar</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Forma explícita</div>
+          <div class="code-block small">
+<span class="kw">double</span> saldo = 500.0;
+saldo = saldo - 80.0;
+
+<span class="com">// 420.0</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Forma cumulativa</div>
+          <div class="code-block small">
+<span class="kw">double</span> saldo = 500.0;
+saldo -= 80.0;
+
+<span class="com">// 420.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">O <code>-=</code> lê o valor atual de <code>saldo</code>, subtrai <code>80.0</code> e guarda o resultado na mesma variável. Até a Seção 3, toda atualização era escrita na forma explícita.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · Operadores">
+      <div class="eyebrow">Um para cada operação aritmética</div>
+      <h2>Os cinco operadores cumulativos</h2>
+      <div class="slide-body top">
+        <div class="sub" style="margin-bottom:12px">Cada linha parte de <code>int x = 10;</code></div>
+        <table class="deck-table">
+          <tr><th class="mono">Forma cumulativa</th><th class="mono">Equivale a</th><th>Novo valor de x</th></tr>
+          <tr><td class="mono"><b>x += 3</b></td><td class="mono">x = x + 3</td><td class="mono">13</td></tr>
+          <tr><td class="mono"><b>x -= 3</b></td><td class="mono">x = x - 3</td><td class="mono">7</td></tr>
+          <tr><td class="mono"><b>x *= 3</b></td><td class="mono">x = x * 3</td><td class="mono">30</td></tr>
+          <tr><td class="mono"><b>x /= 3</b></td><td class="mono">x = x / 3</td><td><span class="mono">3</span> &nbsp;— divisão inteira</td></tr>
+          <tr><td class="mono"><b>x %= 3</b></td><td class="mono">x = x % 3</td><td><span class="mono">1</span> &nbsp;— o resto</td></tr>
+        </table>
+        <div class="callout amber">O lado direito é calculado primeiro. Com <code>total = 10</code>, <code>total *= 2 + 3</code> vale <b>50</b>: é <code>total * (2 + 3)</code>, e não <code>total * 2 + 3</code>.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · Na prática">
+      <div class="eyebrow">Onde elas aparecem</div>
+      <h2>Contas e atualizações condicionais</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Uma conta</div>
+          <div class="code-block small">
+<span class="kw">double</span> saldo = 1000.0;
+
+saldo += 250.0;   <span class="com">// depósito: 1250.0</span>
+saldo -= 80.0;    <span class="com">// saque: 1170.0</span>
+saldo *= 1.01;    <span class="com">// mais 1%: 1181.7</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Só em um dos caminhos</div>
+          <div class="code-block small">
+<span class="kw">double</span> preco = 200.0;
+<span class="kw">boolean</span> clienteFrequente = <span class="kw">true</span>;
+
+<span class="kw">if</span> (clienteFrequente) {
+    preco *= 0.90;   <span class="com">// 10% de desconto</span>
+}
+<span class="com">// 180.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout amber">Multiplicar por <code>0.90</code> mantém 90% do preço — e, portanto, retira 10%. Multiplicar por <code>0.10</code> deixaria só o valor do desconto.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · Casting embutido">
+      <div class="eyebrow">Não é só uma abreviação</div>
+      <h2>A forma cumulativa embute um casting</h2>
+      <div class="two-col wide-left">
+        <div>
+          <div class="col-title">Compila de um jeito, não do outro</div>
+          <div class="code-block small">
+<span class="kw">short</span> quantidade = 5;
+
+quantidade += 1;               <span class="com">// compila</span>
+quantidade = quantidade + 1;   <span class="com">// erro</span>
+
+<span class="com">// o += equivale, na verdade, a:</span>
+quantidade = (<span class="kw">short</span>) (quantidade + 1);
+          </div>
+        </div>
+        <div>
+          <div class="col-title">E o casting estoura calado</div>
+          <div class="code-block small">
+<span class="kw">byte</span> valor = 127;
+valor += 1;
+
+System.out.println(valor);
+<span class="com">// -128</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Em uma operação aritmética, <code>byte</code> e <code>short</code> viram <code>int</code> — a promoção numérica da Seção 3. A forma cumulativa converte o resultado de volta sem avisar: ela não torna a operação mais segura.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · ++ e --">
+      <div class="eyebrow">Somar ou subtrair exatamente 1</div>
+      <h2>Incremento e decremento</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Sozinhos na linha</div>
+          <div class="code-block small">
+<span class="kw">int</span> contador = 0;
+
+contador++;   <span class="com">// 1</span>
+contador++;   <span class="com">// 2</span>
+contador--;   <span class="com">// 1</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Dentro de uma expressão</div>
+          <div class="code-block small">
+<span class="kw">int</span> a = 5;
+<span class="kw">int</span> b = a++;   <span class="com">// b = 5; depois a = 6</span>
+
+<span class="kw">int</span> c = 5;
+<span class="kw">int</span> d = ++c;   <span class="com">// c = 6; depois d = 6</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout"><code>x++</code> produz o valor <b>antigo</b> e depois soma 1; <code>++x</code> soma 1 e produz o valor <b>novo</b>. Sozinhos em uma linha, os dois dão no mesmo. A diferença só aparece quando o valor é usado na mesma expressão — e é aí que a certificação arma as pegadinhas.</div>
+      <div class="callout amber">Enquanto o assunto é novo, uma atualização por linha: o código e o teste de mesa ficam muito mais claros.</div>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 4 · Programa completo">
+      <div class="eyebrow">A atualização só acontece no caminho certo</div>
+      <h2>Um saque com validação</h2>
+      <div class="code-block">
+Scanner sc = <span class="kw">new</span> Scanner(System.in);
+<span class="kw">double</span> saldo = 500.0;
+
+System.out.print(<span class="str">"Valor do saque: "</span>);
+<span class="kw">double</span> saque = sc.nextDouble();
+
+<span class="kw">if</span> (saque > 0.0 &amp;&amp; saque &lt;= saldo) {
+    saldo -= saque;
+    System.out.printf(<span class="str">"Saque realizado. Saldo: %.2f%n"</span>, saldo);
+} <span class="kw">else</span> {
+    System.out.println(<span class="str">"Saque invalido."</span>);
+}
+
+sc.close();
+      </div>
+      <div class="callout">O <code>saldo -= saque</code> só é alcançado depois que a condição confirma que o valor é <b>positivo</b> e <b>cabe</b> no saldo.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>O que este trecho imprime?</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block">
+<span class="kw">byte</span> b = 10;
+b *= 30;
+System.out.println(b);
+          </div>
+        </div>
+        <div>
+          <div class="chip-row">
+            <div class="chip mono" data-correct="false" data-explain="300 não cabe em um byte, que vai só até 127. O resultado precisa voltar para byte — e alguma coisa se perde no caminho.">300</div>
+            <div class="chip mono" data-correct="true" data-explain="b *= 30 equivale a b = (byte) (b * 30). O produto é 300, e o casting para byte descarta os bits que não cabem: sobra 44, o mesmo caso da Seção 3.">44</div>
+            <div class="chip" data-correct="false" data-explain="Compila: a forma cumulativa inclui o casting para o tipo da variável. Quem não compilaria é b = b * 30.">Não compila</div>
+          </div>
+          <div class="fragment js-answer" style="margin-top:28px">
+            <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+            <div class="callout js-answer-text" style="margin-top:14px"><code>b *= 30</code> equivale a <code>b = (byte) (b * 30)</code>. O produto é 300, e o casting para <code>byte</code> descarta os bits que não cabem: sobra <b>44</b>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 4 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 4</div>
+      <h2>Pratique na IDE: atribuição cumulativa</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Parta de <code>double saldo = 1000.0;</code> e aplique um depósito, um saque e um acréscimo de 1% com <code>+=</code>, <code>-=</code> e <code>*=</code>, imprimindo o saldo depois de cada passo.</li>
+          <li>Com <code>short quantidade = 5;</code>, escreva <code>quantidade = quantidade + 1;</code> Leia o erro, troque por <code>quantidade += 1;</code> e explique por que agora compila.</li>
+          <li>Com <code>byte valor = 127;</code>, execute <code>valor += 1;</code> e imprima. Explique o resultado negativo.</li>
+          <li>Com <code>int x = 5;</code>, execute <code>int y = x++;</code> e depois <code>int z = ++x;</code> Imprima <code>x</code>, <code>y</code> e <code>z</code> e explique cada valor.</li>
+          <li>Escreva o programa do saque e teste um valor válido, um maior que o saldo e um negativo.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 5">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 5 DE 7</div>
+      <h1>Estrutura switch-case</h1>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 5 · Valores exatos">
+      <div class="eyebrow">Uma variável, vários valores exatos</div>
+      <h2>O <code>switch</code> organiza a decisão pelo valor</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Com if-else</div>
+          <div class="code-block small">
+<span class="kw">if</span> (dia == 1) {
+    System.out.println(<span class="str">"Domingo"</span>);
+} <span class="kw">else if</span> (dia == 2) {
+    System.out.println(<span class="str">"Segunda-feira"</span>);
+} <span class="kw">else if</span> (dia == 3) {
+    System.out.println(<span class="str">"Terca-feira"</span>);
+} <span class="kw">else</span> {
+    System.out.println(<span class="str">"Dia invalido"</span>);
+}
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Com switch</div>
+          <div class="code-block small">
+<span class="kw">switch</span> (dia) {
+    <span class="kw">case</span> 1:
+        System.out.println(<span class="str">"Domingo"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> 2:
+        System.out.println(<span class="str">"Segunda-feira"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> 3:
+        System.out.println(<span class="str">"Terca-feira"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        System.out.println(<span class="str">"Dia invalido"</span>);
+        <span class="kw">break</span>;
+}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Bloco 5 · Como executa">
+      <div class="eyebrow">Passo a passo</div>
+      <h2>Como o <code>switch</code> executa</h2>
+      <div class="slide-body">
+        <ol class="points">
+          <li>Java avalia a expressão entre parênteses — no exemplo, <code>dia</code>.</li>
+          <li>Procura um <code>case</code> com o mesmo valor.</li>
+          <li>Começa a executar <b>a partir</b> desse ponto.</li>
+          <li>O <code>break</code> encerra o <code>switch</code>.</li>
+          <li>Se nenhum caso combinar, executa o <code>default</code>.</li>
+        </ol>
+        <div class="callout amber">O <code>default</code> é opcional, mas vale a pena: é ele que trata entradas inválidas e valores que ninguém previu.</div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 5 · Fall-through">
+      <div class="eyebrow">O case marca onde começa, não onde termina</div>
+      <h2>Sem <code>break</code>, a execução continua</h2>
+      <div class="two-col wide-left trace">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> opcao = <span data-f="op">1</span>;
+
+<span class="kw">switch</span> (opcao) {
+    <span class="tl" data-k="l1"><span class="kw">case</span> 1:</span><span class="pill" data-k="l1" data-f="l1"></span>
+        <span class="tl" data-k="s1">System.out.println(<span class="str">"Cadastrar"</span>);</span>
+    <span class="tl" data-k="l2"><span class="kw">case</span> 2:</span><span class="pill" data-k="l2" data-f="l2"></span>
+        <span class="tl" data-k="s2">System.out.println(<span class="str">"Consultar"</span>);</span>
+    <span class="tl" data-k="l3"><span class="kw">default</span>:</span><span class="pill" data-k="l3" data-f="l3"></span>
+        <span class="tl" data-k="s3">System.out.println(<span class="str">"Sair"</span>);</span>
+}
+          </div>
+          <div class="callout">Esse comportamento se chama <i>fall-through</i>. Enquanto o conteúdo é novo, termine cada alternativa com <code>break</code>.</div>
+        </div>
+        <div>
+          <div class="col-title">Escolha a opção</div>
+          <div class="trace-row">
+            <button type="button" class="trace-btn" data-state='{"l1":"true","s1":"run","l2":"pass","s2":"run","l3":"pass","s3":"run"}' data-fill='{"op":"1","l1":"começa aqui","l2":"passa direto","l3":"passa direto","out":"Cadastrar\nConsultar\nSair","why":"A execução começa no case 1 e, sem break, atravessa os rótulos seguintes até o fim do switch: as três linhas são impressas."}'>1</button>
+            <button type="button" class="trace-btn" data-state='{"l2":"true","s2":"run","l3":"pass","s3":"run"}' data-fill='{"op":"2","l2":"começa aqui","l3":"passa direto","out":"Consultar\nSair","why":"Começa no case 2 e continua pelo default. O case 1 nem entra na história."}'>2</button>
+            <button type="button" class="trace-btn" data-state='{"l3":"true","s3":"run"}' data-fill='{"op":"9","l3":"começa aqui","out":"Sair","why":"Nenhum case vale 9: a execução começa no default."}'>9</button>
+          </div>
+          <div class="col-title">Saída</div>
+          <div class="code-block small trace-console tall" data-f="out"><span class="com">escolha uma opção</span></div>
+          <div class="callout amber" data-f="why">Preveja a saída antes de clicar.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 5 · Agrupando">
+      <div class="eyebrow">Fall-through de propósito</div>
+      <h2>Vários valores, o mesmo bloco</h2>
+      <div class="two-col">
+        <div>
+          <div class="code-block small">
+<span class="kw">switch</span> (mes) {
+    <span class="kw">case</span> 1:
+    <span class="kw">case</span> 2:
+    <span class="kw">case</span> 3:
+        System.out.println(<span class="str">"Primeiro trimestre"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> 4:
+    <span class="kw">case</span> 5:
+    <span class="kw">case</span> 6:
+        System.out.println(<span class="str">"Segundo trimestre"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        System.out.println(<span class="str">"Mes fora do exemplo"</span>);
+        <span class="kw">break</span>;
+}
+          </div>
+        </div>
+        <div>
+          <ul class="points compact">
+            <li>Os casos <b>1</b> e <b>2</b> não têm instruções nem <code>break</code>.</li>
+            <li>Eles apenas encaminham a execução para o bloco do caso <b>3</b>.</li>
+            <li>O mesmo vale para <b>4</b> e <b>5</b>, que caem no bloco do <b>6</b>.</li>
+          </ul>
+          <div class="callout">Aqui, a ausência de <code>break</code> é intencional — e o agrupamento deixa isso visível para quem lê.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 5 · Tipos e case">
+      <div class="eyebrow">O que pode entrar no switch</div>
+      <h2>Seletores e rótulos</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Tipos usados no curso</div>
+          <ul class="points compact">
+            <li><code>int</code> e os inteiros menores</li>
+            <li><code>char</code></li>
+            <li><code>String</code></li>
+          </ul>
+          <div class="callout amber"><code>long</code>, <code>float</code>, <code>double</code> e <code>boolean</code> não servem como seletor do <code>switch</code>.</div>
+        </div>
+        <div>
+          <div class="col-title">Cada case é um valor constante</div>
+          <div class="code-block small">
+<span class="kw">switch</span> (conceito) {
+    <span class="kw">case</span> <span class="str">'A'</span>:
+        System.out.println(<span class="str">"Excelente"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">'B'</span>:
+        System.out.println(<span class="str">"Bom"</span>);
+        <span class="kw">break</span>;
+}
+
+<span class="com">// case nota >= 6.0:   não compila</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Um <code>case</code> não recebe comparação: ele recebe um valor fixo, compatível com o tipo do seletor. Para intervalos e condições compostas, continue no <code>if-else</code>.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 5 · Setas">
+      <div class="eyebrow">Java moderno, só para reconhecimento</div>
+      <h2>A sintaxe com setas</h2>
+      <div class="code-block">
+<span class="kw">switch</span> (dia) {
+    <span class="kw">case</span> 1 -> System.out.println(<span class="str">"Domingo"</span>);
+    <span class="kw">case</span> 2 -> System.out.println(<span class="str">"Segunda-feira"</span>);
+    <span class="kw">case</span> 3 -> System.out.println(<span class="str">"Terca-feira"</span>);
+    <span class="kw">default</span> -> System.out.println(<span class="str">"Dia invalido"</span>);
+}
+      </div>
+      <div class="callout">Com <code>-></code>, cada caso executa só a sua instrução: não há <code>break</code> nem <i>fall-through</i>.</div>
+      <div class="callout amber">O curso começa pela forma tradicional porque ela aparece em muito código — e porque entender o <code>break</code> vai ser útil nas estruturas repetitivas.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 5 · switch ou if-else">
+      <div class="eyebrow">A escolha deve favorecer a leitura</div>
+      <h2><code>switch</code> ou <code>if-else</code>?</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Situação</th><th>Estrutura mais direta</th></tr>
+          <tr><td>comparar uma variável com valores exatos</td><td><code>switch</code></td></tr>
+          <tr><td>testar faixas, como <code>nota >= 6</code></td><td><code>if-else</code></td></tr>
+          <tr><td>combinar condições com <code>&amp;&amp;</code> e <code>||</code></td><td><code>if-else</code></td></tr>
+          <tr><td>ter apenas dois caminhos simples</td><td>normalmente <code>if-else</code></td></tr>
+          <tr><td>montar um menu numérico</td><td><code>switch</code></td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 5 · Programa completo">
+      <div class="eyebrow">O menu já foi impresso e a opção, lida com nextInt()</div>
+      <h2>Um menu com <code>switch</code></h2>
+      <div class="two-col wide-left">
+        <div>
+          <div class="code-block small"><span class="kw">switch</span> (opcao) {
+    <span class="kw">case</span> 1: {
+        System.out.print(<span class="str">"Digite dois numeros: "</span>);
+        <span class="kw">double</span> a = sc.nextDouble();
+        <span class="kw">double</span> b = sc.nextDouble();
+        System.out.println(<span class="str">"Soma: "</span> + (a + b));
+        <span class="kw">break</span>;
+    }
+    <span class="kw">case</span> 2: {
+        System.out.print(<span class="str">"Digite um numero: "</span>);
+        <span class="kw">double</span> numero = sc.nextDouble();
+        System.out.println(<span class="str">"Dobro: "</span> + (numero * 2));
+        <span class="kw">break</span>;
+    }
+    <span class="kw">default</span>: {
+        System.out.println(<span class="str">"Opcao invalida."</span>);
+        <span class="kw">break</span>;
+    }
+}</div>
+        </div>
+        <div>
+          <div class="col-title">Uma execução</div>
+          <div class="code-block small">
+1 - Somar dois numeros
+2 - Calcular o dobro
+Opcao: 2
+Digite um numero: 7
+Dobro: 14.0
+          </div>
+          <div class="callout">As chaves de cada <code>case</code> fazem <code>a</code>, <code>b</code> e <code>numero</code> existirem só dentro do seu caso. Esse é o assunto do Bloco 7.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 5 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>O que é impresso com <code>opcao = 5</code>?</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">switch</span> (opcao) {
+    <span class="kw">case</span> 1:
+        System.out.print(<span class="str">"A"</span>);
+    <span class="kw">default</span>:
+        System.out.print(<span class="str">"D"</span>);
+    <span class="kw">case</span> 2:
+        System.out.print(<span class="str">"B"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> 3:
+        System.out.print(<span class="str">"C"</span>);
+}
+          </div>
+        </div>
+        <div>
+          <div class="chip-row">
+            <div class="chip mono" data-correct="false" data-explain="O default está certo — nenhum case vale 5. Mas ele não tem break, e a execução continua no case 2.">D</div>
+            <div class="chip mono" data-correct="true" data-explain="Nenhum case vale 5, então a execução começa no default, onde quer que ele esteja. Sem break, cai no case 2, imprime B e para no break.">DB</div>
+            <div class="chip mono" data-correct="false" data-explain="O break do case 2 encerra o switch antes de chegar ao case 3.">DBC</div>
+          </div>
+          <div class="fragment js-answer" style="margin-top:28px">
+            <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+            <div class="callout js-answer-text" style="margin-top:14px">Nenhum <code>case</code> vale 5: a execução começa no <code>default</code>, onde quer que ele esteja. Sem <code>break</code>, ela cai no <code>case 2</code>, imprime <b>B</b> e para no <code>break</code>. Saída: <b>DB</b>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 5 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 5</div>
+      <h2>Pratique na IDE: switch-case</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Escreva o <code>switch</code> dos dias da semana, de 1 a 7, com <code>default</code> para valores inválidos.</li>
+          <li>Remova todos os <code>break</code> e execute com <code>dia = 2</code>. Anote o que foi impresso e explique.</li>
+          <li>Agrupe os meses de 1 a 12 em trimestres usando casos sem instruções.</li>
+          <li>Tente escrever <code>case nota >= 6.0:</code> e leia o erro. Resolva o mesmo problema com <code>if-else</code>.</li>
+          <li>Monte o menu com as opções de soma e dobro. Depois reescreva o mesmo <code>switch</code> com a sintaxe de setas.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 6">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 6 DE 7</div>
+      <h1>Expressão condicional ternária</h1>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Anatomia">
+      <div class="eyebrow">O único operador de Java com três partes</div>
+      <h2>Uma condição, dois valores possíveis</h2>
+      <div style="text-align:center; margin: 4px 0 26px">
+        <span class="formula"><span class="part">condicao</span> ? <span class="part">valorSeVerdadeiro</span> : <span class="part">valorSeFalso</span></span>
+      </div>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">double</span> nota = 7.5;
+
+String resultado =
+        nota >= 6.0 ? <span class="str">"Aprovado"</span> : <span class="str">"Reprovado"</span>;
+
+System.out.println(resultado);   <span class="com">// Aprovado</span>
+          </div>
+        </div>
+        <div>
+          <ol class="points compact">
+            <li><code>nota >= 6.0</code> é a condição;</li>
+            <li>se for <code>true</code>, a expressão produz <code>"Aprovado"</code>;</li>
+            <li>se for <code>false</code>, produz <code>"Reprovado"</code>;</li>
+            <li>o valor escolhido vai para <code>resultado</code>.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Equivalência">
+      <div class="eyebrow">Mesmo resultado, outra natureza</div>
+      <h2>O ternário e o <code>if-else</code></h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Com if-else</div>
+          <div class="code-block small">
+<span class="kw">double</span> valorFinal;
+
+<span class="kw">if</span> (temDesconto) {
+    valorFinal = preco * 0.90;
+} <span class="kw">else</span> {
+    valorFinal = preco;
+}
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Com o ternário</div>
+          <div class="code-block small">
+<span class="kw">double</span> valorFinal =
+        temDesconto ? preco * 0.90 : preco;
+          </div>
+        </div>
+      </div>
+      <div class="callout">As duas versões produzem o mesmo valor. A diferença: o <code>if-else</code> é uma <b>instrução</b>; o ternário é uma <b>expressão</b> — produz um valor e pode participar diretamente de uma atribuição.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Tipo e avaliação">
+      <div class="eyebrow">Como toda expressão</div>
+      <h2>Tem um tipo — e só um lado é calculado</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">O resultado tem um tipo</div>
+          <div class="code-block small">
+<span class="kw">double</span> valor = <span class="kw">true</span> ? 10 : 2.5;
+<span class="com">// 10.0: o 10 é promovido a double</span>
+
+<span class="kw">int</span> erro = <span class="kw">true</span> ? 10 : 2.5;
+<span class="com">// erro: o resultado é double</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Só o lado escolhido é avaliado</div>
+          <div class="code-block small">
+<span class="kw">int</span> divisor = 0;
+<span class="kw">int</span> resultado =
+        divisor != 0 ? 10 / divisor : 0;
+
+System.out.println(resultado);   <span class="com">// 0</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">Escolha resultados do mesmo tipo sempre que possível. E, como no curto-circuito do <code>&amp;&amp;</code>, o lado que não foi escolhido nem chega a ser calculado: a divisão por zero nunca acontece.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Quando usar">
+      <div class="eyebrow">Menor não quer dizer melhor</div>
+      <h2>Quando usar o ternário</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Use o ternário quando</div>
+          <ul class="points compact">
+            <li>existe uma única condição</li>
+            <li>o objetivo é escolher entre dois valores</li>
+            <li>a expressão continua curta e clara</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-title">Prefira if-else quando</div>
+          <ul class="points compact">
+            <li>cada caminho executa várias instruções</li>
+            <li>existem três ou mais alternativas</li>
+            <li>a condição ou os resultados já são longos</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block small" style="margin-top:6px">
+System.out.println(numero % 2 == 0 ? <span class="str">"Par"</span> : <span class="str">"Impar"</span>);   <span class="com">// curto e direto</span>
+      </div>
+      <div class="callout">O ternário substitui bem um <code>if-else</code> simples que apenas <b>escolhe um valor</b> — não toda estrutura condicional.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Aninhados">
+      <div class="eyebrow">Compila, mas cansa</div>
+      <h2>Evite ternários aninhados</h2>
+      <div class="two-col wide-left">
+        <div>
+          <div class="col-title">Qual : é de qual condição?</div>
+          <div class="code-block small">
+String conceito =
+    nota >= 9.0 ? <span class="str">"A"</span> : nota >= 7.0 ? <span class="str">"B"</span> : <span class="str">"C"</span>;
+          </div>
+        </div>
+        <div>
+          <div class="col-title">A versão gradual</div>
+          <div class="code-block small">
+String conceito;
+
+<span class="kw">if</span> (nota >= 9.0) {
+    conceito = <span class="str">"A"</span>;
+} <span class="kw">else if</span> (nota >= 7.0) {
+    conceito = <span class="str">"B"</span>;
+} <span class="kw">else</span> {
+    conceito = <span class="str">"C"</span>;
+}
+          </div>
+        </div>
+      </div>
+      <div class="callout amber">Uma escrita menor não é automaticamente uma escrita melhor. No <code>if-else</code>, cada caminho aparece na sua própria linha.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Teste de mesa">
+      <div class="eyebrow">Preveja cada linha antes de revelar</div>
+      <h2>Teste de mesa com o ternário</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> quantidade = 8;
+
+<span class="kw">double</span> precoUnitario =
+        quantidade >= 10 ? 4.50 : 5.00;
+
+<span class="kw">double</span> total =
+        quantidade * precoUnitario;
+          </div>
+        </div>
+        <div>
+          <table class="deck-table" style="font-size:23px">
+            <tr><th>Etapa</th><th>Resultado</th></tr>
+            <tr class="fragment"><td class="mono">quantidade >= 10</td><td class="mono v-false">false</td></tr>
+            <tr class="fragment"><td>valor escolhido</td><td class="mono">5.00</td></tr>
+            <tr class="fragment"><td class="mono">precoUnitario</td><td class="mono">5.00</td></tr>
+            <tr class="fragment"><td class="mono">total</td><td class="mono">40.00</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="callout fragment">Com <code>quantidade = 10</code>, a condição seria <code>true</code>: preço 4.50 e total 45.00. O 10 entra, porque o operador é <code>>=</code>.</div>
+    </section>
+
+    <section class="slide" data-section="Bloco 6 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Qual destas linhas <b>não</b> compila?</h2>
+      <div class="slide-body">
+        <div class="chip-row">
+          <div class="chip mono" data-correct="false" data-explain="Compila: com um lado int e outro double, o ternário produz double, e o 10 vira 10.0.">double v = true ? 10 : 2.5;</div>
+          <div class="chip mono" data-correct="true" data-explain="Não compila: com um lado int e outro double, o ternário produz double — e double não cabe em int sem casting. Não importa que a condição seja true.">int v = true ? 10 : 2.5;</div>
+          <div class="chip mono" data-correct="false" data-explain="Compila: os dois lados são String, e o resultado vai para uma String.">String s = 3 > 2 ? "sim" : "nao";</div>
+        </div>
+        <div class="fragment js-answer" style="margin-top:34px">
+          <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+          <div class="callout js-answer-text" style="margin-top:14px">Com um lado <code>int</code> e outro <code>double</code>, o ternário produz <code>double</code> — e <code>double</code> não cabe em <code>int</code> sem casting. O tipo é decidido na compilação: não importa que a condição seja <code>true</code>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 6 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 6</div>
+      <h2>Pratique na IDE: o operador ternário</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Reescreva com ternário o <code>if-else</code> que escolhe entre "Aprovado" e "Reprovado". Compare as duas versões.</li>
+          <li>Imprima direto no <code>println</code> se um número é "Par" ou "Impar", usando o ternário.</li>
+          <li>Escreva <code>int erro = true ? 10 : 2.5;</code> Leia a mensagem e corrija o tipo da variável.</li>
+          <li>Com <code>int divisor = 0;</code>, calcule <code>divisor != 0 ? 10 / divisor : 0</code> e confirme que não há exceção.</li>
+          <li>Escreva a classificação em A, B e C com ternário aninhado e depois com <code>else if</code>. Qual das duas você prefere ler?</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide slide--divider" data-section="Bloco 7">
+      <img class="duke" src="./duke.svg" alt="">
+      <div class="div-num">BLOCO 7 DE 7</div>
+      <h1>Escopo e inicialização</h1>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · Escopo">
+      <div class="eyebrow">Onde um nome pode ser usado</div>
+      <h2>Cada par de chaves cria um escopo</h2>
+      <div class="two-col wide-left">
+        <div>
+          <div class="code-block small scope-demo">
+            <div class="scope scope-main">
+              <div class="scope-tag">bloco do main</div>
+              <div class="ln"><span class="kw">int</span> idade = 20;</div>
+              <div class="ln"><span class="kw">if</span> (idade >= 18) {</div>
+              <div class="scope scope-if">
+                <div class="scope-tag">bloco do if</div>
+                <div class="ln">String mensagem = <span class="str">"Maior de idade"</span>;</div>
+                <div class="ln">System.out.println(mensagem);  <span class="com">// ok</span></div>
+                <div class="ln">System.out.println(idade);     <span class="com">// ok: vem de fora</span></div>
+              </div>
+              <div class="ln">}</div>
+              <div class="ln ln-err">System.out.println(mensagem);      <span class="com">// erro</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">O modelo prático</div>
+          <ul class="points compact">
+            <li class="fragment">a variável existe a partir da sua <b>declaração</b></li>
+            <li class="fragment">vale até o <b>fim do bloco</b> em que foi declarada</li>
+            <li class="fragment">blocos internos <b>enxergam</b> os externos</li>
+            <li class="fragment">ao sair do bloco, o nome <b>deixa de existir</b></li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout"><code>idade</code> nasceu fora do <code>if</code>: vale dentro e depois dele. <code>mensagem</code> nasceu no bloco do <code>if</code> e só existe ali.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · Mesmo nome">
+      <div class="eyebrow">Quando pode e quando não pode</div>
+      <h2>O mesmo nome em dois lugares</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Escopos sobrepostos: não pode</div>
+          <div class="code-block small">
+<span class="kw">int</span> valor = 10;
+
+<span class="kw">if</span> (valor > 0) {
+    <span class="com">// int valor = 20;  erro: já existe</span>
+    valor = 20;        <span class="com">// ok: só atribui</span>
+}
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Escopos separados: pode</div>
+          <div class="code-block small">
+<span class="kw">if</span> (numero >= 0) {
+    <span class="kw">int</span> resultado = numero * 2;
+    System.out.println(resultado);
+} <span class="kw">else</span> {
+    <span class="kw">int</span> resultado = numero * -1;
+    System.out.println(resultado);
+}
+          </div>
+        </div>
+      </div>
+      <div class="callout">Java proíbe duas variáveis locais com o mesmo nome em escopos que se <b>sobrepõem</b>. Os blocos do <code>if</code> e do <code>else</code> não se sobrepõem: as duas declarações de <code>resultado</code> convivem — e nenhuma existe depois da estrutura.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · Inicialização">
+      <div class="eyebrow">Declarar não é inicializar</div>
+      <h2>O compilador examina todos os caminhos</h2>
+      <div class="code-block">
+<span class="kw">int</span> idade = 20;
+String categoria;
+
+<span class="kw">if</span> (idade >= 18) {
+    categoria = <span class="str">"adulto"</span>;
+}
+
+System.out.println(categoria);   <span class="com">// erro</span>
+      </div>
+      <div class="callout">Uma variável local precisa estar <b>definitivamente inicializada</b> antes da leitura: <code>variable categoria might not have been initialized</code>. O compilador olha a estrutura, não os valores — mesmo com <code>idade = 20</code>, sem <code>else</code> existe um caminho em que <code>categoria</code> fica sem valor.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · Inicialização">
+      <div class="eyebrow">Duas correções possíveis</div>
+      <h2>Garanta um valor em todo caminho</h2>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Um valor em cada caminho</div>
+          <div class="code-block small">
+String categoria;
+
+<span class="kw">if</span> (idade >= 18) {
+    categoria = <span class="str">"adulto"</span>;
+} <span class="kw">else</span> {
+    categoria = <span class="str">"menor"</span>;
+}
+
+System.out.println(categoria);   <span class="com">// ok</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">Um valor inicial verdadeiro</div>
+          <div class="code-block small">
+String categoria = <span class="str">"menor"</span>;
+
+<span class="kw">if</span> (idade >= 18) {
+    categoria = <span class="str">"adulto"</span>;
+}
+
+System.out.println(categoria);   <span class="com">// ok</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout amber">Só dê um valor inicial quando ele for verdadeiro para o problema. Um <code>-1</code> inventado só para calar o compilador esconde um erro de fluxo.</div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · switch">
+      <div class="eyebrow">Todos os case dividem o mesmo bloco</div>
+      <h2>Escopo dentro do <code>switch</code></h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">switch</span> (opcao) {
+    <span class="kw">case</span> 1: {
+        <span class="kw">int</span> valor = 10;
+        System.out.println(valor);
+        <span class="kw">break</span>;
+    }
+    <span class="kw">case</span> 2: {
+        <span class="kw">int</span> valor = 20;   <span class="com">// outro bloco</span>
+        System.out.println(valor);
+        <span class="kw">break</span>;
+    }
+}
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0">Na forma tradicional, todos os <code>case</code> ficam no mesmo bloco do <code>switch</code>. Sem as chaves extras, o <code>valor</code> do caso 1 continuaria em escopo no caso 2 — e o segundo <code>int valor</code> não compilaria.</div>
+          <div class="callout amber">Para quem está começando, um bloco por caso evita a confusão — foi o que o menu do Bloco 5 fez.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact compact-2" data-section="Bloco 7 · Programa completo">
+      <div class="eyebrow">Declarada antes, atribuída em todos os caminhos</div>
+      <h2>Reajuste de salário por faixa</h2>
+      <div class="two-col wide-left">
+        <div>
+          <div class="code-block small">
+System.out.print(<span class="str">"Salario atual: "</span>);
+<span class="kw">double</span> salario = sc.nextDouble();
+<span class="kw">double</span> percentual;
+
+<span class="kw">if</span> (salario &lt;= 2000.0) {
+    percentual = 10.0;
+} <span class="kw">else if</span> (salario &lt;= 5000.0) {
+    percentual = 7.5;
+} <span class="kw">else</span> {
+    percentual = 5.0;
+}
+
+<span class="kw">double</span> aumento = salario * percentual / 100.0;
+<span class="kw">double</span> novoSalario = salario + aumento;
+
+System.out.printf(<span class="str">"Percentual: %.1f%%%n"</span>, percentual);
+System.out.printf(<span class="str">"Novo salario: %.2f%n"</span>, novoSalario);
+          </div>
+        </div>
+        <div>
+          <table class="deck-table" style="font-size:20px">
+            <tr><th class="mono">salario</th><th class="mono">percentual</th><th>novo</th></tr>
+            <tr class="fragment"><td class="mono">1500</td><td class="mono">10.0</td><td class="mono">1650.00</td></tr>
+            <tr class="fragment"><td class="mono"><b>2000</b></td><td class="mono">10.0</td><td class="mono">2200.00</td></tr>
+            <tr class="fragment"><td class="mono">4000</td><td class="mono">7.5</td><td class="mono">4300.00</td></tr>
+            <tr class="fragment"><td class="mono">8000</td><td class="mono">5.0</td><td class="mono">8400.00</td></tr>
+          </table>
+          <div class="callout"><code>percentual</code> é declarado <b>antes</b> da estrutura porque é usado depois dela. Como a cadeia termina em <code>else</code>, todo caminho atribui um valor — e o compilador sabe disso.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>O que acontece?</h2>
+      <div class="two-col center">
+        <div>
+          <div class="code-block small">
+<span class="kw">int</span> x = 3;
+<span class="kw">int</span> resultado;
+
+<span class="kw">if</span> (x > 0) {
+    resultado = 1;
+}
+
+System.out.println(resultado);
+          </div>
+        </div>
+        <div>
+          <div class="chip-row">
+            <div class="chip" data-correct="false" data-explain="O compilador não olha o valor de x: ele considera também o caminho em que x > 0 é false, e nesse caminho resultado nunca recebe valor.">Imprime 1</div>
+            <div class="chip" data-correct="false" data-explain="Variável local não recebe valor automático — a Seção 3 já avisou. Não existe um 0 implícito aqui.">Imprime 0</div>
+            <div class="chip" data-correct="true" data-explain="Existe um caminho — a condição falsa — em que resultado não recebe valor. O compilador acusa: variable resultado might not have been initialized.">Não compila</div>
+          </div>
+          <div class="fragment js-answer" style="margin-top:28px">
+            <span class="badge badge-amber js-answer-label">RESPOSTA</span>
+            <div class="callout js-answer-text" style="margin-top:14px">Não compila. Existe um caminho — a condição falsa — em que <code>resultado</code> não recebe valor, e o compilador analisa a estrutura, não o valor de <code>x</code>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · Desafio">
+      <div class="eyebrow">Desafio rápido</div>
+      <h2>Ache o erro</h2>
+      <div class="two-col">
+        <div>
+          <div class="code-block small">
+<span class="kw">double</span> nota = 8.0;
+
+<span class="kw">if</span> (nota >= 6.0) {
+    String situacao = <span class="str">"Aprovado"</span>;
+} <span class="kw">else</span> {
+    String situacao = <span class="str">"Reprovado"</span>;
+}
+
+System.out.println(situacao);
+          </div>
+        </div>
+        <div>
+          <div class="fragment">
+            <span class="badge badge-amber">RESPOSTA</span>
+            <div class="callout" style="margin-top:14px"><code>situacao</code> só existe dentro de cada bloco. Depois do <code>if-else</code>, o nome já saiu de escopo: <code>situacao cannot be resolved to a variable</code>.</div>
+          </div>
+          <div class="fragment" style="margin-top:16px">
+            <div class="col-title">Uma correção possível</div>
+            <div class="code-block small">
+String situacao =
+    nota >= 6.0 ? <span class="str">"Aprovado"</span> : <span class="str">"Reprovado"</span>;
+
+System.out.println(situacao);
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Bloco 7 · Mão na massa">
+      <div class="eyebrow">Mão na massa · Bloco 7</div>
+      <h2>Pratique na IDE: escopo e inicialização</h2>
+      <div class="slide-body top">
+        <ol class="points compact">
+          <li>Declare uma variável dentro de um <code>if</code> e tente usá-la depois do bloco. Leia o erro e corrija movendo a declaração para antes do <code>if</code>.</li>
+          <li>Dentro de um <code>if</code>, redeclare uma variável do <code>main</code> com o mesmo nome. Depois troque a declaração por uma simples atribuição.</li>
+          <li>Declare <code>String categoria;</code>, atribua valor só dentro de um <code>if</code> e tente imprimir. Corrija de duas formas: com <code>else</code> e com um valor inicial.</li>
+          <li>Declare <code>int valor</code> em dois <code>case</code> de um <code>switch</code>, primeiro sem chaves extras e depois com chaves. Compare as mensagens.</li>
+          <li>Escreva o reajuste de salário, faça o teste de mesa para 1500, 2000, 4000 e 8000 e depois apague o <code>else</code> final para ver o erro de inicialização.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide compact" data-section="Revisão">
+      <div class="eyebrow">Os erros que mais aparecem</div>
+      <h2>Antes de pedir ajuda, confira isto</h2>
+      <div class="slide-body top">
+        <table class="deck-table">
+          <tr><th>Sintoma</th><th>Causa provável</th></tr>
+          <tr><td><code>int cannot be converted to boolean</code></td><td><code>=</code> no lugar de <code>==</code>, ou uma condição que não é <code>boolean</code></td></tr>
+          <tr><td>O bloco executa com a condição falsa</td><td><code>;</code> logo depois do <code>if</code>, ou <code>if</code> sem chaves</td></tr>
+          <tr><td>Uma faixa da classificação nunca aparece</td><td>a condição mais ampla veio antes da mais específica</td></tr>
+          <tr><td>O <code>switch</code> imprime vários casos</td><td>faltou <code>break</code> — é o <i>fall-through</i></td></tr>
+          <tr><td><code>might not have been initialized</code></td><td>existe um caminho que não atribui valor à variável</td></tr>
+          <tr><td><code>cannot be resolved to a variable</code></td><td>a variável foi usada fora do bloco em que nasceu</td></tr>
+        </table>
+        <div class="callout amber">Cuidado com o primeiro: com <code>boolean</code>, <code>if (aprovado = true)</code> <b>compila</b> — e entra sempre, porque a atribuição vale <code>true</code>.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Revisão">
+      <div class="eyebrow">Comparando as alternativas</div>
+      <h2>Qual estrutura usar?</h2>
+      <div class="slide-body">
+        <table class="deck-table">
+          <tr><th>Situação</th><th>Estrutura</th></tr>
+          <tr><td>executar algo só quando a condição vale</td><td><code>if</code></td></tr>
+          <tr><td>escolher entre dois caminhos</td><td><code>if-else</code></td></tr>
+          <tr><td>várias faixas ou condições compostas</td><td><code>if</code> · <code>else if</code> · <code>else</code></td></tr>
+          <tr><td>uma variável comparada com valores exatos</td><td><code>switch</code></td></tr>
+          <tr><td>escolher entre dois <b>valores</b></td><td>ternário <code>? :</code></td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Revisão">
+      <div class="eyebrow">Fechando a Seção 4</div>
+      <h2>O que você já é capaz de fazer</h2>
+      <div class="slide-body">
+        <ul class="points compact">
+          <li>Prever o resultado de comparações e expressões lógicas, inclusive com curto-circuito</li>
+          <li>Controlar o fluxo com <code>if</code>, <code>else if</code> e <code>else</code>, sem faixas sobrepostas</li>
+          <li>Atualizar variáveis com <code>+=</code>, <code>-=</code>, <code>++</code> e <code>--</code>, sabendo do casting embutido</li>
+          <li>Usar <code>switch</code> com <code>break</code> e reconhecer o <i>fall-through</i></li>
+          <li>Escolher entre dois valores com o operador ternário</li>
+          <li>Garantir escopo e inicialização antes de usar uma variável</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" data-section="Encerramento">
+      <div class="eyebrow">De olho na certificação</div>
+      <h2>Esta seção cai quase inteira na prova</h2>
+      <div class="slide-body">
+        <div class="callout">Comparações, operadores lógicos e curto-circuito, <code>if-else</code>, <code>switch</code> com <i>fall-through</i>, atribuição cumulativa com casting embutido, pré e pós-incremento, ternário, escopo e inicialização de variáveis locais: tudo isso é cobrado no 1Z0-831. O material A8 traz dez questões no estilo da prova.</div>
+        <div class="callout amber" style="margin-top:18px">A próxima seção traz as estruturas repetitivas — <code>while</code>, <code>for</code> e <code>do-while</code> — e começa pela depuração passo a passo no Eclipse.</div>
+      </div>
+    </section>
+
+    <section class="slide slide--end" data-section="Fim">
+      <img class="duke" src="./duke.svg" alt="">
+      <h1>Perguntas?</h1>
+      <div class="subtitle">Seção 4 — Estrutura condicional</div>
+    </section>
+
+  </div>
+</div>
+
+<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+<div class="hud"><span class="sect" id="hudSection"></span><span id="hudCount"></span></div>
+<div class="hint">← → navegar · Espaço avança · Esc visão geral · F tela cheia</div>
+
+<div class="overview" id="overview">
+  <div class="overview-title">Visão geral — clique em um slide para ir até ele</div>
+  <div class="overview-grid" id="overviewGrid"></div>
+</div>
+
+<script>
+(function () {
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+  var fragIndex = 0;
+
+  function fragmentsOf(i) {
+    return Array.prototype.slice.call(slides[i].querySelectorAll('.fragment'));
+  }
+
+  function render() {
+    slides.forEach(function (s, i) { s.classList.toggle('active', i === current); });
+    var frags = fragmentsOf(current);
+    frags.forEach(function (f, i) { f.classList.toggle('visible', i < fragIndex); });
+
+    document.getElementById('hudSection').textContent = slides[current].getAttribute('data-section') || '';
+    document.getElementById('hudCount').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('progressFill').style.width = ((current + 1) / total * 100) + '%';
+
+    history.replaceState(null, '', '#/' + (current + 1));
+  }
+
+  function goTo(i, resetFrag) {
+    current = Math.max(0, Math.min(total - 1, i));
+    fragIndex = resetFrag === 'end' ? fragmentsOf(current).length : 0;
+    render();
+  }
+
+  function next() {
+    var frags = fragmentsOf(current);
+    if (fragIndex < frags.length) { fragIndex++; render(); return; }
+    if (current < total - 1) goTo(current + 1, 'start');
+  }
+
+  function prev() {
+    if (fragIndex > 0) { fragIndex--; render(); return; }
+    if (current > 0) goTo(current - 1, 'end');
+  }
+
+  function buildOverview() {
+    var grid = document.getElementById('overviewGrid');
+    slides.forEach(function (s, i) {
+      var title = s.querySelector('h1, h2');
+      var card = document.createElement('div');
+      card.className = 'overview-card';
+      card.innerHTML = '<div class="oc-num">' + (i + 1) + ' · ' + (s.getAttribute('data-section') || '') + '</div>' +
+                        '<div class="oc-title">' + (title ? title.textContent : '') + '</div>';
+      card.addEventListener('click', function () {
+        goTo(i, 'start');
+        toggleOverview(false);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function toggleOverview(force) {
+    var ov = document.getElementById('overview');
+    var show = typeof force === 'boolean' ? force : !ov.classList.contains('active');
+    ov.classList.toggle('active', show);
+  }
+
+  function scaleStage() {
+    var pad = 110;
+    var sw = (window.innerWidth - pad) / 1280;
+    var sh = (window.innerHeight - pad) / 720;
+    var scale = Math.min(sw, sh);
+    stage.style.transform = 'scale(' + scale + ')';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { toggleOverview(); return; }
+    if (document.getElementById('overview').classList.contains('active')) return;
+    // Espaço e Enter sobre um botão do traçador acionam o botão, não a navegação
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { goTo(0, 'start'); }
+    else if (e.key === 'End') { goTo(total - 1, 'start'); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.querySelectorAll('.chip[data-correct]').forEach(function (chip) {
+    chip.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var row = chip.closest('.chip-row');
+      row.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('chip-correct', 'chip-wrong'); });
+      var isCorrect = chip.dataset.correct === 'true';
+      if (isCorrect) {
+        chip.classList.add('chip-correct');
+      } else {
+        chip.classList.add('chip-wrong');
+        var right = row.querySelector('.chip[data-correct="true"]');
+        if (right) right.classList.add('chip-correct');
+      }
+      var slide = chip.closest('.slide');
+      var answerLabel = slide.querySelector('.js-answer-label');
+      var answerText = slide.querySelector('.js-answer-text');
+      if (answerText && chip.dataset.explain) {
+        answerText.textContent = chip.dataset.explain;
+        if (answerLabel) {
+          answerLabel.textContent = isCorrect ? 'RESPOSTA CERTA' : 'ISSO NÃO É BEM ASSIM';
+          answerLabel.className = 'badge js-answer-label ' + (isCorrect ? 'badge-amber' : 'badge-red');
+        }
+      }
+      var idx = slides.indexOf(slide);
+      var frags = fragmentsOf(idx);
+      frags.forEach(function (f) { f.classList.add('visible'); });
+      if (idx === current) fragIndex = frags.length;
+    });
+  });
+
+  // Traçadores: cada botão diz o estado de cada trecho (data-state) e o texto a preencher (data-fill)
+  document.querySelectorAll('.trace').forEach(function (trace) {
+    var buttons = Array.prototype.slice.call(trace.querySelectorAll('.trace-btn'));
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var state = JSON.parse(btn.getAttribute('data-state') || '{}');
+        var fill = JSON.parse(btn.getAttribute('data-fill') || '{}');
+        buttons.forEach(function (b) { b.classList.toggle('on', b === btn); });
+        trace.classList.add('active');
+        trace.querySelectorAll('[data-k]').forEach(function (el) {
+          el.classList.remove('is-true', 'is-false', 'is-run', 'is-skip', 'is-pass');
+          var s = state[el.getAttribute('data-k')];
+          if (s) el.classList.add('is-' + s);
+        });
+        trace.querySelectorAll('[data-f]').forEach(function (el) {
+          var v = fill[el.getAttribute('data-f')];
+          el.textContent = v === undefined ? '' : v;
+        });
+        btn.blur();
+      });
+    });
+  });
+
+  window.addEventListener('resize', scaleStage);
+
+  buildOverview();
+  scaleStage();
+
+  var hash = window.location.hash.match(/#\/(\d+)/);
+  if (hash) goTo(parseInt(hash[1], 10) - 1, 'start'); else render();
+})();
+</script>
+</body>
+</html>

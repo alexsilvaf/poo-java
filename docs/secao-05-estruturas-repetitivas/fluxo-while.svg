@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="500" viewBox="0 0 820 500" role="img" aria-labelledby="title desc">
+  <title id="title">Fluxo de uma estrutura while</title>
+  <desc id="desc">A condição é testada antes do corpo. Se verdadeira, o corpo executa e retorna à condição; se falsa, o fluxo termina.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker>
+    <style>.label{font-family:Arial,sans-serif;font-size:20px;fill:#0f172a;text-anchor:middle}.small{font-family:Arial,sans-serif;font-size:17px;fill:#334155;text-anchor:middle}.line{stroke:#334155;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect x="310" y="25" width="200" height="58" rx="16" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="410" y="61" class="label">Início</text>
+  <path d="M410 83 L410 125" class="line"/>
+  <polygon points="410,125 545,195 410,265 275,195" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+  <text x="410" y="190" class="label">Condição</text>
+  <text x="410" y="215" class="small">é verdadeira?</text>
+  <path d="M410 265 L410 315" class="line"/>
+  <text x="445" y="292" class="small">true</text>
+  <rect x="295" y="315" width="230" height="65" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+  <text x="410" y="355" class="label">Corpo do while</text>
+  <path d="M295 348 L160 348 L160 195 L270 195" class="line"/>
+  <path d="M545 195 L675 195 L675 420" class="line"/>
+  <text x="610" y="180" class="small">false</text>
+  <rect x="575" y="420" width="200" height="58" rx="16" fill="#e2e8f0" stroke="#475569" stroke-width="3"/>
+  <text x="675" y="456" class="label">Continuação</text>
+</svg>

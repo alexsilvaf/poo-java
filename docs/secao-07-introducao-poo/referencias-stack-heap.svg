@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">Referência entre stack e heap</title>
+  <desc id="desc">O frame do método main contém a variável local triangle, que referencia um objeto Triangle na heap com os campos a, b e c.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <rect width="960" height="420" rx="24" fill="#f8fafc"/>
+  <text x="70" y="55" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">Stack da thread</text>
+  <rect x="60" y="80" width="350" height="270" rx="18" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="90" y="125" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#1e3a8a">frame de main</text>
+  <rect x="95" y="165" width="280" height="90" rx="12" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="120" y="202" font-family="Consolas, monospace" font-size="21" fill="#0f172a">triangle</text>
+  <text x="120" y="234" font-family="Arial, sans-serif" font-size="18" fill="#475569">valor: referência</text>
+  <text x="575" y="55" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">Heap</text>
+  <rect x="550" y="80" width="350" height="270" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+  <text x="585" y="125" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#14532d">objeto Triangle</text>
+  <text x="590" y="185" font-family="Consolas, monospace" font-size="21" fill="#0f172a">a = 3.0</text>
+  <text x="590" y="230" font-family="Consolas, monospace" font-size="21" fill="#0f172a">b = 4.0</text>
+  <text x="590" y="275" font-family="Consolas, monospace" font-size="21" fill="#0f172a">c = 5.0</text>
+  <path d="M375 210 C455 210 470 210 550 210" fill="none" stroke="#2563eb" stroke-width="5" marker-end="url(#arrow)"/>
+  <text x="405" y="190" font-family="Arial, sans-serif" font-size="18" fill="#1d4ed8">referencia</text>
+  <text x="60" y="395" font-family="Arial, sans-serif" font-size="17" fill="#475569">Modelo conceitual: a JVM não expõe ao programa um endereço físico do objeto.</text>
+</svg>

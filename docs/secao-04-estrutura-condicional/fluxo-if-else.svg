@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="440" viewBox="0 0 900 440" role="img" aria-labelledby="title desc">
+  <title id="title">Fluxo de uma estrutura if-else</title>
+  <desc id="desc">Uma condição divide o fluxo entre um bloco verdadeiro e um bloco falso, que voltam ao mesmo ponto de continuação.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <style>
+      .label{font-family:Arial,sans-serif;font-size:20px;fill:#0f172a;text-anchor:middle}
+      .small{font-family:Arial,sans-serif;font-size:17px;fill:#334155;text-anchor:middle}
+      .line{stroke:#334155;stroke-width:3;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect x="350" y="25" width="200" height="58" rx="16" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="450" y="61" class="label">Fluxo anterior</text>
+  <path d="M450 83 L450 125" class="line"/>
+  <polygon points="450,125 585,195 450,265 315,195" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+  <text x="450" y="190" class="label">Condição</text>
+  <text x="450" y="215" class="small">true ou false</text>
+  <path d="M315 195 L180 195 L180 300" class="line"/>
+  <path d="M585 195 L720 195 L720 300" class="line"/>
+  <text x="250" y="180" class="small">true</text>
+  <text x="650" y="180" class="small">false</text>
+  <rect x="75" y="300" width="210" height="65" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+  <text x="180" y="340" class="label">Bloco do if</text>
+  <rect x="615" y="300" width="210" height="65" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/>
+  <text x="720" y="340" class="label">Bloco do else</text>
+  <path d="M180 365 L180 405 L440 405" class="line"/>
+  <path d="M720 365 L720 405 L460 405" class="line"/>
+  <circle cx="450" cy="405" r="8" fill="#334155"/>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="300" viewBox="0 0 1120 300" role="img" aria-labelledby="title desc">
+  <title id="title">Ordem básica de inicialização de um objeto</title>
+  <desc id="desc">Fluxo de quatro etapas: valores padrão, inicializadores de campos e blocos na ordem textual, corpo do construtor e objeto pronto para uso.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="300" rx="24" fill="#f8fafc"/>
+  <text x="40" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">Criação de uma instância de uma classe simples</text>
+  <rect x="35" y="95" width="220" height="120" rx="16" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="145" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#1e3a8a">1. Valores padrão</text>
+  <text x="145" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">0, false, null...</text>
+  <rect x="315" y="95" width="260" height="120" rx="16" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+  <text x="445" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#4c1d95">2. Inicializadores</text>
+  <text x="445" y="169" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">campos e blocos</text>
+  <text x="445" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">na ordem textual</text>
+  <rect x="635" y="95" width="215" height="120" rx="16" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+  <text x="742" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#78350f">3. Construtor</text>
+  <text x="742" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">corpo executado</text>
+  <rect x="910" y="95" width="175" height="120" rx="16" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+  <text x="997" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#14532d">4. Objeto</text>
+  <text x="997" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">pronto para uso</text>
+  <path d="M255 155 L315 155" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M575 155 L635 155" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M850 155 L910 155" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="35" y="266" font-family="Arial, sans-serif" font-size="17" fill="#475569">A ordem entre superclasses e subclasses será acrescentada quando herança for apresentada.</text>
+</svg>
