@@ -1,5 +1,7 @@
 # Estrutura de uma aplicação Java
 
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 4 de 8</sub>
+
 Java é uma linguagem orientada a objetos. A organização do código segue uma hierarquia de agrupamentos, do menor para o maior:
 
 **classe → pacote → módulo → aplicação**
@@ -35,6 +37,7 @@ class Categoria {        // sem modificador, permitida no mesmo arquivo
 }
 ```
 
+> [!IMPORTANT]
 > Java diferencia maiúsculas de minúsculas. `Produto` e `produto` são nomes distintos.
 
 ## Pacotes
@@ -114,3 +117,11 @@ javac -d bin com/exemplo/produtos/*.java   # compila
 jar --create --file app.jar -C bin .       # empacota
 java -jar app.jar                          # executa
 ```
+
+---
+
+<div align="center">
+
+⬅️ [A3 · Versões do Java (desde a versão 8)](./A3%20-%20Versoes%20do%20Java.md) &nbsp;·&nbsp; 📂 [Seção 2](./README.md) &nbsp;·&nbsp; [A5 · Instalação do JDK e da IDE](./A5%20-%20Instalacao%20do%20JDK%20e%20da%20IDE.md) ➡️
+
+</div>

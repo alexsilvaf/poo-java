@@ -1,5 +1,7 @@
 # Tradução e execução de programas
 
+<sub>📚 [Documentação](../README.md) › [Seção 1 · Conceitos de programação](./README.md) › Material 5 de 5</sub>
+
 O código escrito pelo programador precisa ser traduzido ou analisado por algum software antes que o processador possa executar suas instruções.
 
 - **Código-fonte:** texto escrito em uma linguagem de programação.
@@ -68,4 +70,13 @@ Na abordagem híbrida, o código-fonte é compilado para uma representação int
 
 ![Comparação entre as abordagens compilada, interpretada e híbrida](./comparacao-abordagens.svg)
 
+> [!NOTE]
 > Os diagramas apresentam modelos conceituais. Linguagens não são obrigatoriamente limitadas a uma única estratégia; a implementação pode combinar várias técnicas.
+
+---
+
+<div align="center">
+
+⬅️ [A4 · IDE - Ambiente Integrado de Desenvolvimento](./A4%20-%20O%20que%20%C3%A9%20uma%20IDE.md) &nbsp;·&nbsp; 📂 [Seção 1](./README.md) &nbsp;·&nbsp; [Seção 2 · Introdução à linguagem Java](../secao-02-introducao-java/README.md) ➡️
+
+</div>

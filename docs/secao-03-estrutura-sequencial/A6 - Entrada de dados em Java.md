@@ -1,5 +1,7 @@
 # Entrada de dados em Java
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 6 de 8</sub>
+
 Entrada é como o programa recebe dados de fora. No console, a fonte é `System.in`, e a classe usada para lê-la é `java.util.Scanner`.
 
 ## Criando e usando um `Scanner`
@@ -27,6 +29,7 @@ Três coisas são obrigatórias:
 2. a criação do objeto: `Scanner sc = new Scanner(System.in);`
 3. o `sc.close()` ao final, para liberar o recurso.
 
+> [!NOTE]
 > `Scanner` não é primitivo: é uma classe, e por isso precisa de `new`. Esse é o primeiro contato do curso com criação de objetos — o assunto é retomado a fundo na Seção 7.
 
 ## Métodos de leitura
@@ -83,6 +86,7 @@ System.out.print("Nome: ");
 String nome = sc.nextLine();     // agora funciona
 ```
 
+> [!WARNING]
 > Esta é, de longe, a causa número um de "meu programa pulou a leitura". Sempre que um `nextLine()` vier depois de um `nextInt()`, `nextDouble()` ou `next()`, é preciso limpar o buffer.
 
 ## Vírgula ou ponto na leitura de decimais
@@ -144,3 +148,11 @@ void main() {
 ## Referências
 
 - [OCPJ21 Study Guide — Chapter 12: File I/O](../ocpj21-book/ch12.md), seção *Standard Streams*.
+
+---
+
+<div align="center">
+
+⬅️ [A5 · Processamento de dados e casting](./A5%20-%20Processamento%20de%20dados%20e%20casting.md) &nbsp;·&nbsp; 📂 [Seção 3](./README.md) &nbsp;·&nbsp; [A7 · Funções matemáticas em Java](./A7%20-%20Funcoes%20matematicas%20em%20Java.md) ➡️
+
+</div>

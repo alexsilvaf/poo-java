@@ -1,4 +1,7 @@
 # O que é Java?
+
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 1 de 8</sub>
+
 - Linguagem de programação (Regras lexicas, sintáticas e semânticas)
 - Plataforma de desenvolvimento e execução
     - Bibliotecas (API)
@@ -28,3 +31,11 @@
 - Java ME - Java Micro Edition - dispositivos embarcados e móveis - IoT
 - Java SE - Java Standart Edition - core - desktop e servidores
 - Java EE - Java Enterprise Edition - aplicações corporativas
+
+---
+
+<div align="center">
+
+📂 [Seção 2](./README.md) &nbsp;·&nbsp; [A2 · Plataforma Java SE](./A2%20-%20Plataforma%20Java%20SE.md) ➡️
+
+</div>

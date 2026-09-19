@@ -1,5 +1,7 @@
 # Instalação do JDK e da IDE
 
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 5 de 8</sub>
+
 Para escrever e executar programas Java são necessários dois softwares: o **JDK**, que compila e executa, e uma **IDE**, que oferece editor, atalhos, depurador e automação de tarefas.
 
 ## Instalando o JDK
@@ -49,6 +51,7 @@ echo $JAVA_HOME
 which java
 ```
 
+> [!TIP]
 > É comum ter mais de um JDK instalado na mesma máquina. Nesse caso, o que vale para a linha de comando é o que está primeiro no `PATH`, e o que vale para a IDE é o que estiver configurado dentro dela. Os dois podem ser diferentes, e essa é uma fonte frequente de confusão.
 
 ## Escolhendo a IDE
@@ -83,6 +86,7 @@ Em seguida, ajustar o nível de compilação:
 1. **Window → Preferences → Java → Compiler**
 2. Definir *Compiler compliance level* como **25**.
 
+> [!WARNING]
 > Se o nível de compilação estiver abaixo de 25, recursos novos da linguagem, como os arquivos-fonte compactos, serão marcados como erro pelo editor mesmo com o JDK 25 instalado.
 
 ## Criando o primeiro projeto
@@ -101,3 +105,11 @@ Em seguida, ajustar o nível de compilação:
 | O Eclipse não abre e reclama de JVM | O Eclipse não encontrou um Java compatível. Instalar o JDK antes da IDE. |
 | Recursos do Java 25 aparecem como erro | *Compiler compliance level* configurado em uma versão anterior. |
 | `UnsupportedClassVersionError` ao executar | O código foi compilado por um JDK mais novo do que o runtime que está executando. |
+
+---
+
+<div align="center">
+
+⬅️ [A4 · Estrutura de uma aplicação Java](./A4%20-%20Estrutura%20do%20Java.md) &nbsp;·&nbsp; 📂 [Seção 2](./README.md) &nbsp;·&nbsp; [A6 · Criando o primeiro projeto em Java](./A6%20-%20Primeiro%20programa%20em%20Java.md) ➡️
+
+</div>

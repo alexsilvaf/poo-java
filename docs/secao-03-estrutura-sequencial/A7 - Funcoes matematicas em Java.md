@@ -1,5 +1,7 @@
 # Funções matemáticas em Java
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 7 de 8</sub>
+
 Java não tem operador de potenciação nem de raiz quadrada. Essas operações ficam na classe `java.lang.Math`, que é importada automaticamente e não precisa de `import`.
 
 ## Como a classe `Math` é usada
@@ -132,3 +134,11 @@ System.out.println(Math.sin(radianos));   // 1.0
 ## Referências
 
 - [OCPJ21 Study Guide — Chapter 4: Working with Data](../ocpj21-book/ch04.md), seção *The Math API*.
+
+---
+
+<div align="center">
+
+⬅️ [A6 · Entrada de dados em Java](./A6%20-%20Entrada%20de%20dados%20em%20Java.md) &nbsp;·&nbsp; 📂 [Seção 3](./README.md) &nbsp;·&nbsp; [A8 · A certificação OCP Java SE 25 e esta seção](./A8%20-%20A%20certificacao%20OCP%20Java%20SE%2025.md) ➡️
+
+</div>

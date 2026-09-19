@@ -1,5 +1,7 @@
 # Processamento de dados e casting
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 5 de 8</sub>
+
 Processar é transformar valores e guardar o resultado. Em Java isso acontece por meio de **atribuições** e **conversões de tipo**.
 
 ## Atribuição
@@ -29,6 +31,7 @@ long grande = inteiro;        // 100
 
 A ordem é `byte → short → int → long → float → double`, e `char → int`. Ir para a **direita** é automático.
 
+> [!NOTE]
 > `long` para `float` é conversão implícita mesmo os dois tendo tamanhos diferentes: `float` cobre uma faixa maior de valores, ainda que com menos precisão. É por isso que a ordem da conversão não é a ordem dos tamanhos em bits.
 
 ## Conversão explícita (casting)
@@ -111,3 +114,11 @@ Isso não é bug de Java: é como o padrão IEEE 754 funciona em qualquer lingua
 ## Referências
 
 - [OCPJ21 Study Guide — Chapter 4: Working with Data](../ocpj21-book/ch04.md), seções *Unary Operators*, *Binary Operators* e *Assignment Operators*.
+
+---
+
+<div align="center">
+
+⬅️ [A4 · Saída de dados em Java](./A4%20-%20Saida%20de%20dados%20em%20Java.md) &nbsp;·&nbsp; 📂 [Seção 3](./README.md) &nbsp;·&nbsp; [A6 · Entrada de dados em Java](./A6%20-%20Entrada%20de%20dados%20em%20Java.md) ➡️
+
+</div>

@@ -1,9 +1,12 @@
-# Seção 2 - Introdução à linguagem Java
+# Seção 2 — Introdução à linguagem Java
 
-- **Aulas do curso:** 8 a 20
-- **Aulas de referência:** 13 a 25
+<sub>📚 [Documentação](../README.md) › Seção 2</sub>
 
-## Objetivos
+| 🎓 Aulas do curso | 🎬 Aulas de referência | ⏱️ Duração na grade | 🖥️ Slides |
+| :---: | :---: | :---: | :---: |
+| 8 a 20 | 13 a 25 | 40 min | [abrir](./apresentacao.html) |
+
+## 🎯 Objetivos
 
 Ao final desta seção, o aluno deverá ser capaz de:
 
@@ -18,24 +21,25 @@ Ao final desta seção, o aluno deverá ser capaz de:
 - escrever, compilar e executar um programa Java, reconhecendo `main` como ponto de entrada;
 - reconhecer a sintaxe simplificada introduzida no Java 25 sem depender de conceitos de orientação a objetos.
 
-## Apresentação
+## 🖥️ Apresentação
 
-[apresentacao.html](./apresentacao.html) reúne os seis blocos da aula em slides, incluindo os diagramas desta seção. Basta abrir o arquivo no navegador; navegação por `←`/`→`/espaço, `Esc` para visão geral e `F` para tela cheia.
+[apresentacao.html](./apresentacao.html) reúne os seis blocos da aula em slides, incluindo os diagramas desta seção. Basta abrir o arquivo no navegador; navegação por <kbd>←</kbd> <kbd>→</kbd> ou <kbd>Espaço</kbd>, <kbd>Esc</kbd> para a visão geral e <kbd>F</kbd> para tela cheia.
 
+> [!NOTE]
 > A imagem do Duke (`duke.svg`) é de autoria de sbmehta, obtida no Wikimedia Commons e distribuída sob **licença BSD** — o Duke foi liberado como código aberto pela Sun Microsystems em 2006.
 
-## Conteúdos
+## 📚 Conteúdos
 
-- [Contextualização do Java](./A1%20-%20Contextualiza%C3%A7%C3%A3o%20do%20Java.md)
-- [Plataforma Java SE](./A2%20-%20Plataforma%20Java%20SE.md)
-- [Versões do Java](./A3%20-%20Versoes%20do%20Java.md)
-- [Estrutura de uma aplicação Java](./A4%20-%20Estrutura%20do%20Java.md)
-- [Instalação do JDK e da IDE](./A5%20-%20Instalacao%20do%20JDK%20e%20da%20IDE.md)
-- [Primeiro programa em Java](./A6%20-%20Primeiro%20programa%20em%20Java.md)
-- [Sintaxe simplificada do Java 25](./A7%20-%20Sintaxe%20simplificada%20do%20Java%2025.md)
-- [A certificação OCP Java SE 25 e esta seção](./A8%20-%20A%20certificacao%20OCP%20Java%20SE%2025.md)
+- **A1** · [Contextualização do Java](./A1%20-%20Contextualiza%C3%A7%C3%A3o%20do%20Java.md)
+- **A2** · [Plataforma Java SE](./A2%20-%20Plataforma%20Java%20SE.md)
+- **A3** · [Versões do Java](./A3%20-%20Versoes%20do%20Java.md)
+- **A4** · [Estrutura de uma aplicação Java](./A4%20-%20Estrutura%20do%20Java.md)
+- **A5** · [Instalação do JDK e da IDE](./A5%20-%20Instalacao%20do%20JDK%20e%20da%20IDE.md)
+- **A6** · [Primeiro programa em Java](./A6%20-%20Primeiro%20programa%20em%20Java.md)
+- **A7** · [Sintaxe simplificada do Java 25](./A7%20-%20Sintaxe%20simplificada%20do%20Java%2025.md)
+- **A8** · [A certificação OCP Java SE 25 e esta seção](./A8%20-%20A%20certificacao%20OCP%20Java%20SE%2025.md)
 
-## Planejamento da aula
+## 🗓️ Planejamento da aula
 
 | Tempo | Conteúdo | Condução sugerida |
 | :---: | --- | --- |
@@ -46,8 +50,16 @@ Ao final desta seção, o aluno deverá ser capaz de:
 | 40–50 min | Ambiente e primeiro programa | Verificar a instalação com o A5 e escrever o programa do A6 ao vivo |
 | 50–60 min | Sintaxe simplificada do Java 25 | Reescrever o mesmo programa na forma compacta do A7 e discutir quando usar cada uma |
 
-## Observações
+## 📝 Observações
 
 - A2, A3 e A4 formam um mapa da plataforma. Os exemplos de `class`, `package`, `module` e `import` devem ser lidos estruturalmente, sem antecipar orientação a objetos ou bibliotecas ainda não estudadas.
 - O A7 apresenta a sintaxe simplificada, mas o restante do curso continua usando classes declaradas explicitamente. A forma compacta é mostrada para que o aluno a reconheça, não para que a adote.
 - O A8 é material de referência para quem quiser seguir rumo à certificação. Não é conteúdo de aula e não é avaliado.
+
+---
+
+<div align="center">
+
+⬅️ [Seção 1 · Conceitos de programação](../secao-01-conceitos-programacao/README.md) &nbsp;·&nbsp; 📚 [Documentação](../README.md) &nbsp;·&nbsp; [Seção 3 · Estrutura sequencial](../secao-03-estrutura-sequencial/README.md) ➡️
+
+</div>

@@ -1,5 +1,7 @@
 # Criando o primeiro projeto em Java
 
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 6 de 8</sub>
+
 ## Regras de nomes
 
 - Nome do projeto sem espaço em branco, sem acento, nomes simples;
@@ -81,4 +83,13 @@ As declarações `import` serão usadas pela primeira vez quando o curso apresen
 | `';' expected` | Falta o ponto e vírgula ao final da instrução. |
 | `NoClassDefFoundError` | A classe compilou, mas não está no *classpath* na hora de executar. |
 
+> [!NOTE]
 > A partir do Java 25 existe uma forma ainda mais curta de escrever esse primeiro programa, dispensando a classe e o `public static`. Esse assunto está no material [A7 - Sintaxe simplificada do Java 25](./A7%20-%20Sintaxe%20simplificada%20do%20Java%2025.md).
+
+---
+
+<div align="center">
+
+⬅️ [A5 · Instalação do JDK e da IDE](./A5%20-%20Instalacao%20do%20JDK%20e%20da%20IDE.md) &nbsp;·&nbsp; 📂 [Seção 2](./README.md) &nbsp;·&nbsp; [A7 · Sintaxe simplificada do Java 25](./A7%20-%20Sintaxe%20simplificada%20do%20Java%2025.md) ➡️
+
+</div>

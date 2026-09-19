@@ -1,5 +1,7 @@
 # Algoritmo, Automação, Programa de Computador
 
+<sub>📚 [Documentação](../README.md) › [Seção 1 · Conceitos de programação](./README.md) › Material 1 de 5</sub>
+
 ## O que é um algoritmo?
 
 Um algoritmo é uma sequência finita e ordenada de instruções para realizar uma tarefa ou resolver um problema.
@@ -32,3 +34,11 @@ Nem todo algoritmo descreve uma tarefa computacional. Um computador não lava um
 - realizar cálculos;
 - tomar decisões com base em condições;
 - repetir operações.
+
+---
+
+<div align="center">
+
+📂 [Seção 1](./README.md) &nbsp;·&nbsp; [A2 · O que precisaremos?](./A2%20-%20O%20que%20e%20preciso%20para%20fazer%20um%20programa-de-computador.md) ➡️
+
+</div>

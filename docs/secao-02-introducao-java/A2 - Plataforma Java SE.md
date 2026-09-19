@@ -1,5 +1,7 @@
 # Plataforma Java SE
 
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 2 de 8</sub>
+
 A plataforma Java SE é formada por três peças que costumam ser confundidas entre si.
 
 | Sigla   | Nome                     | O que é                                                                 |
@@ -10,6 +12,7 @@ A plataforma Java SE é formada por três peças que costumam ser confundidas en
 
 A relação entre eles é de contenção: **JDK ⊃ JRE ⊃ JVM**.
 
+> [!IMPORTANT]
 > A partir do Java 11 a Oracle deixou de distribuir o JRE separadamente. Hoje se instala o JDK e, quando é necessário um pacote menor apenas para execução, gera-se uma imagem de runtime sob medida com a ferramenta `jlink`.
 
 ## Ferramentas do JDK
@@ -32,6 +35,7 @@ O Java é definido por especificações públicas, e várias organizações dist
 - **Eclipse Temurin (Adoptium)** — distribuição gratuita mantida pela comunidade, muito usada em cursos e em produção.
 - **Amazon Corretto**, **Azul Zulu**, **Red Hat build of OpenJDK** — outras distribuições gratuitas com suporte de longo prazo.
 
+> [!NOTE]
 > Todas passam pelo mesmo conjunto de testes de compatibilidade (TCK). Em condições equivalentes, um programa compatível pode ser executado nas diferentes distribuições.
 
 ## Compilação e interpretação
@@ -88,3 +92,11 @@ java -cp bin com.exemplo.Programa
 # Usando o module path
 java --module-path mods --module com.exemplo/com.exemplo.Programa
 ```
+
+---
+
+<div align="center">
+
+⬅️ [A1 · O que é Java?](./A1%20-%20Contextualiza%C3%A7%C3%A3o%20do%20Java.md) &nbsp;·&nbsp; 📂 [Seção 2](./README.md) &nbsp;·&nbsp; [A3 · Versões do Java (desde a versão 8)](./A3%20-%20Versoes%20do%20Java.md) ➡️
+
+</div>

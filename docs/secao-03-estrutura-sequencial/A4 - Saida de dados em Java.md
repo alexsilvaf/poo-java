@@ -1,5 +1,7 @@
 # Saída de dados em Java
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 4 de 8</sub>
+
 Saída é como o programa mostra resultados. No console, o curso usa `System.out`, ligado à saída padrão. Os detalhes sobre objetos e a classe `PrintStream` serão estudados mais adiante.
 
 ## `print`, `println` e `printf`
@@ -23,6 +25,7 @@ Bom dia!
 Nova linha
 ```
 
+> [!NOTE]
 > Existe também `System.err`, que escreve na saída de erro. Na IDE ele costuma aparecer em vermelho. É onde as mensagens de erro devem ir, para não se misturarem com a saída normal do programa.
 
 ## Concatenação com `+`
@@ -171,6 +174,7 @@ public class Formatacao {
 
 `Locale.setDefault` deve ser chamado **uma única vez**, logo no início do `main`.
 
+> [!NOTE]
 > Isso afeta apenas a **formatação da saída**. A leitura de números pelo `Scanner` também é sensível ao idioma, como mostra o material [A6 - Entrada de dados em Java](./A6%20-%20Entrada%20de%20dados%20em%20Java.md).
 
 ## `String.format`
@@ -227,3 +231,11 @@ void main() {
 
 - [OCPJ21 Study Guide — Chapter 4: Working with Data](../ocpj21-book/ch04.md), seções *Formatting Strings* e *Text Blocks*.
 - [OCPJ21 Study Guide — Chapter 14: Localization](../ocpj21-book/ch14.md), seção *The `Locale` Class*.
+
+---
+
+<div align="center">
+
+⬅️ [A3 · As três operações básicas de programação](./A3%20-%20As%20tres%20operacoes%20basicas.md) &nbsp;·&nbsp; 📂 [Seção 3](./README.md) &nbsp;·&nbsp; [A5 · Processamento de dados e casting](./A5%20-%20Processamento%20de%20dados%20e%20casting.md) ➡️
+
+</div>

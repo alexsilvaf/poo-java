@@ -1,5 +1,8 @@
 # Versões do Java (desde a versão 8)
 
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 3 de 8</sub>
+
+> [!TIP]
 > Os nomes de recursos nesta aula formam apenas um mapa histórico da plataforma. Não é preciso compreender nem usar esses recursos agora; cada conceito será estudado quando seus pré-requisitos já tiverem sido apresentados.
 
 ## Cadência de lançamentos
@@ -14,6 +17,7 @@ Os recursos entram na linguagem por meio de **JEPs** (*JDK Enhancement Proposals
 - **Incubator / Preview:** disponível para testes, precisa ser habilitado explicitamente na compilação e na execução (`--enable-preview`) e ainda pode mudar ou ser removido.
 - **Final:** faz parte da linguagem e não pode mais ser retirado sem um processo de depreciação.
 
+> [!IMPORTANT]
 > Provas de certificação cobram apenas recursos **finais** da versão correspondente. Recursos em *preview* não são cobrados.
 
 ## Resumo das versões LTS
@@ -165,3 +169,11 @@ Lançado em março de 2014.
 - API de *Streams*
 - Nova API de data e hora (`java.time`)
 - Métodos `default` em interfaces
+
+---
+
+<div align="center">
+
+⬅️ [A2 · Plataforma Java SE](./A2%20-%20Plataforma%20Java%20SE.md) &nbsp;·&nbsp; 📂 [Seção 2](./README.md) &nbsp;·&nbsp; [A4 · Estrutura de uma aplicação Java](./A4%20-%20Estrutura%20do%20Java.md) ➡️
+
+</div>

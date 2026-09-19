@@ -1,5 +1,7 @@
 # As três operações básicas de programação
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 3 de 8</sub>
+
 Por mais complexo que um sistema pareça, ele é construído sobre três operações elementares:
 
 ![As três operações básicas](./operacoes-basicas.svg)
@@ -65,6 +67,7 @@ System.out.println(y);   // 5  — imprimiu antes de somar
 y = y + 3;
 ```
 
+> [!IMPORTANT]
 > Uma variável só pode ser usada **depois** de declarada e inicializada. Essa é uma consequência direta da execução sequencial, e é o primeiro modelo mental que o aluno precisa formar.
 
 ## Teste de mesa
@@ -88,3 +91,11 @@ a = c + b;
 Repare que `c` vale `3`, e não `3.33`: a divisão entre dois `int` é inteira, como visto no material [A2](./A2%20-%20Expressoes%20aritmeticas.md).
 
 O teste de mesa volta a aparecer na Seção 5, junto com o depurador do Eclipse.
+
+---
+
+<div align="center">
+
+⬅️ [A2 · Expressões aritméticas](./A2%20-%20Expressoes%20aritmeticas.md) &nbsp;·&nbsp; 📂 [Seção 3](./README.md) &nbsp;·&nbsp; [A4 · Saída de dados em Java](./A4%20-%20Saida%20de%20dados%20em%20Java.md) ➡️
+
+</div>

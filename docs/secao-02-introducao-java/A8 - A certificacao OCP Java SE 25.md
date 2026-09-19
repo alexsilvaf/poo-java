@@ -1,7 +1,10 @@
 # A certificação OCP Java SE 25 e esta seção
 
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 8 de 8</sub>
+
 Este material relaciona a Seção 2 com a certificação **Oracle Certified Professional Java SE 25 Developer**, exame **1Z0-831**.
 
+> [!NOTE]
 > Este é um material opcional de referência. A certificação pressupõe experiência com toda a linguagem; nesta seção, serão relacionados somente os conceitos que o aluno já encontrou. Os assuntos futuros não serão usados para explicar os atuais.
 
 ## Relação com os objetivos da prova
@@ -88,7 +91,7 @@ Esses tópicos serão relacionados à certificação somente depois de ensinados
 **1. Qual ferramenta compila `OlaMundo.java`?**
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `javac`. O comando `javac OlaMundo.java` gera o bytecode em `OlaMundo.class`.
 </details>
@@ -96,7 +99,7 @@ Esses tópicos serão relacionados à certificação somente depois de ensinados
 **2. Qual ferramenta inicia a JVM para executar o programa?**
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `java`. Depois da compilação, o comando tradicional é `java OlaMundo`.
 </details>
@@ -110,7 +113,7 @@ public class Aplicacao {
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 Não. A classe pública se chama `Aplicacao`, então o arquivo precisa se chamar `Aplicacao.java`.
 </details>
@@ -122,7 +125,7 @@ Não. A classe pública se chama `Aplicacao`, então o arquivo precisa se chamar
 `(c)` import, classe, package
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 **(b)**. A declaração `package` vem primeiro, depois as importações e, por fim, as declarações de tipo.
 </details>
@@ -130,7 +133,7 @@ Não. A classe pública se chama `Aplicacao`, então o arquivo precisa se chamar
 **5. Qual arquivo descreve um módulo Java?**
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `module-info.java`.
 </details>
@@ -152,7 +155,7 @@ void main() {
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 Sim. A primeira é a forma tradicional adotada nos projetos do curso; a segunda usa um arquivo fonte compacto do Java 25.
 </details>
@@ -163,3 +166,11 @@ Sim. A primeira é a forma tradicional adotada nos projetos do curso; a segunda 
 - [OCPJ21 Study Guide - Chapter 13: Java Platform Module System](../ocpj21-book/ch13.md)
 - [JEP 512: Compact Source Files and Instance Main Methods](https://openjdk.org/jeps/512)
 - [JEP 511: Module Import Declarations](https://openjdk.org/jeps/511)
+
+---
+
+<div align="center">
+
+⬅️ [A7 · Sintaxe simplificada do Java 25](./A7%20-%20Sintaxe%20simplificada%20do%20Java%2025.md) &nbsp;·&nbsp; 📂 [Seção 2](./README.md) &nbsp;·&nbsp; [Seção 3 · Estrutura sequencial](../secao-03-estrutura-sequencial/README.md) ➡️
+
+</div>

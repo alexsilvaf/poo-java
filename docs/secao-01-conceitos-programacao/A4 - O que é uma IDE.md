@@ -1,5 +1,7 @@
 # IDE - Ambiente Integrado de Desenvolvimento
 
+<sub>📚 [Documentação](../README.md) › [Seção 1 · Conceitos de programação](./README.md) › Material 4 de 5</sub>
+
 Uma IDE reúne em uma única aplicação ferramentas para editar, traduzir, executar e depurar programas. Ela facilita o desenvolvimento, mas um programa também pode ser criado com um editor de texto e as ferramentas da linguagem.
 
 ## Exemplos
@@ -38,3 +40,11 @@ Ao transformar esse algoritmo em código, a IDE oferece:
 - depurador para acompanhar as instruções uma por vez.
 
 O mesmo problema pode ser programado em C, C++, C#, Java e outras linguagens. A lógica do algoritmo permanece; o que muda é a sintaxe. O primeiro programa Java será escrito somente na Seção 2, depois que a plataforma e a estrutura mínima forem apresentadas.
+
+---
+
+<div align="center">
+
+⬅️ [A3 · Linguagem de programação](./A3%20-%20Linguagem%20de%20Programacao.md) &nbsp;·&nbsp; 📂 [Seção 1](./README.md) &nbsp;·&nbsp; [A5 · Tradução e execução de programas](./A5%20-%20Compila%C3%A7%C3%A3o,%20intepreta%C3%A7%C3%A3o,%20c%C3%B3digo%20fonte,%20c%C3%B3digo%20objeto,%20m%C3%A1quina%20virtual.md) ➡️
+
+</div>

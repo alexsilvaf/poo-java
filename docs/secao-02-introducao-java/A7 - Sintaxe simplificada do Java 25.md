@@ -1,5 +1,7 @@
 # Sintaxe simplificada do Java 25
 
+<sub>📚 [Documentação](../README.md) › [Seção 2 · Introdução à linguagem Java](./README.md) › Material 7 de 8</sub>
+
 O programa mínimo tradicional exige que o iniciante copie uma estrutura que ainda será explicada ao longo do curso:
 
 ```java
@@ -97,3 +99,11 @@ Esses assuntos exigem orientação a objetos ou estudo específico para certific
 
 - [JEP 512: Compact Source Files and Instance Main Methods](https://openjdk.org/jeps/512)
 - [JEP 511: Module Import Declarations](https://openjdk.org/jeps/511)
+
+---
+
+<div align="center">
+
+⬅️ [A6 · Criando o primeiro projeto em Java](./A6%20-%20Primeiro%20programa%20em%20Java.md) &nbsp;·&nbsp; 📂 [Seção 2](./README.md) &nbsp;·&nbsp; [A8 · A certificação OCP Java SE 25 e esta seção](./A8%20-%20A%20certificacao%20OCP%20Java%20SE%2025.md) ➡️
+
+</div>

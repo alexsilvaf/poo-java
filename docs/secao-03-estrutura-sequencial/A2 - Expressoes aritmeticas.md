@@ -1,5 +1,7 @@
 # Expressões aritméticas
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 2 de 8</sub>
+
 Uma **expressão** é qualquer trecho de código que, ao ser avaliado, produz um valor. `2 + 3` é uma expressão que resulta em `5`; `preco * 0.9` é uma expressão que resulta em um número.
 
 Toda expressão tem um **valor** e um **tipo**. Os tipos vistos no material [A1 - Variáveis e tipos básicos](./A1%20-%20Variaveis%20e%20tipos%20basicos.md) não valem só para as variáveis: eles valem também para o resultado de cada conta. Em Java, `10 / 3` e `10.0 / 3` são expressões diferentes porque têm tipos diferentes.
@@ -35,6 +37,7 @@ System.out.println(a / (double) b); // 3.3333333333333335
 System.out.println((double) (a / b)); // 3.0  — tarde demais: a divisão já foi inteira
 ```
 
+> [!WARNING]
 > A última linha é o erro clássico. Converter o **resultado** não recupera o que já foi perdido; é preciso converter antes de dividir.
 
 O `(double)` desses exemplos é um **casting**, a conversão explícita de um tipo em outro. Ele aparece aqui só como ferramenta para forçar a divisão real; as regras completas estão no material [A5 - Processamento de dados e casting](./A5%20-%20Processamento%20de%20dados%20e%20casting.md).
@@ -92,6 +95,7 @@ System.out.println(20 / 5 * 2);    // 8   — avalia (20/5) e depois *2, não 20
 
 `*`, `/` e `%` têm a **mesma** precedência entre si, e são avaliados da esquerda para a direita. O mesmo vale para `+` e `-`.
 
+> [!TIP]
 > Na dúvida, use parênteses. Eles não custam nada em desempenho e evitam que o leitor do código precise lembrar a tabela de precedência.
 
 ## Escrevendo fórmulas matemáticas em Java
@@ -132,3 +136,11 @@ A avaliação é da esquerda para a direita. Assim que uma `String` entra na con
 ## Referências
 
 - [OCPJ21 Study Guide — Chapter 4: Working with Data](../ocpj21-book/ch04.md), seção *Operators*.
+
+---
+
+<div align="center">
+
+⬅️ [A1 · Variáveis e tipos básicos em Java](./A1%20-%20Variaveis%20e%20tipos%20basicos.md) &nbsp;·&nbsp; 📂 [Seção 3](./README.md) &nbsp;·&nbsp; [A3 · As três operações básicas de programação](./A3%20-%20As%20tres%20operacoes%20basicas.md) ➡️
+
+</div>

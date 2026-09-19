@@ -1,5 +1,7 @@
 # O que precisaremos?
 
+<sub>📚 [Documentação](../README.md) › [Seção 1 · Conceitos de programação](./README.md) › Material 2 de 5</sub>
+
 - Linguagem de programação
 - Editor de código ou IDE
 - Compilador ou interpretador
@@ -26,3 +28,11 @@ O código objeto nem sempre pode ser executado diretamente: ele pode precisar se
 ## O que é uma máquina virtual?
 
 É um ambiente de execução que funciona como uma máquina abstrata. Ela carrega e executa código intermediário e pode interpretá-lo ou compilá-lo para código nativo durante a execução.
+
+---
+
+<div align="center">
+
+⬅️ [A1 · Algoritmo, Automação, Programa de Computador](./A1%20-%20Algoritmo,%20Automatacao,%20Programa.md) &nbsp;·&nbsp; 📂 [Seção 1](./README.md) &nbsp;·&nbsp; [A3 · Linguagem de programação](./A3%20-%20Linguagem%20de%20Programacao.md) ➡️
+
+</div>

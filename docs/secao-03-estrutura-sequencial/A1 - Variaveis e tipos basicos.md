@@ -1,5 +1,7 @@
 # Variáveis e tipos básicos em Java
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 1 de 8</sub>
+
 Uma **variável** é um espaço nomeado na memória capaz de guardar um valor de um determinado tipo. Java é uma linguagem **estaticamente tipada**: toda variável precisa ser declarada com um tipo antes de ser usada, e esse tipo não muda depois.
 
 ```java
@@ -147,3 +149,11 @@ PI = 3.15;   // erro: cannot assign a value to final variable PI
 ## Referências
 
 - [OCPJ21 Study Guide — Chapter 4: Working with Data](../ocpj21-book/ch04.md), seção *Understanding Data Types*.
+
+---
+
+<div align="center">
+
+📂 [Seção 3](./README.md) &nbsp;·&nbsp; [A2 · Expressões aritméticas](./A2%20-%20Expressoes%20aritmeticas.md) ➡️
+
+</div>

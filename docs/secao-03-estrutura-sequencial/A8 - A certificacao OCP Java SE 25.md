@@ -1,7 +1,10 @@
 # A certificação OCP Java SE 25 e esta seção
 
+<sub>📚 [Documentação](../README.md) › [Seção 3 · Estrutura sequencial](./README.md) › Material 8 de 8</sub>
+
 Este material relaciona a Seção 3 com a certificação **Oracle Certified Professional Java SE 25 Developer**, exame **1Z0-831**.
 
+> [!NOTE]
 > O objetivo é revisar apenas o que já foi ensinado. Operadores condicionais, repetições, arrays, objetos e tratamento de exceções serão relacionados à prova somente nas seções correspondentes.
 
 ## Grupos de objetivos relacionados
@@ -88,7 +91,7 @@ System.out.println((double) a / b);
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `3`, `1` e `3.5`. As duas primeiras operações usam inteiros. Na terceira, o casting ocorre antes da divisão.
 </details>
@@ -102,7 +105,7 @@ byte soma = a + b;
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 Não. `a + b` produz `int`, mesmo que os dois operandos sejam `byte`. Seria necessário um casting explícito.
 </details>
@@ -114,7 +117,7 @@ System.out.println(1 + 2 + "3" + 4);
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `334`. Primeiro ocorre `1 + 2`, que resulta em `3`. Depois da entrada da `String`, as operações seguintes são concatenações.
 </details>
@@ -127,7 +130,7 @@ int inteiro = (int) valor;
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `3`. O casting descarta a parte decimal; ele não arredonda.
 </details>
@@ -140,7 +143,7 @@ long arredondado = Math.round(3.6);
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `Math.sqrt` devolve `double`, portanto `raiz` recebe `4.0`. `Math.round(double)` devolve `long`, portanto `arredondado` recebe `4`.
 </details>
@@ -153,7 +156,7 @@ System.out.println(total);
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 Erro de compilação. A variável local foi declarada, mas não recebeu valor antes da leitura.
 </details>
@@ -161,7 +164,7 @@ Erro de compilação. A variável local foi declarada, mas não recebeu valor an
 **7. Qual formato imprime duas casas decimais e termina a linha?**
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `System.out.printf("%.2f%n", valor);`.
 </details>
@@ -174,7 +177,7 @@ String nome = sc.nextLine();
 ```
 
 <details>
-<summary>Resposta</summary>
+<summary><b>💡 Resposta</b></summary>
 
 `nextInt` deixa a quebra de linha pendente. O `nextLine` seguinte consome essa quebra e devolve uma linha vazia. Um `sc.nextLine()` extra entre as duas leituras descarta o restante da linha.
 </details>
@@ -184,3 +187,11 @@ String nome = sc.nextLine();
 - [OCPJ21 Study Guide - Chapter 4: Working with Data](../ocpj21-book/ch04.md)
 - [OCPJ21 Study Guide - Chapter 12: File I O](../ocpj21-book/ch12.md)
 - [Certificação Oracle Certified Professional Java SE 25 Developer](https://education.oracle.com/java-se-25-developer-professional/pexam_1Z0-831)
+
+---
+
+<div align="center">
+
+⬅️ [A7 · Funções matemáticas em Java](./A7%20-%20Funcoes%20matematicas%20em%20Java.md) &nbsp;·&nbsp; 📂 [Seção 3](./README.md) &nbsp;·&nbsp; [Seção 4 · Estrutura condicional](../secao-04-estrutura-condicional/README.md) ➡️
+
+</div>
