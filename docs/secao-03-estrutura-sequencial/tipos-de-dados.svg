@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 900" role="img" aria-labelledby="title description">
   <title id="title">Tipos de dados em Java</title>
-  <desc id="description">Os tipos de dados de Java se dividem em tipos primitivos, com oito tipos agrupados em inteiros, ponto flutuante, logico e caractere, e tipos por referencia, que incluem classes, interfaces, arrays e enums.</desc>
+  <desc id="description">Os tipos de dados de Java se dividem em oito tipos primitivos e tipos por referencia. String e o primeiro tipo por referencia usado no curso.</desc>
 
   <defs>
     <linearGradient id="rootGradient" x1="0" y1="0" x2="0" y2="1">
@@ -41,7 +41,7 @@
       <rect x="1180" y="220" width="440" height="86" rx="12" fill="url(#rootGradient)" stroke="#b88600" stroke-width="3" />
     </g>
     <text x="1400" y="266" font-size="30" text-anchor="middle" fill="#111827" font-weight="700">Tipos por referencia</text>
-    <text x="1400" y="294" font-size="20" text-anchor="middle" fill="#5a4200">guardam o endereco do objeto</text>
+    <text x="1400" y="294" font-size="20" text-anchor="middle" fill="#5a4200">primeiro exemplo: String</text>
 
     <!-- Conectores primitivos -->
     <path d="M500 306 V350 H200 V390" fill="none" stroke="#347fbd" stroke-width="3" />
@@ -87,15 +87,12 @@
 
     <g filter="url(#shadow)"><rect x="1180" y="390" width="440" height="300" rx="10" fill="url(#leafGradient)" stroke="#c7cbd1" stroke-width="2" /></g>
     <g font-family="Consolas, 'Courier New', monospace" font-size="28" fill="#1f2937" text-anchor="middle">
-      <text x="1400" y="450">String</text>
-      <text x="1400" y="500">Scanner</text>
-      <text x="1400" y="550">int[]</text>
+      <text x="1400" y="490">String</text>
     </g>
-    <text x="1400" y="605" font-size="22" text-anchor="middle" fill="#6b7280">classes, interfaces,</text>
-    <text x="1400" y="635" font-size="22" text-anchor="middle" fill="#6b7280">arrays, enums</text>
-    <text x="1400" y="672" font-size="22" text-anchor="middle" fill="#8f1614" font-weight="700">valor padrao: null</text>
+    <text x="1400" y="565" font-size="22" text-anchor="middle" fill="#6b7280">outros tipos por referencia</text>
+    <text x="1400" y="600" font-size="22" text-anchor="middle" fill="#6b7280">serao estudados depois</text>
 
-    <text x="950" y="770" font-size="27" text-anchor="middle" fill="#111827">Os oito tipos primitivos comecam com letra minuscula. Todo o resto e tipo por referencia.</text>
+    <text x="950" y="770" font-size="27" text-anchor="middle" fill="#111827">Os oito tipos primitivos comecam com letra minuscula.</text>
     <text x="950" y="825" font-size="23" text-anchor="middle" fill="#6b7280" font-style="italic">Variaveis locais nao recebem valor padrao: precisam ser inicializadas antes do uso.</text>
   </g>
 </svg>

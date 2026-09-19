@@ -6,18 +6,13 @@ Java é uma linguagem orientada a objetos. A organização do código segue uma 
 
 ## Classes
 
-Classe é a unidade lógica básica de um programa orientado a objetos, no nosso caso, a linguagem de programação Java. Todo código Java tem que estar dentro de classes.
+Classe é uma unidade usada para organizar código Java. A orientação a objetos e o conteúdo interno das classes serão estudados a partir da Seção 7; por enquanto, basta reconhecer a declaração e sua relação com o arquivo.
 
 ![Classes](./classes.svg)
 
 ```java
 public class Produto {
-    String nome;
-    double preco;
-
-    double precoComDesconto(double percentual) {
-        return preco - (preco * percentual / 100);
-    }
+    // O conteúdo será estudado gradualmente.
 }
 ```
 
@@ -53,19 +48,19 @@ O pacote é declarado na **primeira instrução** do arquivo, antes de qualquer 
 ```java
 package com.exemplo.produtos;   // 1. declaração de pacote
 
-import java.util.ArrayList;     // 2. importações
+import java.util.Scanner;       // 2. importações, quando necessárias
 
-public class Inventario {       // 3. declaração de tipo
-    private ArrayList<Produto> itens = new ArrayList<>();
+public class Aplicacao {        // 3. declaração de tipo
+    // O Scanner será usado na Seção 3.
 }
 ```
 
 Pontos importantes sobre pacotes:
 
 - A estrutura de diretórios no disco precisa espelhar o nome do pacote: `com/exemplo/produtos/Inventario.java`.
-- Classes do pacote `java.lang` (como `String`, `System`, `Math` e `Integer`) são importadas automaticamente.
+- Tipos do pacote `java.lang`, como `String` e `System`, ficam disponíveis automaticamente.
 - Classes do **mesmo pacote** não precisam de `import`.
-- Sem `import`, é preciso usar o nome totalmente qualificado: `java.util.ArrayList lista = new java.util.ArrayList();`.
+- Sem `import`, o tipo precisa ser escrito com o nome completo, como `java.util.Scanner`.
 - `import java.util.*;` importa todos os tipos do pacote `java.util`, mas **não** os de seus subpacotes.
 
 ## Módulos
@@ -95,18 +90,13 @@ Todo módulo depende implicitamente do módulo `java.base`, que contém `java.la
 
 ### Importação de módulos (Java 25)
 
-A partir do Java 25 é possível importar de uma só vez todos os pacotes exportados por um módulo:
+A partir do Java 25 existe uma declaração capaz de importar os pacotes exportados por um módulo:
 
 ```java
-import module java.base;   // equivale a importar java.util, java.io, java.nio.file, ...
-
-public class Exemplo {
-    public static void main(String[] args) {
-        List<String> nomes = List.of("Ana", "Bruno");   // sem import java.util.List
-        System.out.println(nomes);
-    }
-}
+import module java.base;
 ```
+
+Nesta etapa, basta reconhecer a declaração. Os tipos que ela disponibiliza serão apresentados conforme aparecerem no curso; não é necessário estudar coleções ou arquivos agora.
 
 ## Aplicação
 

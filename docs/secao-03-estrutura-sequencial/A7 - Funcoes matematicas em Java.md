@@ -4,13 +4,13 @@ Java não tem operador de potenciação nem de raiz quadrada. Essas operações 
 
 ## Como a classe `Math` é usada
 
-Todos os métodos de `Math` são **estáticos**: são chamados a partir do nome da classe, sem criar objeto.
+As operações são chamadas pelo nome `Math`, seguido de ponto e do nome desejado:
 
 ```java
 double raiz = Math.sqrt(81.0);   // 9.0
 ```
 
-`Math` também não pode ser instanciada — seu construtor é privado. Ela existe apenas como um agrupamento de funções.
+Neste ponto, basta reconhecer o formato `Math.operacao(valor)`. Métodos estáticos, objetos e construtores serão explicados nas seções de orientação a objetos.
 
 ## Os métodos mais usados
 
@@ -80,14 +80,7 @@ A fórmula geral para um inteiro entre `min` e `max`, inclusive:
 int valor = (int) (Math.random() * (max - min + 1)) + min;
 ```
 
-Para uso mais frequente, `java.util.Random` é a opção mais adequada:
-
-```java
-import java.util.Random;
-
-Random gerador = new Random();
-int dado = gerador.nextInt(6) + 1;     // 0..5, mais 1
-```
+Outras formas de gerar números aleatórios serão apresentadas quando o curso aprofundar classes e objetos. Nesta seção, `Math.random()` é suficiente.
 
 ## Um programa completo
 

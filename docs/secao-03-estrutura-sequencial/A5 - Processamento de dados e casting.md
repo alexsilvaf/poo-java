@@ -13,36 +13,7 @@ x = x + 3;    // lê-se: o novo x é o x anterior mais 3
 
 Por isso `x = x + 3` faz sentido em programação e não faria em matemática.
 
-### Operadores de atribuição cumulativa
-
-```java
-int x = 10;
-x += 5;    // equivale a x = x + 5   → 15
-x -= 3;    // x = x - 3              → 12
-x *= 2;    // x = x * 2              → 24
-x /= 4;    // x = x / 4              → 6
-x %= 4;    // x = x % 4              → 2
-```
-
-### Incremento e decremento
-
-```java
-int i = 5;
-i++;   // 6   — equivale a i = i + 1
-i--;   // 5
-```
-
-A posição do operador muda o valor da **expressão**, não o da variável:
-
-```java
-int a = 5;
-System.out.println(a++);   // imprime 5, depois a vira 6  (pós-incremento)
-
-int b = 5;
-System.out.println(++b);   // b vira 6, depois imprime 6  (pré-incremento)
-```
-
-Em uma linha isolada, `a++` e `++a` produzem o mesmo efeito. A diferença só importa quando o valor é usado na mesma expressão — e é aí que a certificação costuma armar as pegadinhas.
+As formas abreviadas `+=`, `-=`, `++` e `--` serão apresentadas na Seção 4. Por enquanto, todas as atualizações permanecem na forma explícita, como `x = x + 3`.
 
 ## Conversão implícita (widening)
 
@@ -127,44 +98,15 @@ double certo2 = a / (double) b;    // 2.5
 double certo3 = a / 4.0;           // 2.5 — literal já é double
 ```
 
-## Convertendo texto em número
-
-Dados que chegam como texto — de um arquivo, de um formulário, de `args` — precisam ser convertidos:
-
-```java
-String texto = "42";
-int numero = Integer.parseInt(texto);        // 42
-double decimal = Double.parseDouble("3.14"); // 3.14
-long longo = Long.parseLong("900000");
-```
-
-E o caminho inverso:
-
-```java
-int numero = 42;
-String texto1 = String.valueOf(numero);   // "42"
-String texto2 = "" + numero;              // "42" — funciona, mas menos claro
-```
-
-Se o texto não representa um número válido, o programa lança `NumberFormatException` em tempo de execução:
-
-```java
-int erro = Integer.parseInt("abc");   // NumberFormatException
-int erro2 = Integer.parseInt("3.14"); // NumberFormatException — parseInt não aceita decimal
-```
-
-> `Double.parseDouble` espera o **ponto** como separador decimal, independentemente do idioma do sistema. `Double.parseDouble("3,14")` falha.
-
 ## Precisão de ponto flutuante
 
 `double` e `float` guardam números em base 2, e nem todo decimal tem representação exata:
 
 ```java
 System.out.println(0.1 + 0.2);          // 0.30000000000000004
-System.out.println(0.1 + 0.2 == 0.3);   // false
 ```
 
-Isso não é bug de Java: é como o padrão IEEE 754 funciona em qualquer linguagem. Para dinheiro e outros valores que exigem exatidão, a solução é `BigDecimal`, que fica para mais adiante no curso.
+Isso não é bug de Java: é como o padrão IEEE 754 funciona em qualquer linguagem. Nesta seção, basta reconhecer que alguns resultados decimais são aproximações. A comparação de valores será estudada na Seção 4.
 
 ## Referências
 

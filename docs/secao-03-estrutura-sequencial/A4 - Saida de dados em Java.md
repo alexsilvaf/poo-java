@@ -1,6 +1,6 @@
 # Saída de dados em Java
 
-Saída é como o programa mostra resultados. No console, tudo passa por `System.out`, que é um objeto `PrintStream` ligado à saída padrão.
+Saída é como o programa mostra resultados. No console, o curso usa `System.out`, ligado à saída padrão. Os detalhes sobre objetos e a classe `PrintStream` serão estudados mais adiante.
 
 ## `print`, `println` e `printf`
 
@@ -81,7 +81,7 @@ System.out.printf("Preço: %.2f%n", preco);   // Preço: 1234,57
 |---|---|---|
 | `%d` | inteiros (`byte`, `short`, `int`, `long`) | `%d` com `42` → `42` |
 | `%f` | ponto flutuante (`float`, `double`) | `%.2f` com `3.14159` → `3,14` |
-| `%s` | texto e qualquer objeto | `%s` com `"Ana"` → `Ana` |
+| `%s` | texto e outros valores convertidos para texto | `%s` com `"Ana"` → `Ana` |
 | `%c` | um caractere | `%c` com `'A'` → `A` |
 | `%b` | booleano | `%b` com `true` → `true` |
 | `%%` | um sinal de porcentagem literal | `%%` → `%` |

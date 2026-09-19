@@ -15,8 +15,8 @@ Ao final desta seção, o aluno deverá ser capaz de:
 - entender a cadência semestral de versões e o significado de uma versão LTS;
 - organizar código em classes, pacotes, módulos e aplicação;
 - instalar o JDK, configurar a IDE e criar o primeiro projeto;
-- escrever, compilar e executar um programa Java, entendendo cada parte do método `main`;
-- reconhecer a sintaxe simplificada introduzida no Java 25.
+- escrever, compilar e executar um programa Java, reconhecendo `main` como ponto de entrada;
+- reconhecer a sintaxe simplificada introduzida no Java 25 sem depender de conceitos de orientação a objetos.
 
 ## Apresentação
 
@@ -48,5 +48,6 @@ Ao final desta seção, o aluno deverá ser capaz de:
 
 ## Observações
 
+- A2, A3 e A4 formam um mapa da plataforma. Os exemplos de `class`, `package`, `module` e `import` devem ser lidos estruturalmente, sem antecipar orientação a objetos ou bibliotecas ainda não estudadas.
 - O A7 apresenta a sintaxe simplificada, mas o restante do curso continua usando classes declaradas explicitamente. A forma compacta é mostrada para que o aluno a reconheça, não para que a adote.
 - O A8 é material de referência para quem quiser seguir rumo à certificação. Não é conteúdo de aula e não é avaliado.

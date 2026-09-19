@@ -8,7 +8,7 @@
 Ao final desta seção, o aluno deverá ser capaz de:
 
 - declarar variáveis, escolher o tipo primitivo adequado e reconhecer os oito tipos primitivos;
-- distinguir tipo primitivo de tipo por referência, e valor de endereço na memória;
+- distinguir tipos primitivos de tipos por referência, reconhecendo `String` como o primeiro exemplo por referência;
 - avaliar expressões aritméticas e prever o resultado da divisão inteira e da divisão real;
 - usar o operador `%` e a precedência de operadores para traduzir fórmulas para código;
 - identificar as três operações básicas — entrada, processamento e saída — em um programa sequencial;
@@ -55,5 +55,7 @@ Ao final desta seção, o aluno deverá ser capaz de:
 - Cada um dos seis blocos da apresentação termina com um slide **Mão na massa**: cinco exercícios para o aluno fazer na IDE, na ordem em que o conteúdo foi apresentado. São exercícios de digitar e executar — vários pedem que o erro seja provocado de propósito antes da correção. Se o encontro estiver curto, eles funcionam como tarefa de casa sem depender de material extra.
 - O `Locale` aparece duas vezes com efeitos opostos: na **saída** (`printf`) e na **entrada** (`Scanner`). Vale fixar uma convenção com a turma logo no começo — o curso usa `Locale.setDefault(Locale.US)` — para não misturar vírgula e ponto entre a leitura e a impressão.
 - A falha do `nextLine()` depois de um `nextInt()` é a dúvida mais recorrente da seção. Provocar o erro ao vivo, antes de mostrar a correção, costuma fixar melhor do que apenas avisar.
-- `var` e *text blocks* são mostrados para que o aluno os reconheça em código alheio. O curso continua usando declarações explícitas de tipo.
+- `var` e *text blocks* aparecem apenas para reconhecimento. Os exemplos principais continuam usando declarações explícitas e strings comuns.
+- Operadores cumulativos, incremento, comparações e condições foram retirados desta seção e ficam concentrados na Seção 4.
+- Arrays, separação de texto e validação condicional da entrada ficam para as seções em que esses recursos forem ensinados.
 - Os exercícios para iniciantes (aulas 31 e 32) ficam no Estudante360 e não são versionados neste repositório.

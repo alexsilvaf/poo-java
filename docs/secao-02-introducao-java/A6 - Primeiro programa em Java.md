@@ -3,8 +3,8 @@
 ## Regras de nomes
 
 - Nome do projeto sem espaço em branco, sem acento, nomes simples;
-- Arquivos devem ser *camel case* com iniciais maiúsculas (`PascalCase`);
-- Nomes das classes devem possuir o mesmo nome do arquivo.
+- Arquivos que contêm uma classe pública usam o mesmo nome da classe, normalmente em `PascalCase`;
+- O nome da classe pública deve ser idêntico ao nome do arquivo, sem a extensão `.java`.
 
 Além dessas convenções, existem regras que o compilador exige:
 
@@ -31,45 +31,12 @@ O método `main` é o **ponto de entrada** da aplicação: é por ele que a JVM 
 | Parte           | Por que é necessária |
 |-----------------|----------------------|
 | `public`        | Permite que a JVM chame o método a partir de fora da classe. |
-| `static`        | Permite chamar o método sem criar um objeto da classe. |
+| `static`        | Faz parte da assinatura tradicional usada pelo curso; seu papel será retomado ao estudar membros estáticos. |
 | `void`          | O método não devolve valor para quem o chamou. |
 | `main`          | O nome que a JVM procura, todo em minúsculas. |
-| `String[] args` | Recebe os argumentos passados na linha de comando. |
+| `String[] args` | Parte da assinatura tradicional; os colchetes serão explicados quando arrays forem estudados. |
 
-O parâmetro `args` pode ter qualquer nome, e a forma `String... args` também é aceita:
-
-```java
-public static void main(String... args) { }   // válido
-public static void main(String args[]) { }    // válido, sintaxe antiga do colchete
-```
-
-### Argumentos de linha de comando
-
-```java
-public class Argumentos {
-    public static void main(String[] args) {
-        if (args.length > 0) {
-            for (String argumento : args) {
-                System.out.println(argumento);
-            }
-        } else {
-            System.out.println("Nenhum argumento informado.");
-        }
-    }
-}
-```
-
-```bash
-java Argumentos um dois tres
-```
-
-```
-um
-dois
-tres
-```
-
-> `args` nunca é `null`. Quando nenhum argumento é passado, ele é um array de tamanho zero.
+Não é necessário entender arrays nem argumentos de linha de comando neste momento. O aluno deve copiar essa parte exatamente como aparece e concentrar-se no fluxo: a JVM entra no `main` e executa as instruções entre as chaves, de cima para baixo.
 
 ## Compilando e executando pela linha de comando
 
@@ -95,18 +62,14 @@ A ordem dos elementos é fixa e o compilador a exige:
 ```java
 package com.exemplo.curso;      // 1. opcional, mas se existir vem primeiro
 
-import java.util.Scanner;       // 2. opcional, depois do package
-
-public class Entrada {          // 3. as declarações de tipo
+public class OlaCurso {         // 2. declaração de tipo
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Digite seu nome: ");
-        String nome = sc.nextLine();
-        System.out.println("Olá, " + nome + "!");
-        sc.close();
+        System.out.println("Olá, curso de Java!");
     }
 }
 ```
+
+As declarações `import` serão usadas pela primeira vez quando o curso apresentar entrada de dados com `Scanner`, na Seção 3.
 
 ## Erros mais comuns no primeiro programa
 

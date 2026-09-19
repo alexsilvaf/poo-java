@@ -32,7 +32,7 @@ O Java é definido por especificações públicas, e várias organizações dist
 - **Eclipse Temurin (Adoptium)** — distribuição gratuita mantida pela comunidade, muito usada em cursos e em produção.
 - **Amazon Corretto**, **Azul Zulu**, **Red Hat build of OpenJDK** — outras distribuições gratuitas com suporte de longo prazo.
 
-> Todas passam pelo mesmo conjunto de testes de compatibilidade (TCK). Um programa que roda em uma roda nas demais.
+> Todas passam pelo mesmo conjunto de testes de compatibilidade (TCK). Em condições equivalentes, um programa compatível pode ser executado nas diferentes distribuições.
 
 ## Compilação e interpretação
 
@@ -60,7 +60,7 @@ O caminho percorrido por um programa Java é sempre o mesmo:
 3. O comando `java` inicia a **JVM**, que carrega os `.class` necessários.
 4. A JVM **verifica** o bytecode, garantindo que ele não viola as regras da plataforma.
 5. A JVM **interpreta** o bytecode e, para os trechos executados com frequência, o compilador **JIT** (*Just-In-Time*) gera código nativo otimizado.
-6. O **coletor de lixo** (*garbage collector*) libera automaticamente a memória dos objetos que não são mais alcançáveis.
+6. O **coletor de lixo** (*garbage collector*) recupera automaticamente memória que deixou de ser necessária.
 
 O bytecode é o que garante a portabilidade: ele é o mesmo em qualquer sistema operacional, e quem se adapta à plataforma é a JVM. Daí o lema *write once, run anywhere*.
 
@@ -68,9 +68,9 @@ O bytecode é o que garante a portabilidade: ele é o mesmo em qualquer sistema 
 
 - **Class Loader:** localiza e carrega os arquivos `.class` sob demanda, a partir do *classpath* ou do *module path*.
 - **Verificador de bytecode:** valida o código carregado antes de permitir sua execução.
-- **Áreas de memória:** a *heap* guarda os objetos, a *stack* guarda as chamadas de método e as variáveis locais, e o *metaspace* guarda os metadados das classes.
+- **Áreas de memória:** organizam o código e os dados usados durante a execução. A divisão detalhada será estudada junto com orientação a objetos.
 - **Motor de execução:** combina interpretação e compilação JIT.
-- **Coletor de lixo:** libera a memória da *heap*. O programador não desaloca memória manualmente.
+- **Coletor de lixo:** recupera memória automaticamente. O programador não faz a liberação manual usada em algumas outras linguagens.
 
 > A ausência de ponteiros explícitos e o gerenciamento automático de memória são justamente os problemas que o Java se propôs a resolver, conforme visto no material de contextualização.
 

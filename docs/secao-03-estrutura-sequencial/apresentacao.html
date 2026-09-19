@@ -340,35 +340,31 @@ idade = 25;             <span class="com">// atribuição</span>
       <h2>Os tipos primitivos</h2>
       <div class="slide-body top">
         <table class="deck-table" style="font-size:22px">
-          <tr><th class="mono">Tipo</th><th>Tamanho</th><th>Faixa</th><th class="mono">Padrão</th></tr>
-          <tr><td class="mono"><b>byte</b></td><td>8 bits</td><td>-128 a 127</td><td class="mono">0</td></tr>
-          <tr><td class="mono"><b>short</b></td><td>16 bits</td><td>-32.768 a 32.767</td><td class="mono">0</td></tr>
-          <tr><td class="mono"><b>int</b></td><td>32 bits</td><td>cerca de -2,1 bi a 2,1 bi</td><td class="mono">0</td></tr>
-          <tr><td class="mono"><b>long</b></td><td>64 bits</td><td>cerca de -9,2 a 9,2 quintilhões</td><td class="mono">0L</td></tr>
-          <tr><td class="mono"><b>float</b></td><td>32 bits</td><td>cerca de 7 dígitos de precisão</td><td class="mono">0.0f</td></tr>
-          <tr><td class="mono"><b>double</b></td><td>64 bits</td><td>cerca de 15 dígitos de precisão</td><td class="mono">0.0d</td></tr>
-          <tr><td class="mono"><b>boolean</b></td><td>—</td><td>true ou false</td><td class="mono">false</td></tr>
-          <tr><td class="mono"><b>char</b></td><td>16 bits</td><td>um caractere Unicode</td><td class="mono">código 0</td></tr>
+          <tr><th class="mono">Tipo</th><th>Tamanho</th><th>Faixa ou conteúdo</th></tr>
+          <tr><td class="mono"><b>byte</b></td><td>8 bits</td><td>-128 a 127</td></tr>
+          <tr><td class="mono"><b>short</b></td><td>16 bits</td><td>-32.768 a 32.767</td></tr>
+          <tr><td class="mono"><b>int</b></td><td>32 bits</td><td>cerca de -2,1 bi a 2,1 bi</td></tr>
+          <tr><td class="mono"><b>long</b></td><td>64 bits</td><td>inteiros de faixa muito ampla</td></tr>
+          <tr><td class="mono"><b>float</b></td><td>32 bits</td><td>cerca de 7 dígitos de precisão</td></tr>
+          <tr><td class="mono"><b>double</b></td><td>64 bits</td><td>cerca de 15 dígitos de precisão</td></tr>
+          <tr><td class="mono"><b>boolean</b></td><td>—</td><td>true ou false</td></tr>
+          <tr><td class="mono"><b>char</b></td><td>16 bits</td><td>um caractere Unicode</td></tr>
         </table>
         <div class="callout amber" style="margin-top:14px">No dia a dia, quatro resolvem quase tudo: <b>int</b>, <b>double</b>, <b>char</b> e <b>boolean</b> — mais a classe <b>String</b>, que não é primitiva.</div>
       </div>
     </section>
 
     <section class="slide" data-section="Bloco 1 · Inicialização">
-      <div class="eyebrow">O valor padrão engana</div>
+      <div class="eyebrow">Inicialize antes de usar</div>
       <h2>Variável local não tem valor padrão</h2>
       <div class="code-block small">
-<span class="kw">public class</span> Exemplo {
-    <span class="kw">static int</span> contador;              <span class="com">// atributo: vale 0 automaticamente</span>
+<span class="kw">int</span> total;
+System.out.println(total);      <span class="com">// ERRO DE COMPILAÇÃO</span>
 
-    <span class="kw">public static void</span> main(String[] args) {
-        <span class="kw">int</span> total;
-        System.out.println(contador);   <span class="com">// 0</span>
-        System.out.println(total);      <span class="com">// ERRO DE COMPILAÇÃO</span>
-    }
-}
+<span class="kw">int</span> quantidade = 10;
+System.out.println(quantidade); <span class="com">// 10</span>
       </div>
-      <div class="callout">Os valores padrão da tabela valem só para <b>atributos</b>. Usar uma variável local sem inicializar é erro de compilação — <span class="mono" style="font-family:Consolas,monospace">variable total might not have been initialized</span>.</div>
+      <div class="callout">Usar uma variável local sem inicializar causa erro de compilação: <span class="mono" style="font-family:Consolas,monospace">variable total might not have been initialized</span>.</div>
     </section>
 
     <section class="slide" data-section="Bloco 1 · Literais">
@@ -442,23 +438,28 @@ System.out.println(c + 1);    <span class="com">// 66 — virou int na operaçã
       <div class="callout">A prova de certificação cobra a primeira lista: o que <b>compila</b>, não o que é elegante.</div>
     </section>
 
-    <section class="slide" data-section="Bloco 1 · Memória">
-      <div class="eyebrow">Onde o valor realmente fica</div>
-      <h2>Variáveis na memória: stack e heap</h2>
-      <div class="diagram-wrap"><img src="./memoria-variaveis.svg" alt="Variáveis na memória: stack e heap"></div>
+    <section class="slide" data-section="Bloco 1 · Tipos">
+      <div class="eyebrow">A distinção necessária agora</div>
+      <h2>Primitivos e String</h2>
+      <div class="code-block">
+<span class="kw">int</span> idade = 25;
+<span class="kw">double</span> altura = 1.72;
+<span class="kw">boolean</span> ativo = <span class="kw">true</span>;
+String nome = <span class="str">"Ana"</span>;
+      </div>
+      <div class="callout">Os oito tipos primitivos guardam valores simples. <span class="mono" style="font-family:Consolas,monospace">String</span> é o primeiro tipo de referência usado no curso.</div>
     </section>
 
-    <section class="slide" data-section="Bloco 1 · Memória">
-      <div class="eyebrow">A consequência prática</div>
-      <h2>Só quem guarda endereço pode não guardar nada</h2>
+    <section class="slide" data-section="Bloco 1 · Tipos">
+      <div class="eyebrow">Somente o que será usado nesta seção</div>
+      <h2>Escolha o tipo pelo valor</h2>
       <div class="code-block">
-<span class="kw">int</span> numero = 10;       <span class="com">// a caixa "numero" contém 10</span>
-String texto = <span class="str">"Oi"</span>;   <span class="com">// contém o ENDEREÇO de um objeto</span>
-String vazio = <span class="kw">null</span>;   <span class="com">// não aponta para nada</span>
-
-<span class="kw">int</span> erro = <span class="kw">null</span>;      <span class="com">// ERRO: int não aceita null</span>
+<span class="kw">int</span> quantidade = 12;       <span class="com">// número inteiro</span>
+<span class="kw">double</span> preco = 19.90;      <span class="com">// número decimal</span>
+<span class="kw">char</span> inicial = <span class="str">'A'</span>;        <span class="com">// um caractere</span>
+String produto = <span class="str">"Caderno"</span>; <span class="com">// texto</span>
       </div>
-      <div class="callout amber">Um tipo primitivo guarda o próprio valor e por isso <b>nunca</b> pode ser <span class="mono" style="font-family:Consolas,monospace">null</span>.</div>
+      <div class="callout amber">Objetos, endereços, pilha e heap serão estudados com orientação a objetos. Eles não são necessários para os cálculos desta seção.</div>
     </section>
 
     <section class="slide" data-section="Bloco 1 · var e final">
@@ -472,7 +473,6 @@ String vazio = <span class="kw">null</span>;   <span class="com">// não aponta 
 <span class="kw">var</span> nome = <span class="str">"Maria"</span>;  <span class="com">// String</span>
 
 <span class="kw">var</span> x;               <span class="com">// erro</span>
-<span class="kw">var</span> y = <span class="kw">null</span>;        <span class="com">// erro</span>
           </div>
         </div>
         <div>
@@ -511,7 +511,7 @@ PI = 3.15;           <span class="com">// erro</span>
         <ol class="points compact">
           <li>Crie a classe <span class="mono" style="font-family:Consolas,monospace">Tipos</span> e declare uma variável de cada um dos <b>oito</b> primitivos, com um valor válido. Imprima todas com <span class="mono" style="font-family:Consolas,monospace">println</span>.</li>
           <li>Escreva <span class="mono" style="font-family:Consolas,monospace">long populacao = 8100000000;</span> e <span class="mono" style="font-family:Consolas,monospace">float altura = 1.75;</span> Leia as duas mensagens de erro e conserte com os sufixos.</li>
-          <li>Declare <span class="mono" style="font-family:Consolas,monospace">int total;</span> dentro do <span class="mono" style="font-family:Consolas,monospace">main</span> e tente imprimir. Depois mova a mesma declaração para fora, como <span class="mono" style="font-family:Consolas,monospace">static</span>, e compare.</li>
+          <li>Declare <span class="mono" style="font-family:Consolas,monospace">int total;</span> e tente imprimir. Depois atribua um valor antes da saída e compare os resultados da compilação.</li>
           <li>Com <span class="mono" style="font-family:Consolas,monospace">char letra = 'A';</span> imprima <span class="mono" style="font-family:Consolas,monospace">letra</span>, <span class="mono" style="font-family:Consolas,monospace">(int) letra</span> e <span class="mono" style="font-family:Consolas,monospace">letra + 1</span>. Explique por que só o primeiro mostra a letra.</li>
           <li>Troque suas declarações por <span class="mono" style="font-family:Consolas,monospace">var</span> e marque uma delas como <span class="mono" style="font-family:Consolas,monospace">final</span>. Tente reatribuí-la e leia o erro.</li>
         </ol>
@@ -707,24 +707,19 @@ System.out.println((<span class="kw">double</span>) (a / b)); <span class="com">
 
     <section class="slide compact" data-section="Bloco 3 · Programa completo">
       <div class="eyebrow">O esqueleto de quase todo exercício da seção</div>
-      <h2>Ler, calcular, mostrar</h2>
+      <h2>Representar, calcular, mostrar</h2>
       <div class="code-block small">
-Scanner sc = <span class="kw">new</span> Scanner(System.in);
-
-<span class="com">// 1. ENTRADA</span>
-System.out.print(<span class="str">"Primeira nota: "</span>);
-<span class="kw">double</span> nota1 = sc.nextDouble();
-System.out.print(<span class="str">"Segunda nota: "</span>);
-<span class="kw">double</span> nota2 = sc.nextDouble();
+<span class="com">// 1. ENTRADA REPRESENTADA POR VALORES FIXOS</span>
+<span class="kw">double</span> nota1 = 7.5;
+<span class="kw">double</span> nota2 = 8.0;
 
 <span class="com">// 2. PROCESSAMENTO</span>
 <span class="kw">double</span> media = (nota1 + nota2) / 2.0;
 
 <span class="com">// 3. SAÍDA</span>
-System.out.printf(<span class="str">"Media: %.2f%n"</span>, media);
-
-sc.close();
+System.out.println(media);
       </div>
+      <div class="callout">A leitura pelo teclado aparece no Bloco 6. Até lá, valores fixos permitem estudar a ordem das operações sem antecipar <span class="mono" style="font-family:Consolas,monospace">Scanner</span>.</div>
     </section>
 
     <section class="slide" data-section="Bloco 3 · Teste de mesa">
@@ -779,11 +774,9 @@ x = z * y;
       <h2>Ache o erro</h2>
       <div class="code-block small">
 <span class="com">// Média de duas notas</span>
-Scanner sc = <span class="kw">new</span> Scanner(System.in);
-
 <span class="kw">double</span> media = (n1 + n2) / 2.0;
-<span class="kw">double</span> n1 = sc.nextDouble();
-<span class="kw">double</span> n2 = sc.nextDouble();
+<span class="kw">double</span> n1 = 7.5;
+<span class="kw">double</span> n2 = 8.0;
 
 System.out.println(media);
       </div>
@@ -798,9 +791,9 @@ System.out.println(media);
       <h2>Pratique na IDE: entrada, processamento e saída</h2>
       <div class="slide-body top">
         <ol class="points compact">
-          <li>Escreva um programa que lê o raio e mostra a área do círculo, separando as partes com os comentários <span class="mono" style="font-family:Consolas,monospace">// entrada</span>, <span class="mono" style="font-family:Consolas,monospace">// processamento</span> e <span class="mono" style="font-family:Consolas,monospace">// saída</span>.</li>
+          <li>Escreva um programa que usa um raio fixo e mostra a área do círculo, separando as partes com os comentários <span class="mono" style="font-family:Consolas,monospace">// entrada</span>, <span class="mono" style="font-family:Consolas,monospace">// processamento</span> e <span class="mono" style="font-family:Consolas,monospace">// saída</span>.</li>
           <li>Antes de executar, faça o teste de mesa no papel com raio 2. Depois rode e compare com o que você previu.</li>
-          <li>Mova a linha do cálculo para <b>antes</b> da leitura. Leia o erro de compilação e explique por que ele acontece.</li>
+          <li>Mova a linha do cálculo para <b>antes</b> da declaração do raio. Leia o erro de compilação e explique por que ele acontece.</li>
           <li>Acrescente uma segunda saída mostrando também o perímetro — sem criar uma nova entrada.</li>
           <li>Comente a linha da saída e execute de novo. O programa ainda calcula? Explique como ele pode processar sem mostrar nada.</li>
         </ol>
@@ -874,7 +867,7 @@ System.out.println(2 + 3 + <span class="str">" itens"</span>);      <span class=
           <tr><th class="mono" style="width:130px">Marcador</th><th>Serve para</th><th class="mono">Com o argumento</th><th class="mono">Sai</th></tr>
           <tr><td class="mono"><b>%d</b></td><td>inteiros</td><td class="mono">42</td><td class="mono">42</td></tr>
           <tr><td class="mono"><b>%.2f</b></td><td>ponto flutuante</td><td class="mono">3.14159</td><td class="mono">3,14</td></tr>
-          <tr><td class="mono"><b>%s</b></td><td>texto e qualquer objeto</td><td class="mono">"Ana"</td><td class="mono">Ana</td></tr>
+          <tr><td class="mono"><b>%s</b></td><td>texto e outros valores convertidos para texto</td><td class="mono">"Ana"</td><td class="mono">Ana</td></tr>
           <tr><td class="mono"><b>%c</b></td><td>um caractere</td><td class="mono">'A'</td><td class="mono">A</td></tr>
           <tr><td class="mono"><b>%b</b></td><td>booleano</td><td class="mono">true</td><td class="mono">true</td></tr>
           <tr><td class="mono"><b>%%</b></td><td>um sinal de porcentagem</td><td>—</td><td class="mono">%</td></tr>
@@ -1063,30 +1056,29 @@ x = x + 3;   <span class="com">// o novo x é o</span>
           </div>
         </div>
         <div>
-          <div class="col-title">Atribuição cumulativa</div>
+          <div class="col-title">Atualização explícita</div>
           <div class="code-block small">
 <span class="kw">int</span> x = 10;
-x += 5;   <span class="com">// 15</span>
-x -= 3;   <span class="com">// 12</span>
-x *= 2;   <span class="com">// 24</span>
-x /= 4;   <span class="com">// 6</span>
-x %= 4;   <span class="com">// 2</span>
+x = x + 5;   <span class="com">// 15</span>
+x = x - 3;   <span class="com">// 12</span>
+x = x * 2;   <span class="com">// 24</span>
           </div>
         </div>
       </div>
+      <div class="callout">As formas abreviadas de atribuição serão apresentadas junto com as estruturas condicionais, na Seção 4.</div>
     </section>
 
-    <section class="slide" data-section="Bloco 5 · Incremento">
-      <div class="eyebrow">A posição do operador importa</div>
-      <h2>Pré e pós-incremento</h2>
+    <section class="slide" data-section="Bloco 5 · Processamento">
+      <div class="eyebrow">Uma etapa de cada vez</div>
+      <h2>Atualizações permanecem explícitas</h2>
       <div class="code-block">
-<span class="kw">int</span> a = 5;
-System.out.println(a++);   <span class="com">// imprime 5, depois a vira 6</span>
+<span class="kw">int</span> pontos = 10;
+pontos = pontos + 1;       <span class="com">// 11</span>
 
-<span class="kw">int</span> b = 5;
-System.out.println(++b);   <span class="com">// b vira 6, depois imprime 6</span>
+<span class="kw">double</span> saldo = 100.0;
+saldo = saldo - 25.0;      <span class="com">// 75.0</span>
       </div>
-      <div class="callout">Em uma linha isolada, <span class="mono" style="font-family:Consolas,monospace">a++</span> e <span class="mono" style="font-family:Consolas,monospace">++a</span> dão no mesmo. A diferença só aparece quando o valor é <b>usado</b> na mesma expressão — e é aí que a certificação arma a pegadinha.</div>
+      <div class="callout">Incremento, decremento e operadores cumulativos ficam para a Seção 4. Aqui, cada atualização mostra claramente o valor anterior e a operação aplicada.</div>
     </section>
 
     <section class="slide" data-section="Bloco 5 · Conversão">
@@ -1150,34 +1142,34 @@ System.out.println(p);  <span class="com">// 44</span>
         <div class="callout" style="margin-top:14px"><span class="mono" style="font-family:Consolas,monospace">incompatible types: possible lossy conversion from int to byte</span> — em uma expressão aritmética, <span class="mono" style="font-family:Consolas,monospace">byte</span> é promovido a <span class="mono" style="font-family:Consolas,monospace">int</span>. O correto é <span class="mono" style="font-family:Consolas,monospace">byte soma = (byte) (a + b);</span></div>
       </div>
       <div class="fragment" style="margin-top:16px">
-        <div class="callout amber">Curiosidade que cai na prova: <span class="mono" style="font-family:Consolas,monospace">short s = 5; s += 1;</span> <b>compila</b> — os operadores cumulativos aplicam um casting implícito.</div>
+        <div class="callout amber">A soma produz <span class="mono" style="font-family:Consolas,monospace">int</span>. O casting deixa explícita a decisão de voltar para <span class="mono" style="font-family:Consolas,monospace">byte</span>.</div>
       </div>
     </section>
 
-    <section class="slide" data-section="Bloco 5 · Texto e número">
-      <div class="eyebrow">Quando o dado chega como texto</div>
-      <h2>Convertendo nos dois sentidos</h2>
+    <section class="slide" data-section="Bloco 5 · Casting">
+      <div class="eyebrow">O ponto do casting muda o cálculo</div>
+      <h2>Divisão inteira e divisão decimal</h2>
       <div class="two-col">
         <div>
-          <div class="col-title">Texto → número</div>
+          <div class="col-title">Casting depois da divisão</div>
           <div class="code-block small">
-Integer.parseInt(<span class="str">"42"</span>);
-Double.parseDouble(<span class="str">"3.14"</span>);
-Long.parseLong(<span class="str">"900000"</span>);
-
-Integer.parseInt(<span class="str">"abc"</span>);
-<span class="com">// NumberFormatException</span>
+<span class="kw">int</span> a = 5;
+<span class="kw">int</span> b = 2;
+<span class="kw">double</span> r = (<span class="kw">double</span>) (a / b);
+<span class="com">// 2.0</span>
           </div>
         </div>
         <div>
-          <div class="col-title">Número → texto</div>
+          <div class="col-title">Casting antes da divisão</div>
           <div class="code-block small">
-String.valueOf(42);   <span class="com">// "42"</span>
-<span class="str">""</span> + 42;             <span class="com">// "42"</span>
+<span class="kw">int</span> a = 5;
+<span class="kw">int</span> b = 2;
+<span class="kw">double</span> r = (<span class="kw">double</span>) a / b;
+<span class="com">// 2.5</span>
           </div>
         </div>
       </div>
-      <div class="callout"><span class="mono" style="font-family:Consolas,monospace">Double.parseDouble</span> exige o <b>ponto</b> como separador decimal, qualquer que seja o idioma do sistema.</div>
+      <div class="callout">O primeiro cálculo perde a parte decimal antes do casting. No segundo, um operando já é <span class="mono" style="font-family:Consolas,monospace">double</span> quando a divisão acontece.</div>
     </section>
 
     <section class="slide" data-section="Bloco 5 · Precisão">
@@ -1185,24 +1177,23 @@ String.valueOf(42);   <span class="com">// "42"</span>
       <h2>Ponto flutuante é aproximado</h2>
       <div class="code-block">
 System.out.println(0.1 + 0.2);          <span class="com">// 0.30000000000000004</span>
-System.out.println(0.1 + 0.2 == 0.3);   <span class="com">// false</span>
       </div>
       <div class="callout"><span class="mono" style="font-family:Consolas,monospace">double</span> e <span class="mono" style="font-family:Consolas,monospace">float</span> guardam números em base 2, e nem todo decimal tem representação exata. É o padrão IEEE 754, e vale para qualquer linguagem.</div>
-      <div class="callout amber" style="margin-top:14px">Para dinheiro e valores que exigem exatidão, existe <span class="mono" style="font-family:Consolas,monospace">BigDecimal</span> — assunto para mais adiante no curso.</div>
+      <div class="callout amber" style="margin-top:14px">Por enquanto, basta reconhecer que o resultado pode exibir pequenas diferenças de precisão.</div>
     </section>
 
     <section class="slide" data-section="Bloco 5 · Desafio">
       <div class="eyebrow">Desafio rápido</div>
-      <h2>Depois de <span class="mono" style="font-family:Consolas,monospace">int x = 5; x = x++;</span> quanto vale x?</h2>
+      <h2>Quanto vale <span class="mono" style="font-family:Consolas,monospace">(int) 7.9</span>?</h2>
       <div class="slide-body">
         <div class="chip-row">
-          <div class="chip" data-correct="true" data-explain="O pós-incremento devolve o valor antigo (5) e incrementa x para 6; em seguida a atribuição sobrescreve x com o 5 devolvido.">5</div>
-          <div class="chip" data-correct="false" data-explain="Seria 6 se a linha fosse apenas x++; a atribuição é que desfaz o incremento, ao gravar de volta o valor antigo.">6</div>
-          <div class="chip" data-correct="false" data-explain="O código compila normalmente — o problema não é sintático, é de ordem de avaliação.">Não compila</div>
+          <div class="chip" data-correct="false" data-explain="O casting não arredonda para o inteiro mais próximo.">8</div>
+          <div class="chip" data-correct="true" data-explain="O casting para int descarta a parte decimal.">7</div>
+          <div class="chip" data-correct="false" data-explain="O resultado do casting é um int, não um double.">7.0</div>
         </div>
         <div class="fragment js-answer" style="margin-top:34px">
           <span class="badge badge-amber js-answer-label">RESPOSTA</span>
-          <div class="callout js-answer-text" style="margin-top:14px">O pós-incremento devolve o valor antigo (5) e incrementa <span class="mono" style="font-family:Consolas,monospace">x</span> para 6; a atribuição então sobrescreve <span class="mono" style="font-family:Consolas,monospace">x</span> com o 5 devolvido.</div>
+          <div class="callout js-answer-text" style="margin-top:14px">O casting para <span class="mono" style="font-family:Consolas,monospace">int</span> descarta a parte decimal. O resultado é <b>7</b>.</div>
         </div>
       </div>
     </section>
@@ -1214,9 +1205,9 @@ System.out.println(0.1 + 0.2 == 0.3);   <span class="com">// false</span>
         <ol class="points compact">
           <li>Com <span class="mono" style="font-family:Consolas,monospace">double nota = 7.9;</span> imprima <span class="mono" style="font-family:Consolas,monospace">(int) nota</span>. Confirme que o casting <b>trunca</b> em vez de arredondar.</li>
           <li>Declare <span class="mono" style="font-family:Consolas,monospace">byte a = 10, b = 20;</span> e depois tente <span class="mono" style="font-family:Consolas,monospace">byte soma = a + b;</span> Leia o erro e conserte com um cast.</li>
-          <li>Execute <span class="mono" style="font-family:Consolas,monospace">int x = 5;</span> seguido de <span class="mono" style="font-family:Consolas,monospace">println(x++)</span> e de <span class="mono" style="font-family:Consolas,monospace">println(++x)</span>. Explique cada uma das saídas.</li>
-          <li>Converta <span class="mono" style="font-family:Consolas,monospace">"7"</span> e <span class="mono" style="font-family:Consolas,monospace">"3"</span> com <span class="mono" style="font-family:Consolas,monospace">Integer.parseInt</span>, some os dois e devolva o resultado para <span class="mono" style="font-family:Consolas,monospace">String</span>.</li>
-          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">0.1 + 0.2</span> e compare com <span class="mono" style="font-family:Consolas,monospace">0.3</span>. Anote por que um teste de igualdade entre eles falha.</li>
+          <li>Atualize <span class="mono" style="font-family:Consolas,monospace">int x = 5;</span> usando apenas a forma explícita <span class="mono" style="font-family:Consolas,monospace">x = x + 1</span> e imprima o resultado.</li>
+          <li>Compare no papel os resultados de <span class="mono" style="font-family:Consolas,monospace">(double) (5 / 2)</span> e <span class="mono" style="font-family:Consolas,monospace">(double) 5 / 2</span>. Depois confirme na IDE.</li>
+          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">0.1 + 0.2</span> e registre a pequena diferença de precisão exibida.</li>
         </ol>
       </div>
     </section>
@@ -1413,7 +1404,7 @@ sc.useLocale(Locale.US);
           <tr><td class="mono"><b>Math.floor / ceil</b></td><td>arredonda para baixo / para cima</td><td class="mono">ceil(3.1) → 4.0</td></tr>
           <tr><td class="mono"><b>Math.random()</b></td><td>decimal aleatório em [0.0, 1.0)</td><td class="mono">(int)(random()*6)+1</td></tr>
         </table>
-        <div class="callout" style="margin-top:14px">Todos os métodos são <b>estáticos</b>: chamam-se pelo nome da classe, sem criar objeto. <span class="mono" style="font-family:Consolas,monospace">Math</span> nem sequer pode ser instanciada.</div>
+        <div class="callout" style="margin-top:14px">Nesta seção, use a forma <span class="mono" style="font-family:Consolas,monospace">Math.operação(valor)</span>. O significado completo de membros estáticos será retomado mais adiante.</div>
       </div>
     </section>
 

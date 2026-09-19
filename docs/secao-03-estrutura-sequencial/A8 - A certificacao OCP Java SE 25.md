@@ -1,101 +1,87 @@
 # A certificação OCP Java SE 25 e esta seção
 
-Este material relaciona o conteúdo da Seção 3 com o que a Oracle cobra na certificação **Oracle Certified Professional, Java SE 25 Developer** (exame **1Z0-831**). Os dados da prova — formato, duração e nota de corte — estão no [A8 da Seção 2](../secao-02-introducao-java/A8%20-%20A%20certificacao%20OCP%20Java%20SE%2025.md).
+Este material relaciona a Seção 3 com a certificação **Oracle Certified Professional Java SE 25 Developer**, exame **1Z0-831**.
 
-> A Seção 2 era quase toda contexto e plataforma, e pouco dela caía na prova. A Seção 3 é o oposto: praticamente tudo o que ela ensina é cobrado, porque tipos, operadores e conversões são a base sobre a qual as outras questões são construídas.
+> O objetivo é revisar apenas o que já foi ensinado. Operadores condicionais, repetições, arrays, objetos e tratamento de exceções serão relacionados à prova somente nas seções correspondentes.
 
-## Grupos de objetivos tocados por esta seção
+## Grupos de objetivos relacionados
 
-| Grupo de objetivos | O que desta seção entra |
-|---|---|
-| **Handling Date, Time, Text, Numeric and Boolean Values** | tipos primitivos, literais, operadores, casting, promoção numérica, `String`, formatação, `Math` |
-| **Performing Input/Output Operations** | entrada padrão com `Scanner` |
-| Developing Applications with Localization Support | `Locale` afetando formatação e leitura de números |
-| Applying Object-Oriented Principles | declaração de variáveis, `final`, `var` |
+| Grupo de objetivos | Conteúdo já estudado |
+| --- | --- |
+| Handling Date, Time, Text, Numeric and Boolean Values | tipos primitivos, literais, operadores aritméticos, casting, `String`, formatação e `Math` |
+| Performing Input Output Operations | entrada e saídas padrão com `Scanner`, `System.in` e `System.out` |
+| Developing Applications with Localization Support | efeito de `Locale` na leitura e na formatação de números |
 
-## O que desta seção cai na prova
+## Tipos primitivos e literais
 
-### Tipos primitivos e literais (material A1)
+Do conteúdo desta seção, é importante saber:
 
-Do que **esta seção ensina**, a prova exige saber:
+- os oito tipos primitivos e suas faixas gerais;
+- que variáveis locais precisam ser inicializadas antes da leitura;
+- que literais inteiros são `int` por padrão;
+- que literais com ponto decimal são `double` por padrão;
+- os sufixos `L`, `F` e `D`;
+- as notações hexadecimal, binária e octal;
+- as regras do `_` em literais numéricos;
+- a diferença entre `char` e `String`.
 
-- os oito tipos primitivos, seus tamanhos e seus valores padrão;
-- que os valores padrão valem para **atributos**, e que **variáveis locais precisam ser inicializadas** antes do uso — o contrário é erro de compilação;
-- os sufixos `L`, `F` e `D`, e por que `long g = 8100000000;` e `float f = 1.75;` não compilam;
-- as notações `0x`, `0b` e `0` para literais inteiros;
-- as regras do `_` em literais numéricos: nem no começo, nem no fim, nem ao lado do ponto decimal, nem antes do sufixo;
-- que `var` é inferência em tempo de compilação, exige inicializador e não aceita `null`;
-- que uma variável `final` só pode ser atribuída uma vez.
+Tipos por referência serão aprofundados junto com orientação a objetos. Nesta seção, `String` e `Scanner` são usados somente pelo comportamento necessário aos programas básicos.
 
-> Corresponde ao **Capítulo 4** do [OCPJ21 Study Guide](../ocpj21-book/ch04.md), seção *Understanding Data Types*.
+## Operadores aritméticos e casting
 
-> **Vai além desta seção:** *wrapper classes* (`Integer`, `Double`), *autoboxing* e *unboxing*, e o cache de `Integer` entre -128 e 127. A prova cobra isso no mesmo grupo de objetivos, mas depende de conceitos de objeto que só chegam na Seção 7.
+A prova exige atenção a:
 
-### Operadores, casting e promoção numérica (materiais A2 e A5)
+- precedência de `*`, `/`, `%`, `+` e `-`;
+- divisão inteira quando os dois operandos são inteiros;
+- uso de casting antes da divisão para produzir um resultado decimal;
+- resto da divisão com `%`;
+- promoção de `byte`, `short` e `char` para `int` nas expressões;
+- conversões implícitas para tipos mais amplos;
+- perda de dados em conversões explícitas;
+- truncamento da parte decimal pelo casting.
 
-Este é o assunto mais cobrado da seção:
+Os operadores de comparação e as formas abreviadas de atribuição ficam para a Seção 4.
 
-- divisão inteira contra divisão de ponto flutuante, e o momento certo de aplicar o casting;
-- `ArithmeticException` na divisão inteira por zero, contra `Infinity` e `NaN` na divisão de ponto flutuante;
-- precedência entre `*`, `/`, `%` e `+`, `-`, e a avaliação da esquerda para a direita;
-- a regra de promoção: `byte`, `short` e `char` são **sempre promovidos a `int`** em uma expressão aritmética — por isso `byte soma = b + c;` não compila;
-- que o casting trunca em vez de arredondar, e que ele pode estourar em silêncio: `(byte) 300` é `44`;
-- pré e pós-incremento na mesma expressão (`i++ + ++i`);
-- que os operadores cumulativos (`+=`, `-=`, ...) fazem um casting implícito, e por isso `short s = 5; s += 1;` compila enquanto `s = s + 1;` não;
-- concatenação com `+`: assim que uma `String` entra na expressão, tudo à direita vira texto.
+## Saída e formatação
 
-> Corresponde ao **Capítulo 4** do [OCPJ21 Study Guide](../ocpj21-book/ch04.md), seções *Operators*, *Unary Operators*, *Binary Operators* e *Assignment Operators*.
+Do material de saída, revise:
 
-> **Vai além desta seção:** operadores bitwise e de deslocamento (`&`, `|`, `^`, `<<`, `>>`, `>>>`), que estão na Seção 6, e os operadores lógicos e relacionais, que estão na Seção 4.
+- diferença entre `print`, `println` e `printf`;
+- especificadores `%d`, `%f`, `%s`, `%c`, `%b`, `%n` e `%%`;
+- quantidade de casas decimais em `%.2f`;
+- largura e alinhamento de campos;
+- sequências de escape como `\n`, `\t`, `\"` e `\\`;
+- efeito do `Locale` sobre o separador decimal.
 
-### Saída e formatação (material A4)
+## Funções matemáticas
 
-- os especificadores `%d`, `%f`, `%s`, `%c`, `%b`, `%n` e `%%`;
-- largura, alinhamento com `-`, preenchimento com `0` e casas decimais com `.n`;
-- a diferença entre `%n` e `\n`;
-- `String.format` produzindo a mesma saída de `printf`, porém como valor;
-- `IllegalFormatConversionException` quando o especificador não corresponde ao tipo do argumento;
-- as sequências de escape `\n`, `\t`, `\"` e `\\`;
-- *text blocks*: as três aspas, a remoção da indentação comum e a exigência de que o conteúdo comece na linha seguinte à abertura.
+É necessário prever o tipo e o valor produzido por chamadas como:
 
-> Corresponde ao **Capítulo 4** do [OCPJ21 Study Guide](../ocpj21-book/ch04.md), seções *Formatting Strings* e *Text Blocks*.
+- `Math.sqrt` e `Math.pow`, que devolvem `double`;
+- `Math.abs`;
+- `Math.max` e `Math.min`;
+- `Math.round`, `Math.floor` e `Math.ceil`;
+- `Math.random`, cujo resultado começa em `0.0` e não chega a `1.0`.
 
-> **Vai além desta seção:** os métodos de `String` e `StringBuilder`, a imutabilidade de `String` e o *string pool*. A Seção 6 cobre parte disso.
+## Entrada padrão
 
-### A API `Math` (material A7)
+Nesta etapa, basta reconhecer:
 
-- que os métodos são estáticos e que `Math` não é instanciável;
-- que `sqrt`, `cbrt` e `pow` devolvem sempre `double`;
-- que `Math.round(double)` devolve `long` e `Math.round(float)` devolve `int`, enquanto `floor` e `ceil` devolvem `double`;
-- que `Math.round(-2.5)` é `-2`, porque a definição é `floor(x + 0.5)`;
-- que `Math.abs(Integer.MIN_VALUE)` continua negativo;
-- a faixa de `Math.random()`: de `0.0` inclusive a `1.0` exclusive.
+- `System.in` como entrada padrão;
+- `System.out` como saída padrão;
+- o uso de `Scanner` para ler tokens e linhas;
+- a diferença entre `next` e `nextLine`;
+- a quebra de linha pendente depois de leituras numéricas;
+- o efeito de `Locale` sobre `nextDouble`;
+- que fechar o `Scanner` ligado a `System.in` fecha também a entrada padrão.
 
-> Corresponde ao **Capítulo 4** do [OCPJ21 Study Guide](../ocpj21-book/ch04.md), seção *The Math API*.
+## Questões de revisão
 
-### Entrada padrão (material A6)
-
-- que `System.in`, `System.out` e `System.err` são os fluxos padrão;
-- que fechar um `Scanner` ligado a `System.in` fecha a entrada padrão do programa;
-- `InputMismatchException` e `NoSuchElementException`, e o que provoca cada uma.
-
-> Corresponde ao **Capítulo 12** do [OCPJ21 Study Guide](../ocpj21-book/ch12.md), seção *Standard Streams*.
-
-> **Vai além desta seção:** todo o resto do Capítulo 12 — `Path`, `Files`, fluxos de arquivo, serialização. `Scanner` aparece na prova como coadjuvante; o peso está na API de arquivos.
-
-## O que desta seção **não** cai na prova
-
-- o conceito de estrutura sequencial e o teste de mesa — são ferramentas de aprendizagem, não conteúdo de linguagem;
-- a distinção didática entre entrada, processamento e saída;
-- convenções de nomes como `camelCase` e `PascalCase` — a prova cobra o que **compila**, não o que é elegante;
-- a explicação de *stack* e *heap* como modelo mental de memória.
-
-## Exemplos no estilo da prova
-
-**1.** O que este código imprime?
+**1. Qual é a saída?**
 
 ```java
-int a = 7, b = 2;
+int a = 7;
+int b = 2;
 System.out.println(a / b);
 System.out.println(a % b);
 System.out.println((double) a / b);
@@ -104,10 +90,10 @@ System.out.println((double) a / b);
 <details>
 <summary>Resposta</summary>
 
-`3`, `1` e `3.5`. Os dois primeiros são divisão e resto inteiros. No terceiro, o casting transforma `a` em `double` **antes** da divisão, e a promoção leva `b` junto.
+`3`, `1` e `3.5`. As duas primeiras operações usam inteiros. Na terceira, o casting ocorre antes da divisão.
 </details>
 
-**2.** O que acontece ao compilar?
+**2. O trecho compila?**
 
 ```java
 byte a = 10;
@@ -118,117 +104,83 @@ byte soma = a + b;
 <details>
 <summary>Resposta</summary>
 
-**Erro de compilação:** `incompatible types: possible lossy conversion from int to byte`. Em uma expressão aritmética, `byte`, `short` e `char` são promovidos a `int`, então `a + b` é um `int`. Seria preciso escrever `byte soma = (byte) (a + b);`.
+Não. `a + b` produz `int`, mesmo que os dois operandos sejam `byte`. Seria necessário um casting explícito.
 </details>
 
-**3.** E este, compila?
+**3. Qual é a saída?**
 
 ```java
-short s = 5;
-s += 1;
+System.out.println(1 + 2 + "3" + 4);
 ```
 
 <details>
 <summary>Resposta</summary>
 
-**Sim**, e `s` fica valendo `6`. Os operadores de atribuição cumulativa aplicam um casting implícito para o tipo da variável. Já `s = s + 1;` **não** compilaria, pela regra da promoção a `int`.
+`334`. Primeiro ocorre `1 + 2`, que resulta em `3`. Depois da entrada da `String`, as operações seguintes são concatenações.
 </details>
 
-**4.** Qual é a saída?
+**4. Qual valor é armazenado?**
 
 ```java
-System.out.println(1 + 2 + "3" + 4 + 5);
+double valor = 3.99;
+int inteiro = (int) valor;
 ```
 
 <details>
 <summary>Resposta</summary>
 
-`3345`. A avaliação é da esquerda para a direita: `1 + 2` ainda é soma e dá `3`; a partir da `String` `"3"`, tudo vira concatenação.
+`3`. O casting descarta a parte decimal; ele não arredonda.
 </details>
 
-**5.** O que é impresso?
+**5. Quais são os tipos dos resultados?**
 
 ```java
-int x = 5;
-x = x++;
-System.out.println(x);
+double raiz = Math.sqrt(16);
+long arredondado = Math.round(3.6);
 ```
 
 <details>
 <summary>Resposta</summary>
 
-`5`. O pós-incremento devolve o valor antigo (`5`), incrementa `x` para `6`, e a atribuição então sobrescreve `x` com o `5` que havia sido devolvido.
+`Math.sqrt` devolve `double`, portanto `raiz` recebe `4.0`. `Math.round(double)` devolve `long`, portanto `arredondado` recebe `4`.
 </details>
 
-**6.** Qual é o resultado?
+**6. O que acontece?**
 
 ```java
-System.out.println(Math.round(-2.5));
-System.out.println(Math.round(2.5));
+int total;
+System.out.println(total);
 ```
 
 <details>
 <summary>Resposta</summary>
 
-`-2` e `3`. `Math.round(x)` equivale a `floor(x + 0.5)`: `floor(-2.0)` é `-2` e `floor(3.0)` é `3`.
+Erro de compilação. A variável local foi declarada, mas não recebeu valor antes da leitura.
 </details>
 
-**7.** O que este código faz em tempo de execução?
+**7. Qual formato imprime duas casas decimais e termina a linha?**
+
+<details>
+<summary>Resposta</summary>
+
+`System.out.printf("%.2f%n", valor);`.
+</details>
+
+**8. Por que este padrão pode pular a leitura do nome?**
 
 ```java
-System.out.println(10 / 0);
+int idade = sc.nextInt();
+String nome = sc.nextLine();
 ```
 
 <details>
 <summary>Resposta</summary>
 
-Lança **`ArithmeticException: / by zero`**. Se fosse `10.0 / 0`, não haveria exceção: o resultado seria `Infinity`.
-</details>
-
-**8.** Qual é a saída?
-
-```java
-double d = 3.99;
-int i = (int) d;
-System.out.println(i);
-```
-
-<details>
-<summary>Resposta</summary>
-
-`3`. O casting **trunca**, descartando a parte decimal. Para obter `4`, seria preciso `Math.round(d)`.
-</details>
-
-**9.** Este código compila?
-
-```java
-public class Teste {
-    static int contador;
-
-    public static void main(String[] args) {
-        int total;
-        System.out.println(contador);
-        System.out.println(total);
-    }
-}
-```
-
-<details>
-<summary>Resposta</summary>
-
-**Não.** `contador` é um atributo e recebe o valor padrão `0`, mas `total` é uma variável local: `variable total might not have been initialized`.
-</details>
-
-**10.** O que `Integer.parseInt("3.14")` devolve?
-
-<details>
-<summary>Resposta</summary>
-
-Nada: lança **`NumberFormatException`**. `parseInt` só aceita a representação de um inteiro. Para `3.14` seria preciso `Double.parseDouble`, que exige o ponto como separador decimal.
+`nextInt` deixa a quebra de linha pendente. O `nextLine` seguinte consome essa quebra e devolve uma linha vazia. Um `sc.nextLine()` extra entre as duas leituras descarta o restante da linha.
 </details>
 
 ## Referências
 
-- [OCPJ21 Study Guide — Chapter 4: Working with Data](../ocpj21-book/ch04.md)
-- [OCPJ21 Study Guide — Chapter 12: File I/O](../ocpj21-book/ch12.md)
-- [Certificação Oracle Certified Professional, Java SE 25 Developer](https://education.oracle.com/java-se-25-developer-professional/pexam_1Z0-831)
+- [OCPJ21 Study Guide - Chapter 4: Working with Data](../ocpj21-book/ch04.md)
+- [OCPJ21 Study Guide - Chapter 12: File I O](../ocpj21-book/ch12.md)
+- [Certificação Oracle Certified Professional Java SE 25 Developer](https://education.oracle.com/java-se-25-developer-professional/pexam_1Z0-831)

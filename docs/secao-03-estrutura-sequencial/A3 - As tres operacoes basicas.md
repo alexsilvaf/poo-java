@@ -18,37 +18,24 @@ Esta seção trata da **estrutura sequencial**: as instruções são executadas 
 | Condicional | escolhe entre caminhos alternativos | Seção 4 |
 | Repetitiva | repete um trecho enquanto valer uma condição | Seção 5 |
 
-## O programa completo, na ordem
+## Um primeiro exemplo, na ordem
+
+Como a leitura pelo teclado ainda será ensinada no A6, os dados de entrada aparecem inicialmente como valores colocados nas variáveis:
 
 ```java
-package curso;
+// 1. ENTRADA REPRESENTADA POR VALORES INICIAIS
+String nome = "Ana";
+double nota1 = 7.0;
+double nota2 = 8.0;
 
-import java.util.Scanner;
+// 2. PROCESSAMENTO
+double media = (nota1 + nota2) / 2.0;
 
-public class MediaAluno {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        // 1. ENTRADA
-        System.out.print("Nome do aluno: ");
-        String nome = sc.nextLine();
-        System.out.print("Primeira nota: ");
-        double nota1 = sc.nextDouble();
-        System.out.print("Segunda nota: ");
-        double nota2 = sc.nextDouble();
-
-        // 2. PROCESSAMENTO
-        double media = (nota1 + nota2) / 2.0;
-
-        // 3. SAÍDA
-        System.out.printf("%s obteve media %.2f%n", nome, media);
-
-        sc.close();
-    }
-}
+// 3. SAÍDA
+System.out.println(nome + " obteve media " + media);
 ```
 
-Esse esqueleto — ler, calcular, mostrar — vai se repetir em praticamente todos os exercícios da seção.
+O exemplo já permite observar a ordem **entrada, processamento e saída** sem exigir `Scanner` ou formatação com `printf` antes das respectivas aulas. Depois do A6, os valores fixos podem ser substituídos por leituras do teclado.
 
 ## Nem todo programa tem as três
 

@@ -32,3 +32,8 @@ Ao final desta seção, o aluno deverá ser capaz de:
 | 25–30 min | Ambiente integrado de desenvolvimento | Mostrar com o A4 o que uma IDE agrega e por que ela não é obrigatória |
 | 30–50 min | Formas de tradução e execução | Percorrer os diagramas do A5 e comparar compilação, interpretação e abordagem híbrida |
 | 50–60 min | Revisão e exercícios | Usar o diagrama comparativo, responder dúvidas e realizar uma atividade curta de classificação |
+
+## Observações
+
+- Esta seção é conceitual. Os pequenos fragmentos do A3 servem apenas para visualizar léxica e sintaxe; não se espera que o aluno conheça variáveis ou operadores.
+- O exemplo do A4 permanece em linguagem natural. A implementação em Java começa somente na Seção 2.

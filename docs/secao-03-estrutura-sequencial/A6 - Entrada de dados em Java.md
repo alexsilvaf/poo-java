@@ -111,34 +111,6 @@ sc.useLocale(Locale.US);             // depois de criado
 
 Escolha uma convenção e mantenha-a: misturar formatação `US` na saída com leitura `pt-BR` na entrada é fonte garantida de confusão.
 
-## Lendo uma linha e separando depois
-
-Quando os dados vêm todos em uma linha e é preciso tratá-los individualmente:
-
-```java
-System.out.print("Nome e idade: ");
-String linha = sc.nextLine();          // "Maria 30"
-String[] partes = linha.split(" ");
-String nome = partes[0];
-int idade = Integer.parseInt(partes[1]);
-```
-
-Arrays e `split` são estudados a fundo mais adiante; aqui interessa saber que o caminho existe.
-
-## Verificando se há mais dados
-
-`hasNextInt()`, `hasNextLine()` e companhia devolvem `true` se a próxima leitura vai funcionar. Isso evita a exceção, sem precisar de tratamento de erro:
-
-```java
-System.out.print("Digite um numero: ");
-if (sc.hasNextInt()) {
-    int n = sc.nextInt();
-    System.out.println("Dobro: " + (n * 2));
-} else {
-    System.out.println("Isso nao e um numero inteiro.");
-}
-```
-
 ## Fechando o `Scanner`
 
 `sc.close()` libera o recurso, e a IDE avisa quando ele é esquecido. Duas ressalvas:
@@ -157,16 +129,7 @@ void main() {
 }
 ```
 
-`IO.readln` sempre devolve `String`. Para obter números, é preciso converter com `Integer.parseInt` ou `Double.parseDouble`:
-
-```java
-void main() {
-    int idade = Integer.parseInt(IO.readln("Idade: "));
-    IO.println("No ano que vem voce tera " + (idade + 1));
-}
-```
-
-O curso segue usando `Scanner`, que é o que aparece em projetos reais e no restante do material.
+`IO.readln` devolve texto. A conversão desse texto para números será apresentada somente quando houver necessidade; nos exercícios desta seção, o curso usa `Scanner`, que já fornece `nextInt` e `nextDouble`.
 
 ## Erros comuns
 

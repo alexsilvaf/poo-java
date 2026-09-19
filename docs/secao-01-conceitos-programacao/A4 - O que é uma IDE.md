@@ -8,9 +8,9 @@ Uma IDE reúne em uma única aplicação ferramentas para editar, traduzir, exec
 - Java: Eclipse, NetBeans, IntelliJ IDEA
 - C#: Microsoft Visual Studio
 
-### Exemplo de um programa
+## Exemplo de um problema
 
-Suponha um programa que solicita do usuário dois números e depois mostra a média aritmética deles:
+Suponha um programa que solicita dois números e depois mostra a média aritmética:
 
 ```text
 Digite o primeiro numero: 3
@@ -19,85 +19,22 @@ Digite o segundo numero: 6
 Media = 4.5
 ```
 
-### Solução em linguagem C
+Neste momento, o objetivo não é entender a sintaxe de uma linguagem. O algoritmo pode ser representado em linguagem natural:
 
-```c
-#include <stdio.h>
+1. receber o primeiro número;
+2. receber o segundo número;
+3. somar os dois valores;
+4. dividir a soma por dois;
+5. apresentar a média.
 
-int main() {
-    double x, y, media;
+## Como a IDE ajuda
 
-    printf("Digite o primeiro numero: ");
-    scanf("%lf", &x);
-    printf("Digite o segundo numero: ");
-    scanf("%lf", &y);
-    media = (x + y) / 2.0;
-    printf("Media = %.1f\n", media);
+Ao transformar esse algoritmo em código, a IDE oferece:
 
-    return 0;
-}
-```
+- editor com destaque visual dos elementos da linguagem;
+- avisos sobre erros de escrita e de estrutura;
+- comandos para traduzir e executar o programa;
+- console para digitar os números e visualizar a resposta;
+- depurador para acompanhar as instruções uma por vez.
 
-### Solução em linguagem C++
-
-```cpp
-#include <iostream>
-
-using namespace std;
-
-int main() {
-    double x, y, media;
-
-    cout << "Digite o primeiro numero: ";
-    cin >> x;
-    cout << "Digite o segundo numero: ";
-    cin >> y;
-    media = (x + y) / 2.0;
-    cout << "Media = " << media << endl;
-
-    return 0;
-}
-```
-
-### Solução em linguagem C#
-
-```csharp
-using System;
-
-namespace programa {
-    class Program {
-        static void Main(string[] args) {
-            double x, y, media;
-
-            Console.Write("Digite o primeiro numero: ");
-            x = double.Parse(Console.ReadLine());
-            Console.Write("Digite o segundo numero: ");
-            y = double.Parse(Console.ReadLine());
-            media = (x + y) / 2.0;
-            Console.WriteLine("Media = " + media);
-        }
-    }
-}
-```
-
-### Solução em linguagem Java
-
-```java
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        double x, y, media;
-
-        System.out.print("Digite o primeiro numero: ");
-        x = sc.nextDouble();
-        System.out.print("Digite o segundo numero: ");
-        y = sc.nextDouble();
-        media = (x + y) / 2.0;
-        System.out.println("Media = " + media);
-
-        sc.close();
-    }
-}
-```
+O mesmo problema pode ser programado em C, C++, C#, Java e outras linguagens. A lógica do algoritmo permanece; o que muda é a sintaxe. O primeiro programa Java será escrito somente na Seção 2, depois que a plataforma e a estrutura mínima forem apresentadas.

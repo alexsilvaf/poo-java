@@ -437,9 +437,9 @@
         <ul class="points compact">
           <li><b>Class Loader</b> — localiza e carrega os <span class="mono" style="font-family:Consolas,monospace">.class</span> sob demanda.</li>
           <li><b>Verificador de bytecode</b> — valida o código antes de executar.</li>
-          <li><b>Áreas de memória</b> — heap (objetos), stack (chamadas e variáveis locais), metaspace (metadados das classes).</li>
+          <li><b>Memória gerenciada</b> — guarda os dados necessários durante a execução.</li>
           <li><b>Motor de execução</b> — combina interpretação e compilação JIT.</li>
-          <li><b>Coletor de lixo (GC)</b> — libera a memória da heap automaticamente.</li>
+          <li><b>Coletor de lixo (GC)</b> — libera automaticamente a memória que deixou de ser usada.</li>
         </ul>
       </div>
     </section>
@@ -450,7 +450,7 @@
       <div class="diagram-wrap">
         <svg viewBox="0 0 1900 900" role="img" aria-labelledby="jvmanim-title jvmanim-desc" style="max-width:100%;max-height:100%">
           <title id="jvmanim-title">Jornada animada de uma classe dentro da JVM</title>
-          <desc id="jvmanim-desc">Um ícone de arquivo .class viaja pelo Class Loader, pelo Verificador e pelo Motor de execução, enquanto objetos aparecem e desaparecem na Heap, mostrando a coleta de lixo automática.</desc>
+          <desc id="jvmanim-desc">Um arquivo .class passa pelo Class Loader, pelo Verificador e pelo Motor de execução. A JVM também administra a memória usada pelo programa.</desc>
           <style>
             .jvmanim-pkg { animation: jvmanimTravel 8s ease-in-out infinite; }
             .jvmanim-loader { animation: jvmanimArrive 8s ease-in-out infinite; animation-delay: 1.2s; }
@@ -590,8 +590,8 @@
               <text x="1285" y="375" font-size="22" text-anchor="middle" fill="#6b4b00">⚡ Compilador JIT</text>
             </g>
 
-            <!-- Áreas de memória -->
-            <text x="905" y="470" font-size="26" text-anchor="middle" fill="#1e3a5f" font-weight="700">Áreas de memória</text>
+            <!-- Memória gerenciada -->
+            <text x="905" y="470" font-size="26" text-anchor="middle" fill="#1e3a5f" font-weight="700">Memória gerenciada pela JVM</text>
 
             <g filter="url(#jvmanim-softShadow)">
               <rect x="365" y="495" width="330" height="150" rx="10" fill="url(#jvmanim-green)" stroke="#4f7f30" stroke-width="3" />
@@ -599,11 +599,11 @@
               <rect x="1105" y="495" width="330" height="150" rx="10" fill="url(#jvmanim-green)" stroke="#4f7f30" stroke-width="3" />
             </g>
             <g fill="#ffffff" text-anchor="middle">
-              <text x="530" y="522" font-size="24" font-weight="700">📦 Heap</text>
-              <text x="900" y="522" font-size="24" font-weight="700">Stack</text>
-              <text x="900" y="600" font-size="17">chamadas e variáveis locais</text>
-              <text x="1270" y="522" font-size="24" font-weight="700">Metaspace</text>
-              <text x="1270" y="600" font-size="17">metadados das classes</text>
+              <text x="530" y="522" font-size="24" font-weight="700">Dados do programa</text>
+              <text x="900" y="522" font-size="24" font-weight="700">Dados em uso</text>
+              <text x="900" y="600" font-size="17">necessários durante a execução</text>
+              <text x="1270" y="522" font-size="24" font-weight="700">Informações das classes</text>
+              <text x="1270" y="600" font-size="17">usadas pela JVM</text>
             </g>
 
             <!-- Objetos que nascem e somem da Heap -->
@@ -618,12 +618,12 @@
                 <rect x="365" y="695" width="330" height="95" rx="10" fill="url(#jvmanim-gray)" stroke="#777777" stroke-width="2.5" />
               </g>
               <text x="530" y="732" font-size="22" text-anchor="middle" fill="#1f2937" font-weight="700">🧹 Coletor de lixo (GC)</text>
-              <text x="530" y="760" font-size="17" text-anchor="middle" fill="#374151">libera a heap automaticamente</text>
+              <text x="530" y="760" font-size="17" text-anchor="middle" fill="#374151">libera memória sem uso</text>
             </g>
           </g>
         </svg>
       </div>
-      <div class="callout">Veja o <span class="mono" style="font-family:Consolas,monospace">.class</span> passar pelo Class Loader, pelo Verificador e pelo Motor de execução — enquanto isso, objetos nascem e somem sozinhos na Heap.</div>
+      <div class="callout">Acompanhe o arquivo <span class="mono" style="font-family:Consolas,monospace">.class</span> passar pelo Class Loader, pelo Verificador e pelo Motor de execução. Os detalhes da memória ficam para as aulas de orientação a objetos.</div>
     </section>
 
     <section class="slide" data-section="Bloco 2 · Classpath">
@@ -678,7 +678,7 @@ java --module-path mods --module com.exemplo/com.exemplo.Programa
         <div class="chip-row">
           <div class="chip" data-correct="false" data-explain="O JDK inclui o compilador (javac) e ferramentas de desenvolvimento — é mais do que você precisa só para executar.">JDK completo</div>
           <div class="chip" data-correct="true" data-explain="JRE — é a JVM mais as bibliotecas padrão, o mínimo para executar. Sem javac, ele não compila nada.">JRE</div>
-          <div class="chip" data-correct="false" data-explain="A JVM sozinha executa bytecode, mas sem as bibliotecas padrão (como String, System, ArrayList) quase nenhum programa real funciona.">Só a JVM</div>
+          <div class="chip" data-correct="false" data-explain="A JVM sozinha executa bytecode, mas sem as bibliotecas padrão, como String e System, quase nenhum programa real funciona.">Só a JVM</div>
         </div>
         <div class="fragment js-answer" style="margin-top:34px">
           <span class="badge badge-amber js-answer-label">RESPOSTA</span>
@@ -742,13 +742,11 @@ java --module-path mods --module com.exemplo/com.exemplo.Programa
       <h2>Destaques da versão</h2>
       <div class="slide-body">
         <ul class="points compact">
-          <li>Arquivos-fonte compactos e método <span class="mono" style="font-family:Consolas,monospace">main</span> de instância (JEP 512)</li>
-          <li><span class="mono" style="font-family:Consolas,monospace">import module</span> — importação de módulo inteiro (JEP 511)</li>
-          <li>Corpos de construtor flexíveis (JEP 513)</li>
-          <li>Scoped Values finalizados (JEP 506)</li>
-          <li>Cabeçalhos de objeto compactos — menos memória (JEP 519)</li>
+          <li>É uma versão LTS, adequada para permanecer em uso por vários anos</li>
+          <li>Permite arquivos-fonte compactos com <span class="mono" style="font-family:Consolas,monospace">void main()</span></li>
+          <li>Acrescenta a declaração <span class="mono" style="font-family:Consolas,monospace">import module</span></li>
         </ul>
-        <div class="callout">É a versão cobrada pela certificação Oracle Certified Professional, Java SE 25 Developer (1Z0-831).</div>
+        <div class="callout">Os demais recursos da versão formam apenas um mapa histórico. Eles serão estudados quando seus pré-requisitos já tiverem sido apresentados.</div>
       </div>
     </section>
 
@@ -842,7 +840,7 @@ java --module-path mods --module com.exemplo/com.exemplo.Programa
       <div class="diagram-wrap" style="height:300px"><img src="./pacote.svg" alt="Pacotes entities e services"></div>
       <div class="code-block small" style="margin-top:18px">
 <span class="kw">package</span> com.exemplo.produtos;   <span class="com">// 1ª instrução do arquivo</span>
-<span class="kw">import</span> java.util.ArrayList;     <span class="com">// depois do package</span>
+<span class="kw">import</span> java.util.Scanner;       <span class="com">// depois do package</span>
       </div>
     </section>
 
@@ -950,10 +948,10 @@ java --module-path mods --module com.exemplo/com.exemplo.Programa
         <table class="deck-table">
           <tr><th class="mono">Parte</th><th>Por que é necessária</th></tr>
           <tr><td class="mono">public</td><td>Permite que a JVM chame o método de fora da classe</td></tr>
-          <tr><td class="mono">static</td><td>Permite chamar sem criar um objeto da classe</td></tr>
+          <tr><td class="mono">static</td><td>Faz parte da assinatura tradicional; será explicado mais adiante</td></tr>
           <tr><td class="mono">void</td><td>O método não devolve valor</td></tr>
           <tr><td class="mono">main</td><td>Nome que a JVM procura, todo em minúsculas</td></tr>
-          <tr><td class="mono">String[] args</td><td>Recebe os argumentos da linha de comando</td></tr>
+          <tr><td class="mono">String[] args</td><td>Parte da assinatura tradicional; os colchetes serão estudados com arrays</td></tr>
         </table>
       </div>
     </section>
@@ -984,31 +982,32 @@ java OlaMundo          <span class="com">// executa (sem a extensão .class)</sp
 
     <section class="slide" data-section="Bloco 5 · Desafio">
       <div class="eyebrow">Desafio rápido</div>
-      <h2>Por que o main precisa ser static?</h2>
+      <h2>Qual nome a JVM procura para iniciar o programa?</h2>
       <div class="slide-body">
         <div class="chip-row">
-          <div class="chip" data-correct="false" data-explain="Não é só estilo — sem static, a JVM precisaria de um objeto já criado antes de conseguir chamar o main.">Só por convenção</div>
-          <div class="chip" data-correct="true" data-explain="static permite que a JVM chame o método diretamente pela classe, sem instanciar nada antes.">Pra JVM chamar sem criar um objeto</div>
-          <div class="chip" data-correct="false" data-explain="static não afeta a velocidade de execução — é sobre como o método é chamado, não sobre performance.">Pra rodar mais rápido</div>
+          <div class="chip" data-correct="false" data-explain="start não é o nome do ponto de entrada tradicional do Java.">start</div>
+          <div class="chip" data-correct="true" data-explain="main é o nome usado como ponto de entrada do programa.">main</div>
+          <div class="chip" data-correct="false" data-explain="run aparece em outros contextos, mas não inicia este programa.">run</div>
         </div>
         <div class="fragment js-answer" style="margin-top:34px">
           <span class="badge badge-amber js-answer-label">RESPOSTA</span>
-          <div class="callout js-answer-text" style="margin-top:14px">static permite que a JVM chame o método diretamente pela classe, sem instanciar nada antes.</div>
+          <div class="callout js-answer-text" style="margin-top:14px">A JVM procura o método chamado <span class="mono" style="font-family:Consolas,monospace">main</span>. O significado completo das outras palavras será estudado gradualmente.</div>
         </div>
       </div>
     </section>
 
     <section class="slide" data-section="Bloco 5 · Desafio">
       <div class="eyebrow">Desafio rápido</div>
-      <h2>args, em main(String[] args), pode ser null quando não passo argumento nenhum?</h2>
+      <h2>Qual deve ser o nome do arquivo desta classe?</h2>
       <div class="slide-body">
         <div class="chip-row">
-          <div class="chip" data-correct="false" data-explain="Um engano comum — mas causaria NullPointerException toda vez que alguém checasse args.length sem passar nada.">Sim, sempre que não há argumento</div>
-          <div class="chip" data-correct="true" data-explain="args nunca é null. Sem argumentos, ele é simplesmente um array de tamanho zero.">Não</div>
+          <div class="chip" data-correct="true" data-explain="Uma classe pública chamada OlaMundo deve ficar em OlaMundo.java.">OlaMundo.java</div>
+          <div class="chip" data-correct="false" data-explain="Java diferencia maiúsculas de minúsculas, inclusive no nome da classe pública.">olamundo.java</div>
+          <div class="chip" data-correct="false" data-explain="O nome precisa coincidir com a classe pública, não com o método main.">main.java</div>
         </div>
         <div class="fragment js-answer" style="margin-top:34px">
           <span class="badge badge-amber js-answer-label">RESPOSTA</span>
-          <div class="callout js-answer-text" style="margin-top:14px">args nunca é null. Sem argumentos, ele é simplesmente um array de tamanho zero.</div>
+          <div class="callout js-answer-text" style="margin-top:14px">O arquivo deve se chamar <b>OlaMundo.java</b>, exatamente como a classe pública.</div>
         </div>
       </div>
     </section>
@@ -1018,18 +1017,14 @@ java OlaMundo          <span class="com">// executa (sem a extensão .class)</sp
       <h2>Personalize o OlaMundo</h2>
       <div class="slide-body top">
         <ul class="points compact">
-          <li>Troque o texto fixo por uma pergunta: leia o nome da pessoa com <span class="mono" style="font-family:Consolas,monospace">Scanner</span>.</li>
-          <li>Imprima <span class="mono" style="font-family:Consolas,monospace">"Olá, " + nome + "!"</span> em vez da mensagem fixa.</li>
+          <li>Troque a mensagem por uma saudação de sua escolha.</li>
+          <li>Acrescente uma segunda linha com <span class="mono" style="font-family:Consolas,monospace">System.out.println</span>.</li>
         </ul>
         <div class="fragment" style="margin-top:26px">
           <span class="badge badge-amber">SOLUÇÃO — dentro do main</span>
           <div class="code-block small" style="margin-top:14px">
-<span class="kw">import</span> java.util.Scanner;
-Scanner sc = <span class="kw">new</span> Scanner(System.in);
-System.out.print(<span class="str">"Digite seu nome: "</span>);
-String nome = sc.nextLine();
-System.out.println(<span class="str">"Olá, "</span> + nome + <span class="str">"!"</span>);
-sc.close();
+System.out.println(<span class="str">"Olá, turma!"</span>);
+System.out.println(<span class="str">"Meu primeiro programa Java."</span>);
           </div>
         </div>
       </div>
@@ -1077,12 +1072,10 @@ sc.close();
       <h2>A classe java.lang.IO</h2>
       <div class="slide-body">
         <table class="deck-table">
-          <tr><td class="mono"><b>IO.println(Object)</b></td><td>Escreve o objeto e quebra a linha</td></tr>
-          <tr><td class="mono"><b>IO.print(Object)</b></td><td>Escreve sem quebrar a linha</td></tr>
-          <tr><td class="mono"><b>IO.readln()</b></td><td>Lê uma linha digitada pelo usuário</td></tr>
-          <tr><td class="mono"><b>IO.readln(String)</b></td><td>Escreve um prompt e então lê a linha</td></tr>
+          <tr><td class="mono"><b>IO.println("texto")</b></td><td>Escreve o texto e quebra a linha</td></tr>
+          <tr><td class="mono"><b>IO.print("texto")</b></td><td>Escreve o texto sem quebrar a linha</td></tr>
         </table>
-        <div class="callout">Substitui, em casos simples, a combinação de <span class="mono" style="font-family:Consolas,monospace">System.out.println</span> com <span class="mono" style="font-family:Consolas,monospace">Scanner</span>.</div>
+        <div class="callout">Nesta etapa, basta reconhecer as duas operações de saída. A entrada de dados será estudada na Seção 3.</div>
       </div>
     </section>
 
@@ -1092,25 +1085,25 @@ sc.close();
       <div class="slide-body">
         <table class="deck-table">
           <tr><th>Situação</th><th>Forma recomendada</th></tr>
-          <tr><td>Exercício rápido, script, aula introdutória</td><td>Arquivo compacto, <span class="mono">void main()</span></td></tr>
-          <tr><td>Classe de um projeto real</td><td>Classe explícita, com package e main tradicional</td></tr>
-          <tr><td>Código chamado por outras classes</td><td>Classe explícita, obrigatoriamente</td></tr>
+          <tr><td>Reconhecer a novidade do Java 25</td><td>Arquivo compacto com <span class="mono">void main()</span></td></tr>
+          <tr><td>Exercícios das próximas seções</td><td>Classe explícita com o <span class="mono">main</span> tradicional</td></tr>
         </table>
-        <div class="callout amber">O recurso não substitui a orientação a objetos — apenas adia o momento de aprendê-la.</div>
+        <div class="callout amber">O curso mantém uma única forma principal para que o foco permaneça nos conceitos novos de cada seção.</div>
       </div>
     </section>
 
     <section class="slide" data-section="Bloco 6 · Desafio">
       <div class="eyebrow">Desafio rápido</div>
-      <h2>Um arquivo-fonte compacto pode declarar package?</h2>
+      <h2>Qual trecho inicia o arquivo compacto apresentado?</h2>
       <div class="slide-body">
         <div class="chip-row">
-          <div class="chip" data-correct="false" data-explain="Justamente o contrário: arquivos-fonte compactos não podem ter package — é uma das limitações da JEP 512.">Sim</div>
-          <div class="chip" data-correct="true" data-explain="Não — a classe implícita sempre fica no pacote sem nome.">Não</div>
+          <div class="chip" data-correct="true" data-explain="void main() é a forma compacta mostrada nesta aula.">void main()</div>
+          <div class="chip" data-correct="false" data-explain="public class inicia a forma tradicional, não o arquivo compacto.">public class</div>
+          <div class="chip" data-correct="false" data-explain="package organiza o código, mas não inicia a execução.">package</div>
         </div>
         <div class="fragment js-answer" style="margin-top:34px">
           <span class="badge badge-amber js-answer-label">RESPOSTA</span>
-          <div class="callout js-answer-text" style="margin-top:14px">Não — a classe implícita sempre fica no pacote sem nome.</div>
+          <div class="callout js-answer-text" style="margin-top:14px">A forma compacta apresentada começa com <span class="mono" style="font-family:Consolas,monospace">void main()</span>.</div>
         </div>
       </div>
     </section>
@@ -1121,8 +1114,8 @@ sc.close();
       <div class="slide-body">
         <div class="chip-row">
           <div class="chip" data-correct="true" data-explain="java.lang.IO — importada automaticamente, com println, print e readln.">java.lang.IO</div>
-          <div class="chip" data-correct="false" data-explain="Console existe desde antes, mas exige obter a instância via System.console() — mais burocrático que a nova IO.">java.io.Console</div>
-          <div class="chip" data-correct="false" data-explain="Scanner lê dados de entrada, mas não substitui println para saída — e não é a novidade do Java 25.">java.util.Scanner</div>
+          <div class="chip" data-correct="false" data-explain="Console é outra API. A novidade apresentada nesta aula é java.lang.IO.">java.io.Console</div>
+          <div class="chip" data-correct="false" data-explain="System é usado na forma tradicional, mas a novidade apresentada nesta aula é IO.">java.lang.System</div>
         </div>
         <div class="fragment js-answer" style="margin-top:34px">
           <span class="badge badge-amber js-answer-label">RESPOSTA</span>

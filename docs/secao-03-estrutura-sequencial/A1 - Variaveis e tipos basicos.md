@@ -12,37 +12,37 @@ int quantidade = 10;    // declaração com inicialização
 
 ![Tipos de dados em Java](./tipos-de-dados.svg)
 
-- **Tipos primitivos** — guardam o próprio valor. São exatamente oito, todos escritos em letra minúscula.
-- **Tipos por referência** — guardam o endereço de um objeto. `String`, `Scanner`, arrays e todas as classes entram aqui.
+- **Tipos primitivos** — representam valores básicos. São exatamente oito, todos escritos em letra minúscula.
+- **Tipos por referência** — representam valores criados a partir de classes. `String` é o primeiro exemplo usado no curso.
+
+Neste momento, basta distinguir os dois grupos. Objetos, referências e sua organização na memória serão explicados na introdução à orientação a objetos.
 
 ## Os oito tipos primitivos
 
-| Tipo | Tamanho | Faixa de valores | Padrão | Uso típico |
-|---|---:|---|---|---|
-| `byte` | 8 bits | -128 a 127 | `0` | dados binários, economia de memória |
-| `short` | 16 bits | -32.768 a 32.767 | `0` | raramente usado |
-| `int` | 32 bits | cerca de -2,1 bi a 2,1 bi | `0` | **o inteiro padrão do dia a dia** |
-| `long` | 64 bits | cerca de -9,2 a 9,2 quintilhões | `0L` | contadores grandes, milissegundos |
-| `float` | 32 bits | cerca de 7 dígitos de precisão | `0.0f` | quando memória importa mais que precisão |
-| `double` | 64 bits | cerca de 15 dígitos de precisão | `0.0d` | **o decimal padrão do dia a dia** |
-| `boolean` | não definido pela especificação | `true` ou `false` | `false` | condições |
-| `char` | 16 bits | 0 a 65.535, um caractere Unicode | caractere de código 0 | uma única letra ou símbolo |
+| Tipo | Tamanho | Faixa de valores | Uso típico |
+|---|---:|---|---|
+| `byte` | 8 bits | -128 a 127 | dados binários, economia de memória |
+| `short` | 16 bits | -32.768 a 32.767 | raramente usado |
+| `int` | 32 bits | cerca de -2,1 bi a 2,1 bi | **o inteiro padrão do dia a dia** |
+| `long` | 64 bits | cerca de -9,2 a 9,2 quintilhões | contadores grandes, milissegundos |
+| `float` | 32 bits | cerca de 7 dígitos de precisão | quando memória importa mais que precisão |
+| `double` | 64 bits | cerca de 15 dígitos de precisão | **o decimal padrão do dia a dia** |
+| `boolean` | não definido pela especificação | `true` ou `false` | condições |
+| `char` | 16 bits | 0 a 65.535, um caractere Unicode | uma única letra ou símbolo |
 
 No dia a dia deste curso, quatro tipos resolvem quase tudo: **`int`**, **`double`**, **`char`** e **`boolean`** — mais a classe **`String`**, que não é primitiva.
 
-> Os valores padrão da tabela valem apenas para **atributos de classe**. Uma **variável local** não recebe valor padrão: usá-la sem inicializar é erro de compilação, não de execução.
+Uma variável local não recebe um valor automaticamente. Ela precisa ser inicializada antes da leitura:
 
 ```java
-public class Exemplo {
-    static int contador;              // atributo: vale 0 automaticamente
+int total;
+// System.out.println(total); // erro: total ainda não foi inicializada
 
-    public static void main(String[] args) {
-        int total;
-        System.out.println(contador); // 0
-        System.out.println(total);    // erro: variable total might not have been initialized
-    }
-}
+total = 0;
+System.out.println(total);    // agora funciona
 ```
+
+Valores automáticos de atributos serão estudados quando o curso apresentar classes e objetos.
 
 ## Literais e sufixos
 
@@ -97,7 +97,7 @@ System.out.println(c + 1);    // 66  — virou int na operação aritmética
 Regras que o **compilador** exige:
 
 - podem conter letras, dígitos, `_` e `$`, mas **não podem começar com dígito**;
-- não podem ser palavras reservadas (`int`, `class`, `for`, `new`, ...);
+- não podem ser palavras reservadas (`int`, `class`, `public`, ...);
 - diferenciam maiúsculas de minúsculas: `total` e `Total` são variáveis distintas.
 
 Convenções que a **comunidade** segue:
@@ -129,7 +129,6 @@ var nome = "Maria";           // infere String
 var preco = 49.90;            // infere double
 
 var indefinida;               // erro: precisa de inicializador
-var nulo = null;              // erro: não há tipo a inferir
 ```
 
 `var` **não** torna a linguagem dinamicamente tipada: o tipo é fixado na compilação e continua o mesmo até o fim. Neste curso as declarações continuam explícitas, para que o tipo de cada variável fique visível enquanto o assunto ainda é novo.
@@ -143,19 +142,6 @@ final double PI = 3.14159;
 final int MAXIMO_TENTATIVAS = 3;
 
 PI = 3.15;   // erro: cannot assign a value to final variable PI
-```
-
-## Como as variáveis ficam na memória
-
-![Variáveis na memória](./memoria-variaveis.svg)
-
-Uma variável primitiva guarda diretamente o seu valor. Uma variável de referência guarda o **endereço** de um objeto que vive na *heap*. É por isso que uma variável de referência pode valer `null` — ausência de objeto — e uma variável primitiva nunca pode.
-
-```java
-int numero = 10;       // a caixa "numero" contém 10
-String texto = "Oi";   // a caixa "texto" contém o endereço de um objeto String
-String vazio = null;   // a caixa "vazio" não aponta para nada
-int erro = null;       // erro de compilação: int não aceita null
 ```
 
 ## Referências

@@ -1,5 +1,7 @@
 # Versões do Java (desde a versão 8)
 
+> Os nomes de recursos nesta aula formam apenas um mapa histórico da plataforma. Não é preciso compreender nem usar esses recursos agora; cada conceito será estudado quando seus pré-requisitos já tiverem sido apresentados.
+
 ## Cadência de lançamentos
 
 Desde o Java 9 a Oracle publica uma nova versão a cada seis meses, sempre em **março** e **setembro**. A cada dois anos uma dessas versões é marcada como **LTS** (*Long-Term Support*), ou seja, recebe correções e atualizações de segurança por vários anos.
